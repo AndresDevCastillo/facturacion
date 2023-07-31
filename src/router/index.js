@@ -4,15 +4,15 @@ import {
 } from 'vue-router';
 //Creación de rutas a los archivos
 const routes = [{
-    path: '/',
+    path: '/producto',
     name: 'principal',
     component: () =>
-        import ('../components/Home.vue'),
+        import('../components/AddProducto.vue'),
     children: [{
         path: '/inicio',
         name: 'inicio',
         component: () =>
-            import ('../components/Home.vue')
+            import('../components/AddProducto.vue')
     }]
 }];
 
