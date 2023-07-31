@@ -57,6 +57,10 @@ export default {
 </script>
 
 <style>
+:root {
+    --bg-table-header: #f3f2f7;
+}
+
 #app {
     font-family: Avenir, Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
@@ -64,6 +68,27 @@ export default {
     text-align: center;
     color: #2c3e50;
     margin-top: 60px;
+}
+
+.fw-600 {
+    font-weight: 600;
+}
+
+.bg-table-header>tr>th {
+    background-color: var(--bg-table-header) !important;
+    font-weight: bold !important;
+}
+
+.fw-bold {
+    font-weight: bold !important;
+}
+
+.bc-gray {
+    color: rgba(var(--v-theme-on-surface), var(--v-medium-emphasis-opacity));
+}
+
+.divider-dotted {
+    border-style: dotted;
 }
 
 .items-bar>.v-list-item__content>.v-list-item-title {
