@@ -4,55 +4,50 @@
         <v-form v-model="valid">
             <v-container>
                 <v-row>
-                    <v-col cols="12" md="4">
-                        <v-text-field v-model="form.nombre" :rules="nameRules" :counter="10" label="Nombre"
-                            required></v-text-field>
+                    <v-col cols="12" md="3">
+                        <v-text-field v-model="form.nombre" :counter="10" label="Nombre" required></v-text-field>
                     </v-col>
 
 
 
-                    <v-col cols="12" md="4">
-                        <v-text-field v-model="form.cedula" :rules="numberRules" label="Cedula" type="number"
+                    <v-col cols="12" md="3">
+                        <v-text-field v-model="form.cedula" label="Cedula" type="number" placeholder="1062123536"
                             required></v-text-field>
                     </v-col>
 
-                    <v-col cols="12" md="4">
+                    <v-col cols="12" md="3">
                         <v-select v-model="form.pago" :items="pagos" label="Medio de pago">
                         </v-select>
                     </v-col>
 
-                    <v-col cols="12" md="4">
+                    <v-col cols="12" md="3">
                         <v-select v-model="form.mesero" :items="meseros" label="Mesero">
                         </v-select>
                     </v-col>
 
-                    <v-col cols="12" md="4">
+                    <v-col cols="12" md="3">
                         <v-select v-model="form.ubicacion" :items="ubicaciones" label="Lugar">
                         </v-select>
                     </v-col>
-                    <v-col cols="12" md="4">
 
-                    </v-col>
-
-                    <v-col cols="12" md="4">
+                    <v-col cols="12" md="3">
                         <v-select v-model="add" :items="products" label="Productos" item-title="name" return-object="">
                         </v-select>
                     </v-col>
 
-                    <v-col cols="12" md="4">
-                        <v-text-field v-model="cantidad" :rules="numberRules" label="Candidad" type="number"
-                            required></v-text-field>
-                    </v-col>
                     <v-col cols="12" md="2">
+                        <v-text-field v-model="cantidad" label="Candidad" type="number" required></v-text-field>
+                    </v-col>
+                    <v-col cols="6" md="2">
                         <v-btn elevation="4" size="x-large" @click="addCompra" color="primary">Añadir</v-btn>
                     </v-col>
-                    <v-col cols="12" md="2" v-if="form.compras.length != 0">
+                    <v-col cols="6" md="2" v-if="form.compras.length != 0">
                         <v-btn elevation="4" size="x-large" @click="addCompra" color="red">Enviar</v-btn>
                     </v-col>
                 </v-row>
             </v-container>
         </v-form>
-        <v-table fixed-header height="400" v-if="form.compras.length != 0">
+        <v-table fixed-header fixed-footer height="400" v-if="form.compras.length != 0">
             <thead style="z-index: 999999;">
                 <tr>
                     <th class="text-left">
@@ -107,20 +102,20 @@ export default {
     },
     data: () => ({
         add: null,
-        cantidad: 0,
+        cantidad: null,
         drawer2: true,
         group: null,
         pagos: ['Efectivo', 'Tarjeta Credito', 'Tarjeta Debito', 'Transferencia'],
         form: {
             nombre: null,
-            cedula: 0,
+            cedula: null,
             pago: null,
             compras: [],
             ubicacion: null,
             mesero: null,
 
         },
-        meseros: ['Mesero 1', 'Mesero 2', 'Mesero 3', 'Mesero 4'],
+        meseros: ['Javier Gómez', 'María Rodríguez', 'Carlos Pérez', 'Ana Martínez', 'Luis Ramírez'],
         ubicaciones: ['Domicilio', 'Recogido En Persona', 'Mesa 1', 'Mesa 2', 'Mesa 3', 'Mesa 4'],
         defect: 'No hay medios disponibles',
         products: [{
@@ -165,7 +160,7 @@ export default {
         addCompra() {
             this.cantidad = parseFloat(this.cantidad);
             console.log(typeof (this.cantidad))
-            if (this.cantidad <= 0 || !Number.isInteger(this.cantidad)) {
+            if (this.cantidad <= 0 || !Number.isInteger(this.cantidad) || this.add == null) {
                 return Swal.fire({
                     icon: 'error',
                     title: 'Oops...',

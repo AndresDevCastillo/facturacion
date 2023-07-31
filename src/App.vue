@@ -4,7 +4,7 @@
             <v-app-bar theme="dark" prominent app>
                 <v-app-bar-nav-icon variant="text" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
 
-                <v-toolbar-title>Nombre empresa</v-toolbar-title>
+                <v-toolbar-title>Engineersoft</v-toolbar-title>
 
                 <v-spacer></v-spacer>
 
@@ -25,8 +25,8 @@
                 <v-list density="comfortable" nav>
                     <v-list-item prepend-icon="mdi mdi-folder" title="Facturación" value="myfiles"
                         class="items-bar"></v-list-item>
-                    <v-list-item prepend-icon="mdi-account-multiple" @click="cambiarVista()" title="Shared with me" value="shared"
-                        class="items-bar"></v-list-item>
+                    <v-list-item prepend-icon="mdi-account-multiple" @click="cambiarVista()" title="Empleados"
+                        value="shared" class="items-bar"></v-list-item>
                     <v-list-item prepend-icon="mdi-star" title="Starred" value="starred" class="items-bar"></v-list-item>
                 </v-list>
             </v-navigation-drawer>
@@ -47,11 +47,11 @@ export default {
 
         drawer: true
     }),
-    methods:{
-        
+    methods: {
+
     },
     mounted() {
-       // this.$router.push('/inicio');
+        // this.$router.push('/inicio');
     },
 }
 </script>
@@ -64,5 +64,9 @@ export default {
     text-align: center;
     color: #2c3e50;
     margin-top: 60px;
+}
+
+.items-bar>.v-list-item__content>.v-list-item-title {
+    padding: 10px 0;
 }
 </style>
