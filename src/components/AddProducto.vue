@@ -1,6 +1,5 @@
 <template>
     <div>
-
         <v-form v-model="valid">
             <v-container>
                 <v-row>
@@ -47,7 +46,7 @@
                         <v-btn elevation="4" size="x-large" @click="addCompra" color="primary">Añadir</v-btn>
                     </v-col>
                     <v-col cols="12" md="2" v-if="form.compras.length != 0">
-                        <v-btn elevation="4" size="x-large" @click="addCompra" color="red">Enviar</v-btn>
+                        <v-btn elevation="4" size="x-large" @click="generarFactura()" color="red">Enviar</v-btn>
                     </v-col>
                 </v-row>
             </v-container>
@@ -95,17 +94,20 @@
         </v-table>
         {{ $data.form }}
         {{ $data.add }}
-
+        <facturaView :dialog="dialog" @cerrarDialogo="dialog=false" />
     </div>
 </template>
   
 <script>
 import Swal from 'sweetalert2';
+import facturaView from './factura.vue';
 export default {
     name: 'HomePrincipal',
     components: {
+        facturaView
     },
     data: () => ({
+        dialog: false,
         add: null,
         cantidad: 0,
         drawer2: true,
@@ -201,6 +203,9 @@ export default {
             this.total.descuento = descuentoTemp;
             this.total.neto = netoTemp;
             this.total.cantidad = cantidadTemp;
+        },
+        generarFactura() {
+            this.dialog = true;
         }
     },
 
