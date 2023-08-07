@@ -7,12 +7,12 @@ const routes = [{
     path: '/producto',
     name: 'principal',
     component: () =>
-        import('../components/AddProducto.vue'),
+        import('../views/AddProducto.vue'),
     children: [{
         path: '/inicio',
         name: 'inicio',
         component: () =>
-            import('../components/AddProducto.vue')
+            import('../views/AddProducto.vue')
     }]
 }];
 

@@ -1,51 +1,63 @@
 <template>
     <div>
-        <v-form v-model="valid">
-            <v-container>
-                <v-row>
-                    <v-col cols="12" md="3">
-                        <v-text-field v-model="form.nombre" :counter="10" label="Nombre" required></v-text-field>
-                    </v-col>
+        <v-card class="ma-3">
+            <v-form v-model="valid">
+                <v-container>
+                    <v-row>
+                        <v-col cols="12" md="3">
+                            <v-text-field class="inline-form-input-name" v-model="form.cedula" label="Cedula" type="number"
+                                placeholder="1062123536" required></v-text-field>
+                        </v-col>
 
+                        <v-col cols="12" md="3">
+                            <v-text-field v-model="form.nombre" :counter="10" label="Nombre" required></v-text-field>
+                        </v-col>
 
+                        <v-col cols="12" md="3">
+                            <v-text-field v-model="form.numero" label="Teléfono"></v-text-field>
+                        </v-col>
 
-                    <v-col cols="12" md="3">
-                        <v-text-field v-model="form.cedula" label="Cedula" type="number" placeholder="1062123536"
-                            required></v-text-field>
-                    </v-col>
+                        <v-col cols="12" md="3">
+                            <v-text-field v-model="form.correo" label="Correo Electrónico"></v-text-field>
+                        </v-col>
 
-                    <v-col cols="12" md="3">
-                        <v-select v-model="form.pago" :items="pagos" label="Medio de pago">
-                        </v-select>
-                    </v-col>
+                        <v-col cols="12" md="3">
+                            <v-select v-model="form.pago" :items="pagos" label="Medio de pago">
+                            </v-select>
+                        </v-col>
 
-                    <v-col cols="12" md="3">
-                        <v-select v-model="form.mesero" :items="meseros" label="Mesero">
-                        </v-select>
-                    </v-col>
+                        <v-col cols="12" md="3">
+                            <v-select v-model="form.mesero" :items="meseros" label="Mesero">
+                            </v-select>
+                        </v-col>
 
-                    <v-col cols="12" md="3">
-                        <v-select v-model="form.ubicacion" :items="ubicaciones" label="Lugar">
-                        </v-select>
-                    </v-col>
+                        <v-col cols="12" md="3">
+                            <v-select v-model="form.ubicacion" :items="ubicaciones" label="Lugar">
+                            </v-select>
+                        </v-col>
 
-                    <v-col cols="12" md="3">
-                        <v-select v-model="add" :items="products" label="Productos" item-title="name" return-object="">
-                        </v-select>
-                    </v-col>
+                        <v-col cols="12" md="3">
+                            <v-text-field v-model="form.descuento" label="Descuento 0-100"></v-text-field>
+                        </v-col>
 
-                    <v-col cols="12" md="2">
-                        <v-text-field v-model="cantidad" label="Candidad" type="number" required></v-text-field>
-                    </v-col>
-                    <v-col cols="6" md="2">
-                        <v-btn elevation="4" size="x-large" @click="addCompra" color="primary">Añadir</v-btn>
-                    </v-col>
-                    <v-col cols="12" md="2" v-if="form.compras.length != 0">
-                        <v-btn elevation="4" size="x-large" @click="generarFactura()" color="red">Enviar</v-btn>
-                    </v-col>
-                </v-row>
-            </v-container>
-        </v-form>
+                        <v-col cols="12" md="3">
+                            <v-select v-model="add" :items="products" label="Productos" item-title="name" return-object="">
+                            </v-select>
+                        </v-col>
+
+                        <v-col cols="12" md="3">
+                            <v-text-field v-model="cantidad" label="Cantidad" type="number" required></v-text-field>
+                        </v-col>
+                        <v-col cols="6" md="3">
+                            <v-btn elevation="4" size="x-large" @click="addCompra" color="primary">Añadir</v-btn>
+                        </v-col>
+                        <v-col cols="12" md="3" v-if="form.compras.length != 0">
+                            <v-btn elevation="4" size="x-large" @click="generarFactura()" color="red">Enviar</v-btn>
+                        </v-col>
+                    </v-row>
+                </v-container>
+            </v-form>
+        </v-card>
         <v-table fixed-header fixed-footer height="400" v-if="form.compras.length != 0">
             <thead style="z-index: 999999;">
                 <tr>
@@ -95,7 +107,7 @@
   
 <script>
 import Swal from 'sweetalert2';
-import facturaView from './factura.vue';
+import facturaView from '../components/factura.vue';
 export default {
     name: 'HomePrincipal',
     components: {
@@ -115,6 +127,9 @@ export default {
             compras: [],
             ubicacion: null,
             mesero: null,
+            numero: null,
+            correo: null,
+            descuento: 0,
 
         },
         meseros: ['Javier Gómez', 'María Rodríguez', 'Carlos Pérez', 'Ana Martínez', 'Luis Ramírez'],
@@ -207,14 +222,4 @@ export default {
 }
 </script>
 
-<style>
-.items-bar>.v-list-item__content>.v-list-item-title {
-    font-size: 1.4rem;
-    padding-top: 10px;
-    text-align: left;
-}
-
-.footer-table {
-    font-weight: bold;
-}
-</style>
+<style></style>
