@@ -102,7 +102,7 @@ export default {
         facturaView
     },
     data: () => ({
-        dialog: false,
+        dialog: true,
         add: null,
         cantidad: null,
         drawer2: true,
