@@ -1,23 +1,14 @@
 <template>
     <v-row justify="center">
-        <v-dialog
-            v-model="verDialog"
-            fullscreen
-            :scrim="false"
-            transition="dialog-bottom-transition">
+        <v-dialog v-model="verDialog" fullscreen :scrim="false" transition="dialog-bottom-transition">
             <v-card>
-                <v-toolbar
-                    dark
-                    theme="dark">
-                    <v-btn
-                        icon
-                        dark @click="cerrarDialogo()">
+                <v-toolbar dark theme="dark">
+                    <v-btn icon dark @click="cerrarDialogo()">
                         <v-icon>mdi-close</v-icon>
                     </v-btn>
                     <v-spacer></v-spacer>
                     <v-toolbar-items>
-                        <v-btn
-                            variant="text">
+                        <v-btn variant="text">
                             Imprimir
                         </v-btn>
                     </v-toolbar-items>
@@ -27,7 +18,8 @@
                         <v-card rounded="4" class="pa-4">
                             <v-row justify="space-between">
                                 <v-col cols="4">
-                                    <v-img width="40" cover :src="require('@/assets/logo.png')" :lazy-src="require('@/assets/logo.png')"></v-img>
+                                    <v-img width="40" cover :src="require('@/assets/logo.png')"
+                                        :lazy-src="require('@/assets/logo.png')"></v-img>
                                 </v-col>
                                 <v-col cols="8" class="text-right">
                                     <label class="text-dark mr-1">Factura</label>
@@ -151,8 +143,8 @@
 </template>
 <script>
 export default {
-    name: 'facturaView',
-    props: { dialog: { type: Boolean, default: false, required:true }},
+    name: 'facturaComponent',
+    props: { dialog: { type: Boolean, default: false, required: true } },
     data: () => ({
         verDialog: false,
         form: {
@@ -177,8 +169,8 @@ export default {
             },]
         }
     }),
-    methods:{
-        cerrarDialogo(){
+    methods: {
+        cerrarDialogo() {
             this.$emit('cerrarDialogo');
         }
     },

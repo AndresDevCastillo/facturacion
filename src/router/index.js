@@ -2,19 +2,20 @@ import {
     createRouter,
     createWebHashHistory
 } from 'vue-router';
+import facturaVista from '../views/facturaView.vue';
+import productosVista from '../views/productosView';
 //Creación de rutas a los archivos
 const routes = [{
-    path: '/producto',
-    name: 'principal',
-    component: () =>
-        import('../views/AddProducto.vue'),
-    children: [{
-        path: '/inicio',
-        name: 'inicio',
-        component: () =>
-            import('../views/AddProducto.vue')
-    }]
-}];
+    path: '/factura',
+    name: 'factura',
+    component: facturaVista,
+},
+{
+    path: '/productos',
+    name: 'productos',
+    component: productosVista
+}
+];
 
 const router = createRouter({
     history: createWebHashHistory(process.env.BASE_URL),

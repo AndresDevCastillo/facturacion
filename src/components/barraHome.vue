@@ -8,9 +8,9 @@
 
         <v-btn variant="text" icon="mdi-magnify"></v-btn>
 
-        <v-btn variant="text" icon="mdi-filter"></v-btn>
+        <v-btn variant="text" icon="mdi mdi-bell"></v-btn>
 
-        <v-btn variant="text" icon="mdi-dots-vertical"></v-btn>
+        <v-btn variant="text" icon="mdi mdi-help"></v-btn>
     </v-app-bar>
     <v-navigation-drawer app theme="dark" :rail=ocultar>
         <v-list>
@@ -21,10 +21,10 @@
         <v-divider></v-divider>
 
         <v-list density="comfortable" nav>
-            <v-list-item prepend-icon="mdi mdi-cash-plus" title="Facturación" value="myfiles" class="items-bar"
-                to="/producto"></v-list-item>
-            <v-list-item prepend-icon="mdi-account-tie" title="Empleados" value="shared" class="items-bar"></v-list-item>
-            <v-list-item prepend-icon="mdi-star" title="Starred" value="starred" class="items-bar"></v-list-item>
+            <v-list-item prepend-icon="mdi mdi-cash-plus" title="Facturación" class="items-bar" to="/factura"></v-list-item>
+            <v-list-item prepend-icon="mdi mdi-cart" title="Productos" class="items-bar" to="/productos"></v-list-item>
+            <v-list-item prepend-icon="mdi-account-tie" title="Empleados" class="items-bar"></v-list-item>
+            <v-list-item prepend-icon="mdi-star" title="Starred" class="items-bar"></v-list-item>
         </v-list>
         <v-footer class="d-flex flex-column" v-if=!ocultar style="position: absolute;
         bottom: 0; width: 100%;">
