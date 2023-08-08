@@ -1,10 +1,6 @@
 <template>
     <v-row justify="center">
-        <v-dialog
-            v-model="verDialog"
-            fullscreen
-            :scrim="false"
-            transition="dialog-bottom-transition">
+        <v-dialog v-model="verDialog" fullscreen :scrim="false" transition="dialog-bottom-transition">
             <v-card>
                 <v-toolbar
                     dark
@@ -159,16 +155,7 @@ import {
 import "jspdf-autotable";
 export default {
     name: 'facturaView',
-    props: {
-        dialog: {
-            type: Boolean,
-            default: true,
-            required: true
-        },
-        datos: {
-            type: Object
-        }
-    },
+    props: { dialog: { type: Boolean, default: false, required:true }},
     data: () => ({
         verDialog: true,
         form: {
