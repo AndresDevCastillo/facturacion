@@ -157,7 +157,7 @@ export default {
     name: 'facturaView',
     props: { dialog: { type: Boolean, default: false, required:true }},
     data: () => ({
-        verDialog: true,
+        verDialog: false,
         form: {
             compras: [
                 {
@@ -198,7 +198,7 @@ export default {
             const parteFinal = document.getElementById('parteFinal');
             const margin = 20;
             const scale = (doc.internal.pageSize.width - margin * 2) / document.body.clientWidth;
-            const scale_mobile = (doc.internal.pageSize.width - margin * 2) / document.body.getBoundingClientRect();
+            //const scale_mobile = (doc.internal.pageSize.width - margin * 2) / document.body.getBoundingClientRect();
             let finalY;
             doc.setDocumentProperties({
                 title: 'factura.pdf'
@@ -214,13 +214,13 @@ export default {
                     //height: 200,
                     //windowHeight: 200,
                     windowWidth: 1320,
-                    html2canvas: {
-                        scale: scale_mobile,
+                   /*  html2canvas: {
+                        //scale: scale_mobile,
                         //height: 200,
-                        width: 1320,
-                        windowWidth: 1320,
+                        //width: 1320,
+                        //windowWidth: 1320,
                         //windowHeight: 200,
-                    },
+                    }, */
                     filename: 'factura.pdf',
                     callback: (pdf) => {
                         pdf.autoTable({
@@ -246,29 +246,29 @@ export default {
                         pdf.html(parte3, {
                             x: margin,
                             y: finalY + 20,
-                            width: 1320,
-                            windowWidth: 1320,
-                            html2canvas: {
-                                scale: scale_mobile,
+                            //width: 1320,
+                            //windowWidth: 1320,
+                            /* html2canvas: {
+                                //scale: scale_mobile,
                                 //height: 200,
-                                width: 1320,
-                                windowWidth: 1320,
+                                //width: 1320,
+                                //windowWidth: 1320,
                                 //windowHeight: 200,
-                            },
+                            }, */
                             filename: 'factura.pdf',
                             callback: (newPdf) => {
                                 newPdf.html(parteFinal, {
                                     x: margin,
                                     y: finalY + 80,
-                                    width: 1320,
-                                    windowWidth: 1320,
-                                    html2canvas: {
-                                        scale: scale_mobile,
+                                    //width: 1320,
+                                    //windowWidth: 1320,
+                                    /* html2canvas: {
+                                        //scale: scale_mobile,
                                         //height: 200,
-                                        width: 1320,
-                                        windowWidth: 1320,
+                                        //width: 1320,
+                                        //windowWidth: 1320,
                                         //windowHeight: 200,
-                                    },
+                                    }, */
                                     filename: 'factura.pdf',
                                     callback: (newPdf2) => {
                                         newPdf2.autoPrint();

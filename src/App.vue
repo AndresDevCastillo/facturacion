@@ -43,4 +43,20 @@ export default {
 
     color: #2c3e50;
 }
-</style>
+
+.bg-table-header>tr>th {
+    background-color: var(--bg-table-header) !important;
+    font-weight: bold !important;
+}
+
+.fw-600 {
+    font-weight: 600;
+}
+
+.fw-bold {
+    font-weight: bold;
+}
+
+.divider-dotted {
+    border-style: dotted !important;
+}</style>
