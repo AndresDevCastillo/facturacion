@@ -31,6 +31,12 @@ export default {
 <style>
 :root {
     --bg-table-header: #f3f2f7;
+
+}
+
+.bg-table-header>tr>th {
+    background-color: var(--bg-table-header) !important;
+    font-weight: bold !important;
 }
 
 #app {
