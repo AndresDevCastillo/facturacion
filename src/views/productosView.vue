@@ -10,7 +10,7 @@
 
             </v-col>
             <v-col cols="2" md="2">
-                <v-btn prepend-icon="mdi-plus" color="green" @click="dialog = true">Producto</v-btn>
+                <v-btn prepend-icon="mdi-plus" color="green" @click="dialogP = true">Producto</v-btn>
             </v-col>
             <v-col cols="2" md="2">
                 <v-btn prepend-icon="mdi-plus" color="yellow">Categoria</v-btn>
@@ -37,7 +37,7 @@
                             <th class="text-left">
                                 Estado
                             </th>
-                            <th>Acción</th>
+                            <th colspan="2" class="text-center">Acción</th>
 
                         </tr>
                     </thead>
@@ -49,86 +49,192 @@
                             <td class="text-left">{{ item.precio }}</td>
                             <td v-if="item.estado" class="text-left"><v-chip color="green">Activo</v-chip></td>
                             <td v-else class="text-left"><v-chip color="red">No Activo</v-chip></td>
-                            <td><v-btn elevation="4" density="comfortable">eliminar</v-btn> </td>
+                            <td><v-btn density="comfortable" @click="eliminarProducto(item.id)" color="red">eliminar</v-btn>
+                            </td>
+                            <td><v-btn color="blue" density="comfortable"
+                                    @click="editarProductoFunction(Object.assign({}, item))">Editar</v-btn></td>
                         </tr>
                     </tbody>
                 </v-table>
             </v-card>
         </v-row>
-        <p>{{ data }}</p>
 
     </v-card>
-    <v-dialog v-model="dialog" persistent width="1024">
+    <v-dialog v-model="dialogP" persistent width="700">
         <v-card>
             <v-card-title>
-                <span class="text-h5">User Profile</span>
+
             </v-card-title>
             <v-card-text>
                 <v-container>
-                    <v-row>
-                        <v-col cols="12" sm="6" md="4">
-                            <v-text-field label="Legal first name*" required></v-text-field>
-                        </v-col>
-                        <v-col cols="12" sm="6" md="4">
-                            <v-text-field label="Legal middle name"
-                                hint="example of helper text only on focus"></v-text-field>
-                        </v-col>
-                        <v-col cols="12" sm="6" md="4">
-                            <v-text-field label="Legal last name*" hint="example of persistent helper text" persistent-hint
-                                required></v-text-field>
-                        </v-col>
-                        <v-col cols="12">
-                            <v-text-field label="Email*" required></v-text-field>
-                        </v-col>
-                        <v-col cols="12">
-                            <v-text-field label="Password*" type="password" required></v-text-field>
-                        </v-col>
-                        <v-col cols="12" sm="6">
-                            <v-select :items="['0-17', '18-29', '30-54', '54+']" label="Age*" required></v-select>
-                        </v-col>
-                        <v-col cols="12" sm="6">
-                            <v-autocomplete
-                                :items="['Skiing', 'Ice hockey', 'Soccer', 'Basketball', 'Hockey', 'Reading', 'Writing', 'Coding', 'Basejump']"
-                                label="Interests" multiple></v-autocomplete>
-                        </v-col>
-                    </v-row>
+                    <v-form ref="formProducto">
+                        <v-row>
+                            <v-col cols="12" sm="6" md="6">
+                                <v-text-field class="inline-form-input-name" label="Nombre" type="text" required
+                                    variant="outlined" v-model="formProducto.nombre" :rules="nombreRules"
+                                    :counter="65"></v-text-field>
+                            </v-col>
+                            <v-col cols="12" sm="6" md="6">
+                                <v-text-field label="Precio" type="number" variant="outlined"
+                                    hint="Sin comas o puntos (, .)" persistent-hint required v-model="(formProducto.precio)"
+                                    :rules="precioRules"></v-text-field>
+                            </v-col>
+                            <v-col cols="12">
+                                <v-text-field class="inline-form-input-name" label="Descripción" type="text" required
+                                    variant="outlined" v-model="formProducto.descripcion"
+                                    :rules="[v => !!v || 'La descripción es requerida']"></v-text-field>
+                            </v-col>
+                            <v-col cols="12" sm="6" v-if="categorias.length > 0">
+                                <v-select :items="categorias" item-title="nombre" item-value="id" variant="outlined"
+                                    label="Categoría" required v-model="formProducto.categoria"
+                                    :rules="[v => !!v || 'Seleccione una categoría']"></v-select>
+                            </v-col>
+                            <v-col cols="12" sm="6">
+                                <v-select :items="estado" label="Estado" variant="outlined" item-title="title"
+                                    item-value="estado" v-model="formProducto.estado"
+                                    :rules="[v => v !== null || 'Seleccione un estado']"></v-select>
+                            </v-col>
+                        </v-row>
+                    </v-form>
                 </v-container>
-                <small>*indicates required field</small>
             </v-card-text>
             <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="blue-darken-1" variant="text" @click="dialog = false">
-                    Close
+                <v-btn color="red-darken-1" variant="tonal" @click="dialogP = false">
+                    Cerrar
                 </v-btn>
-                <v-btn color="blue-darken-1" variant="text" @click="dialog = false">
-                    Save
+                <v-btn color="green-darken-1" variant="tonal" @click="crearProducto()">
+                    Crear
                 </v-btn>
             </v-card-actions>
         </v-card>
     </v-dialog>
+    <editarProductoComponent v-model="dialogEditar" @noactualizo="noactualizoProducto" @actualizo="actualizoProducto"
+        @cerrar="cerrarEditarProducto" :editarProducto="actualizarProducto">
+    </editarProductoComponent>
+    <v-p>{{ productos }}</v-p>
 </template>
 
 <script>
 import axios from 'axios';
-
+import Swal from 'sweetalert2';
+import editarProductoComponent from '../components/editarProducto.vue';
 
 export default {
     name: 'productosVista',
+    components: {
+        editarProductoComponent,
+    },
     data: () => ({
         productos: [],
-        dialog: false
+        categorias: [],
+        estado: [{ title: "Activo", estado: true }, { title: "No Activo", estado: false }],
+        dialogP: false,
+        actualizarProducto: { id: null, nombre: null, descripcion: null, precio: null, estado: null, categoria: { id: null, nombre: null, descripcion: null, estado: null } },
+        dialogEditar: false,
+        formProducto: {
+            nombre: null,
+            precio: null,
+            estado: null,
+            categoria: null,
+            descripcion: null
+        },
+        nombreRules: [
+            v => !!v || 'El nombre es requerido',
+            v => (v && v.length <= 65) || 'EL nombre no puede superar los 65 caracteres',
+        ],
+        precioRules: [v => !!v || 'El precio es requerido', v => (v && /^[0-9]+$/.test(v)) || 'El numero no debe contener caracteres'],
+
     }),
+    idActualizarP: null,
     mounted() {
         this.listarProductos();
+        this.listarCategorias();
     },
     methods: {
         async listarProductos() {
-            await axios.get('http://18.117.142.149:3000/producto').then((resp) => {
+            await axios.get(`${process.env.VUE_APP_API_URL}/producto`).then((resp) => {
                 this.productos = resp.data;
             });
+        },
+        async listarCategorias() {
+            await axios.get(`${process.env.VUE_APP_API_URL}/categoria`).then((resp) => {
+                this.categorias = resp.data;
+            });
+        },
+        async crearProducto() {
+
+            const { valid } = await this.$refs.formProducto.validate();
+            if (valid) {
+                this.dialogP = false;
+                this.formProducto.precio = parseInt(this.formProducto.precio)
+                await axios.post(`${process.env.VUE_APP_API_URL}/producto/crear`, this.formProducto).then((resp) => {
+                    if (resp.status == 201) {
+                        return Swal.fire({
+                            icon: 'success',
+                            title: 'Exitoso',
+                            text: 'Producto creado correctamente!'
+                        })
+                    }
+
+                }).catch(() => {
+                    return Swal.fire({ icon: 'error', title: 'No se pudo crear el producto', timer: 1000 });
+                })
+                this.listarProductos();
+                this.formProducto = {
+                    nombre: null,
+                    precio: null,
+                    estado: null,
+                    categoria: null,
+                    descripcion: null
+                }
+            }
+
+        },
+        async eliminarProducto(id) {
+            Swal.fire({
+                icon: 'info',
+                title: 'Seguro quiere eliminar el producto?',
+                showDenyButton: true,
+                denyButtonText: 'No',
+                confirmButtonText: 'Eliminar',
+            }).then(async (result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    await axios.delete(`${process.env.VUE_APP_API_URL}/producto/${id}`).then(() => {
+                        this.listarProductos();
+                        Swal.fire({ icon: 'success', title: 'Se elimino correctamente', timer: 1000, showConfirmButton: false });
+                    })
+                }
+            }).catch(() => {
+                return Swal.fire({ icon: 'error', title: 'No se pudo eliminar el producto', timer: 1000 });
+            });
+        },
+        editarProducto(producto) {
+            console.log(producto);
+        },
+        cerrarEditarProducto() {
+            this.dialogEditar = false;
+        },
+        editarProductoFunction(item) {
+            this.dialogEditar = true;
+            item.categoria = parseInt(item.categoria.id);
+            this.actualizarProducto = item;
+        },
+        actualizoProducto() {
+            this.dialogEditar = false;
+            Swal.fire({ icon: 'success', title: 'Se edito correctamente', timer: 1000, showConfirmButton: false });
+            this.listarProductos();
+        },
+        noactualizoProducto() {
+            this.dialogEditar = false;
+            Swal.fire({ icon: 'error', title: 'No se edito correctamente', timer: 1000, showConfirmButton: false });
+            this.listarProductos();
         }
-    }
+    },
+
 }
+
 </script>
 
 <style></style>

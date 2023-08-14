@@ -9,43 +9,52 @@
                     </v-col>
 
                     <v-col cols="12" md="3">
-                        <v-text-field v-model="form.nombre" label="Nombre" placeholder="Pepito pérez" required variant="outlined"></v-text-field>
+                        <v-text-field v-model="form.nombre" label="Nombre" placeholder="Pepito pérez" required
+                            variant="outlined"></v-text-field>
                     </v-col>
 
                     <v-col cols="12" md="3">
-                        <v-text-field v-model="form.numero" label="Teléfono" placeholder="3104205923" required variant="outlined"></v-text-field>
+                        <v-text-field v-model="form.numero" label="Teléfono" placeholder="3104205923" required
+                            variant="outlined"></v-text-field>
                     </v-col>
 
                     <v-col cols="12" md="3">
-                        <v-text-field v-model="form.correo" label="Correo Electrónico" placeholder="pepito@gmail.com" required variant="outlined"></v-text-field>
+                        <v-text-field v-model="form.correo" label="Correo Electrónico" placeholder="pepito@gmail.com"
+                            required variant="outlined"></v-text-field>
                     </v-col>
 
                     <v-col cols="12" md="3">
-                        <v-select v-model="form.pago" :items="pagos" label="Medio de pago" placeholder="Escoja medio de pago" required variant="outlined">
+                        <v-select v-model="form.pago" :items="pagos" label="Medio de pago"
+                            placeholder="Escoja medio de pago" required variant="outlined">
                         </v-select>
                     </v-col>
 
                     <v-col cols="12" md="3">
-                        <v-select v-model="form.mesero" :items="meseros" label="Mesero" placeholder="Escoja mesero" required variant="outlined">
+                        <v-select v-model="form.mesero" :items="meseros" label="Mesero" placeholder="Escoja mesero" required
+                            variant="outlined">
                         </v-select>
                     </v-col>
 
                     <v-col cols="12" md="3">
-                        <v-select v-model="form.ubicacion" :items="ubicaciones" label="Lugar" placeholder="Escoja lugar de atención" required variant="outlined">
+                        <v-select v-model="form.ubicacion" :items="ubicaciones" label="Lugar"
+                            placeholder="Escoja lugar de atención" required variant="outlined">
                         </v-select>
                     </v-col>
 
                     <v-col cols="12" md="3">
-                        <v-text-field v-model="form.descuento" label="Descuento(%)" placeholder="Porcentaje de descuento" required variant="outlined"></v-text-field>
+                        <v-text-field v-model="form.descuento" label="Descuento(%)" placeholder="Porcentaje de descuento"
+                            required variant="outlined"></v-text-field>
                     </v-col>
 
                     <v-col cols="12" md="3">
-                        <v-select v-model="add" :items="products" label="Productos" item-title="name" return-object="" placeholder="Escoja producto" required variant="outlined">
+                        <v-select v-model="add" :items="products" label="Productos" item-title="name" return-object=""
+                            placeholder="Escoja producto" required variant="outlined">
                         </v-select>
                     </v-col>
 
                     <v-col cols="12" md="3">
-                        <v-text-field v-model="cantidad" label="Cantidad" type="number" placeholder="Ingrese cantidad del producto" required variant="outlined"></v-text-field>
+                        <v-text-field v-model="cantidad" label="Cantidad" type="number"
+                            placeholder="Ingrese cantidad del producto" required variant="outlined"></v-text-field>
                     </v-col>
                     <v-col cols="6" md="2">
                         <v-btn elevation="4" size="x-large" @click="addCompra" color="primary">Añadir</v-btn>
@@ -115,7 +124,7 @@ export default {
     name: 'facturaVista',
     components: {
         facturaComponent,
-        ticketComponent
+        ticketComponent,
     },
     data: () => ({
         dialog: false,
@@ -223,7 +232,10 @@ export default {
             this.dialog = true;
         }
     },
+    mounted() {
 
+
+    }
 }
 </script>
 

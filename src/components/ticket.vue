@@ -2,18 +2,13 @@
     <v-row justify="center">
         <v-dialog v-model="verDialogTicket" fullscreen :scrim="false" transition="dialog-bottom-transition">
             <v-card>
-                <v-toolbar
-                    dark
-                    theme="dark" class="noImprimir">
-                    <v-btn
-                        icon
-                        dark @click="cerrarDialogo()">
+                <v-toolbar dark theme="dark" class="noImprimir">
+                    <v-btn icon dark @click="cerrarDialogo()">
                         <v-icon>mdi-close</v-icon>
                     </v-btn>
                     <v-spacer></v-spacer>
                     <v-toolbar-items>
-                        <v-btn
-                            variant="text" @click="imprimir()">
+                        <v-btn variant="text" @click="imprimir()">
                             Imprimir
                         </v-btn>
                     </v-toolbar-items>
@@ -21,67 +16,95 @@
                 <v-card-text>
                     <v-col cols="4" sm="6" md="4" xl="4" class="ma-auto">
                         <v-card rounded="4" class="pa-4 mt-2" id="ticket">
-                            <v-row class="w-100 flex-column" id="infoEmpresa" no-gutters style="font-family: 'Roboto', sans-serif; color: #000 !important; margin-top:5px;">
-                                <p style="text-align: center !important; font-weight: bold !important; text-transform: uppercase !important;">EMPRESA X</p>
+                            <v-row class="w-100 flex-column" id="infoEmpresa" no-gutters
+                                style="font-family: 'Roboto', sans-serif; color: #000 !important; margin-top:5px;">
+                                <p
+                                    style="text-align: center !important; font-weight: bold !important; text-transform: uppercase !important;">
+                                    EMPRESA X</p>
                                 <p style="text-align: center !important;">Calle 3 #30-46 Barrio el mora</p>
                                 <p style="text-align: center !important;">Montería, Córdoba, Colombia</p>
-                                <p style="text-align: center !important; font-weight: bold; text-transform: uppercase;">*** Ticket ***</p>
                             </v-row>
                             <v-row class="w-100 flex-column" no-gutters id="datosGenerales">
-                                <v-row class="w-100 flex-column" no-gutters style="font-family: 'Roboto', sans-serif; color: #000 !important; font-weight: 500 !important;">
-                                    <p>TICKET: <span>123</span></p>
-                                    <p>FECHA: <span>09-08-2023</span></p>
-                                    <p>CLIENTE: <span>01</span></p>
+                                <v-row class="w-100 flex-column" no-gutters
+                                    style="font-family: 'Roboto', sans-serif; color: #000 !important; font-weight: 500 !important;">
+                                    <p style=" font-size: 1.2rem;">TICKET: <span>123</span></p>
+                                    <p style=" font-size: 1.2rem;">FECHA: <span>09-08-2023</span></p>
+                                    <p style=" font-size: 1.2rem;">CLIENTE: <span>01</span></p>
                                 </v-row>
-                                <v-divider class="divider-dotted" style="border-style: dotted !important; color: #000; opacity: 1;"></v-divider>
+                                <v-divider class="divider-dotted"
+                                    style="border-style: dotted !important; color: #000; opacity: 1;"></v-divider>
                                 <v-row class="w-100 flex-column" no-gutters>
-                                    <v-table id="tablaTicket" class="w-100" fixed-header height="auto" border="1" border-collapse="collapse" cellspacing="0">
+                                    <v-table id="tablaTicket" class="w-100" fixed-header height="auto" border="1"
+                                        border-collapse="collapse" cellspacing="0">
                                         <thead class="fw-bold" style="font-weight: bold; font-size: 1.3rem;">
                                             <tr style="color: #000;">
-                                                <th class="text-left" style="font-size: 1.05rem; color: #000; border-bottom-style: dotted !important; border-bottom-width: 1px !important; box-shadow: none !important;">
+                                                <th class="text-left"
+                                                    style="font-size: 1.20rem; color: #000; border-bottom-style: dotted !important; border-bottom-width: 1px !important; box-shadow: none !important;">
                                                     Cant
                                                 </th>
-                                                <th class="text-left" style="font-size: 1.05rem; color: #000; border-bottom-style: dotted !important; border-bottom-width: 1px !important; box-shadow: none !important;">
+                                                <th class="text-left"
+                                                    style="font-size: 1.20rem; color: #000; border-bottom-style: dotted !important; border-bottom-width: 1px !important; box-shadow: none !important;">
                                                     Descripción
                                                 </th>
-                                                <th class="text-left" style="font-size: 1.05rem; color: #000; border-bottom-style: dotted !important; border-bottom-width: 1px !important; box-shadow: none !important;">
+                                                <th class="text-left"
+                                                    style="font-size: 1.20rem; color: #000; border-bottom-style: dotted !important; border-bottom-width: 1px !important; box-shadow: none !important;">
                                                     P.U
                                                 </th>
-                                                <th class="text-left" style="font-size: 1.05rem; color: #000; border-bottom-style: dotted !important; border-bottom-width: 1px !important; box-shadow: none !important;">
+                                                <th class="text-left"
+                                                    style="font-size: 1.20rem; color: #000; border-bottom-style: dotted !important; border-bottom-width: 1px !important; box-shadow: none !important;">
                                                     Pagar
                                                 </th>
                                             </tr>
                                         </thead>
                                         <tbody id="productosTicket">
                                             <tr v-for="(item, index) in compras" :key="index">
-                                                <td class="text-left" style="font-size: 0.88rem; border-style: none !important;">{{ item.cantidad }}</td>
-                                                <td class="text-left" style="font-size: 0.88rem; max-width: 60px !important; border-style: none !important;">{{ item.descripcion }}</td>
-                                                <td class="text-left" style="font-size: 0.88rem; border-style: none !important;">{{ item.precioU }}</td>
-                                                <td class="text-left" style="font-size: 0.88rem; border-style: none !important;">{{ item.cantidad * item.precioU }}</td>
+                                                <td class="text-left"
+                                                    style="font-size: 1.20rem; border-style: none !important;">{{
+                                                        item.cantidad }}</td>
+                                                <td class="text-left"
+                                                    style="font-size: 1.20rem; max-width: 60px !important; border-style: none !important;">
+                                                    {{ item.descripcion }}</td>
+                                                <td class="text-left"
+                                                    style="font-size: 1.20rem; border-style: none !important;">{{
+                                                        item.precioU }}</td>
+                                                <td class="text-left"
+                                                    style="font-size: 1.20rem; border-style: none !important;">{{
+                                                        item.cantidad * item.precioU }}</td>
                                             </tr>
                                         </tbody>
                                         <tfoot>
                                             <tr>
-                                                <th colspan="4" style="border-top:1px dotted #000; border-bottom: 1px dotted rgb(0,0,0);">
-                                                    <p style="font-weight: bold; text-align: right;">VALOR VENTA: $<span>{{ valorVenta() }}</span></p>
-                                                    <p style="font-weight: bold; text-align: right;">IVA: $<span>{{ iva }}</span></p>
-                                                    <p style="font-weight: bold; text-align: right;">PROPINA: $<span>{{ propina }}</span></p>
-                                                    <p style="font-weight: bold; text-align: right; font-size: 1.3rem;">TOTAL: $<span>{{ totalPagar() }}</span></p>
+                                                <th colspan="4"
+                                                    style="border-top:1px dotted #000; border-bottom: 1px dotted rgb(0,0,0);">
+                                                    <p style="font-weight: bold; text-align: right;">VALOR VENTA: $<span>{{
+                                                        valorVenta() }}</span></p>
+                                                    <p style="font-weight: bold; text-align: right;">IVA: $<span>{{ iva
+                                                    }}</span></p>
+                                                    <p style="font-weight: bold; text-align: right;">PROPINA: $<span>{{
+                                                        propina }}</span></p>
+                                                    <p style="font-weight: bold; text-align: right; font-size: 1.3rem;">
+                                                        TOTAL: $<span>{{ totalPagar() }}</span></p>
                                                 </th>
                                             </tr>
                                         </tfoot>
                                     </v-table>
                                 </v-row>
-                                <v-row class="w-100 flex-column" no-gutters id="infoVendedores" style="font-family: 'Roboto', sans-serif;">
+                                <v-row class="w-100 flex-column" no-gutters id="infoVendedores"
+                                    style="font-family: 'Roboto', sans-serif;">
                                     <p>MESERO: <span>Pepito Pérez</span></p>
                                     <p>CAJERO: <span>Brayan García</span></p>
-                                    <v-divider class="divider-dotted" style="border-style: dotted !important; color: #000; opacity: 1;"></v-divider>
+                                    <v-divider class="divider-dotted"
+                                        style="border-style: dotted !important; color: #000; opacity: 1;"></v-divider>
                                 </v-row>
                                 <v-row no-gutters class="w-100 flex-column" id="terminos">
                                     <p style="text-transform: uppercase; margin-top: 6px;">
-                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vero beatae maiores excepturi laborum sed sunt accusamus quaerat, quibusdam consequatur laudantium asperiores cupiditate tempore aperiam cumque, ea voluptatum amet perspiciatis dolores?
+                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vero beatae maiores
+                                        excepturi laborum sed sunt accusamus quaerat, quibusdam consequatur laudantium
+                                        asperiores cupiditate tempore aperiam cumque, ea voluptatum amet perspiciatis
+                                        dolores?
                                     </p>
-                                    <p style="margin-top: 14px; text-align: center; font-weight: bold; text-transform: uppercase;" id="agradecimiento">*** Gracias por su compra ***</p>
+                                    <p style="margin-top: 14px; text-align: center; font-weight: bold; text-transform: uppercase;"
+                                        id="agradecimiento">*** Gracias por su compra ***</p>
                                 </v-row>
                             </v-row>
                         </v-card>
