@@ -4,13 +4,13 @@
             <v-container>
                 <v-row>
                     <v-col cols="12" md="3">
-                        <v-text-field class="inline-form-input-name" v-model="form.cedula" label="Cédula" type="number"
-                            placeholder="1062123536" required variant="outlined"></v-text-field>
+                        <v-text-field v-model="form.nombre" label="Nombre" placeholder="Pepito pérez" required
+                            variant="outlined"></v-text-field>
                     </v-col>
 
                     <v-col cols="12" md="3">
-                        <v-text-field v-model="form.nombre" label="Nombre" placeholder="Pepito pérez" required
-                            variant="outlined"></v-text-field>
+                        <v-text-field class="inline-form-input-name" v-model="form.cedula" label="Cédula" type="number"
+                            placeholder="1062123536" required variant="outlined"></v-text-field>
                     </v-col>
 
                     <v-col cols="12" md="3">

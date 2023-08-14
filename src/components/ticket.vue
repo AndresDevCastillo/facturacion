@@ -19,17 +19,17 @@
                             <v-row class="w-100 flex-column" id="infoEmpresa" no-gutters
                                 style="font-family: 'Roboto', sans-serif; color: #000 !important; margin-top:5px;">
                                 <p
-                                    style="text-align: center !important; font-weight: bold !important; text-transform: uppercase !important;">
-                                    EMPRESA X</p>
-                                <p style="text-align: center !important;">Calle 3 #30-46 Barrio el mora</p>
-                                <p style="text-align: center !important;">Montería, Córdoba, Colombia</p>
+                                    style="font-size: 2rem;  text-align: center !important; font-weight: bold !important; text-transform: uppercase !important;">
+                                    DULCERÍA CAT</p>
+                                <p style="text-align: center !important; font-size: 1.1rem;">El Sena</p>
+                                <p style="text-align: center !important; font-size: 1.1rem;">Montería, Córdoba, Colombia</p>
                             </v-row>
                             <v-row class="w-100 flex-column" no-gutters id="datosGenerales">
                                 <v-row class="w-100 flex-column" no-gutters
                                     style="font-family: 'Roboto', sans-serif; color: #000 !important; font-weight: 500 !important;">
-                                    <p style=" font-size: 1.2rem;">TICKET: <span>123</span></p>
-                                    <p style=" font-size: 1.2rem;">FECHA: <span>09-08-2023</span></p>
-                                    <p style=" font-size: 1.2rem;">CLIENTE: <span>01</span></p>
+                                    <p style=" font-size: 1.2rem;">TICKET: <span>#1</span></p>
+                                    <p style=" font-size: 1.2rem;">FECHA: <span>14-08-2023</span></p>
+                                    <p style=" font-size: 1.2rem;">CLIENTE: <span>Ronaldo Genes</span></p>
                                 </v-row>
                                 <v-divider class="divider-dotted"
                                     style="border-style: dotted !important; color: #000; opacity: 1;"></v-divider>
@@ -76,35 +76,36 @@
                                             <tr>
                                                 <th colspan="4"
                                                     style="border-top:1px dotted #000; border-bottom: 1px dotted rgb(0,0,0);">
-                                                    <p style="font-weight: bold; text-align: right;">VALOR VENTA: $<span>{{
-                                                        valorVenta() }}</span></p>
-                                                    <p style="font-weight: bold; text-align: right;">IVA: $<span>{{ iva
-                                                    }}</span></p>
-                                                    <p style="font-weight: bold; text-align: right;">PROPINA: $<span>{{
-                                                        propina }}</span></p>
-                                                    <p style="font-weight: bold; text-align: right; font-size: 1.3rem;">
+                                                    <p style="font-size: 1.2rem; font-weight: bold; text-align: right;">
+                                                        VALOR
+                                                        VENTA: $<span>{{
+                                                            valorVenta() }}</span></p>
+                                                    <p style="font-size: 1.2rem; font-weight: bold; text-align: right;">IVA:
+                                                        $<span>{{ iva
+                                                        }}</span></p>
+                                                    <p style="font-size: 1.2rem; font-weight: bold; text-align: right;">
+                                                        PROPINA: $<span>{{
+                                                            propina }}</span></p>
+                                                    <p style="font-weight: bold; text-align: right; font-size: 1.4rem;">
                                                         TOTAL: $<span>{{ totalPagar() }}</span></p>
                                                 </th>
                                             </tr>
                                         </tfoot>
                                     </v-table>
                                 </v-row>
-                                <v-row class="w-100 flex-column" no-gutters id="infoVendedores"
-                                    style="font-family: 'Roboto', sans-serif;">
-                                    <p>MESERO: <span>Pepito Pérez</span></p>
-                                    <p>CAJERO: <span>Brayan García</span></p>
+                                <v-row class="w-100 flex-column" no-gutters id="infoVendedores">
+                                    <p>MESERO: <span>Catalina Manjarrez</span></p>
+                                    <p>CAJERO: <span>EngineerSoft</span></p>
                                     <v-divider class="divider-dotted"
                                         style="border-style: dotted !important; color: #000; opacity: 1;"></v-divider>
                                 </v-row>
                                 <v-row no-gutters class="w-100 flex-column" id="terminos">
-                                    <p style="text-transform: uppercase; margin-top: 6px;">
-                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vero beatae maiores
-                                        excepturi laborum sed sunt accusamus quaerat, quibusdam consequatur laudantium
-                                        asperiores cupiditate tempore aperiam cumque, ea voluptatum amet perspiciatis
-                                        dolores?
+                                    <p
+                                        style="text-transform: uppercase; margin-top: 6px; font-family: 'Helvetica', Arial, sans-serif;">
+                                        Por favor pagar lo mas pronto posible
                                     </p>
                                     <p style="margin-top: 14px; text-align: center; font-weight: bold; text-transform: uppercase;"
-                                        id="agradecimiento">*** Gracias por su compra ***</p>
+                                        id="agradecimiento">*** Gracias por su compra Ronaldo ***</p>
                                 </v-row>
                             </v-row>
                         </v-card>
@@ -129,30 +130,16 @@ export default {
         compras: [
             {
                 cantidad: 2,
-                descripcion: "Arroz de grano largo, 1kg.",
-                precioU: 1800,
-                pagar: 0,//cantidad*precioU
-            }, {
-                cantidad: 2,
-                descripcion: "Arroz de grano largo, 1kg.",
-                precioU: 1800,
-                pagar: 0,//cantidad*precioU
-            }, {
-                cantidad: 2,
-                descripcion: "Arroz de grano largo, 1kg.",
-                precioU: 1800,
-                pagar: 0,//cantidad*precioU
-            }, {
-                cantidad: 2,
-                descripcion: "Arroz de grano largo, 1kg.",
-                precioU: 1800,
-                pagar: 0,//cantidad*precioU
-            }, {
-                cantidad: 2,
-                descripcion: "Arroz de grano largo, 1kg.",
-                precioU: 1800,
+                descripcion: "Tocinetas",
+                precioU: 1000,
                 pagar: 0,//cantidad*precioU
             },
+            {
+                cantidad: 1,
+                descripcion: "Dorito de Queso",
+                precioU: 2000,
+                pagar: 0
+            }
         ]
 
     }),
@@ -384,7 +371,11 @@ export default {
 
 }
 </script>
-<style>
+<style scoped>
+p {
+    font-family: Arial !important;
+}
+
 @media print {
     .noImprimir {
         display: none !important;
