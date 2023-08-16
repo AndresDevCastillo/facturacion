@@ -1,62 +1,16 @@
 <template>
     <div>
         <v-card class="ma-3">
-            <v-form v-model="valid">
+            <v-form ref="form">
                 <v-container>
                     <v-row>
                         <v-col cols="12" md="3">
-                            <v-autocomplete
+                            <v-autocomplete clearable
                                 label="Nombre del cliente"
-                                :items="clientes" variant="outlined" v-model="form.nombre" @keyup="buscarCliente()"></v-autocomplete>
+                                :items="clientes" variant="outlined" v-model="form.nombre" @update:search="buscarCliente"></v-autocomplete>
                             <!-- <v-text-field v-model="form.nombre" label="Nombre del cliente" placeholder="Pepito pérez" required
                                 variant="outlined"></v-text-field> -->
                         </v-col>
-                        <v-col cols="12" md="3">
-                            <v-text-field class="inline-form-input-name" v-model="form.cedula" label="Cédula" type="number"
-                                placeholder="1062123536" required variant="outlined"></v-text-field>
-                        </v-col>
-                        <v-col cols="12" md="3">
-                            <v-text-field v-model="form.numero" label="Teléfono" placeholder="3104205923" required
-                                variant="outlined"></v-text-field>
-                        </v-col>
-
-                        <v-col cols="12" md="3">
-                            <v-text-field v-model="form.correo" label="Correo Electrónico" placeholder="pepito@gmail.com"
-                                required variant="outlined"></v-text-field>
-                        </v-col>
-
-                        <v-col cols="12" md="3">
-                            <v-select v-model="form.pago" :items="pagos" label="Medio de pago"
-                                placeholder="Escoja medio de pago" required variant="outlined">
-                            </v-select>
-                        </v-col>
-
-                        <v-col cols="12" md="3">
-                            <v-select v-model="form.ubicacion" :items="ubicaciones" label="Lugar"
-                                placeholder="Escoja lugar de atención" required variant="outlined">
-                            </v-select>
-                        </v-col>
-                        <v-col cols="12" md="3" v-if="form.ubicacion === 'Domicilio'">
-                            <v-select v-model="form.domiciliario" :items="domiciliarios" label="Domiciliario" placeholder="Escoja domicialiario" required
-                                variant="outlined">
-                            </v-select>
-                        </v-col>
-                        <v-col cols="12" md="3" v-if="form.ubicacion === 'Domicilio'">
-                            <v-text-field v-model="form.direccion" label="Dirección domicilio" placeholder="Ingrese dirección del domicilio" required
-                                variant="outlined">
-                            </v-text-field>
-                        </v-col>
-                        <v-col cols="12" md="3" v-if="form.ubicacion != 'Domicilio' && form.ubicacion != 'Recogido en persona'">
-                            <v-select v-model="form.mesero" :items="meseros" label="Mesero" placeholder="Escoja mesero" required
-                                variant="outlined">
-                            </v-select>
-                        </v-col>
-
-                        <v-col cols="12" md="3">
-                            <v-text-field v-model="form.descuento" label="Descuento(%)" placeholder="Porcentaje de descuento"
-                                required variant="outlined"></v-text-field>
-                        </v-col>
-
                         <v-col cols="12" md="3">
                             <v-select v-model="add" :items="products" label="Productos" item-title="name" return-object=""
                                 placeholder="Escoja producto" required variant="outlined">
@@ -69,15 +23,6 @@
                         </v-col>
                         <v-col cols="6" md="2">
                             <v-btn elevation="4" size="x-large" @click="addCompra" color="primary">Añadir</v-btn>
-                        </v-col>
-                        <v-col cols="12" md="2" v-if="form.compras.length != 0">
-                            <v-btn elevation="4" size="x-large" @click="dialogTicket = true" color="red">Ver ticket</v-btn>
-                        </v-col>
-                        <v-col cols="12" md="2" v-if="form.compras.length != 0">
-                            <v-btn elevation="4" size="x-large" @click="generarFactura()" color="red">Enviar</v-btn>
-                        </v-col>
-                        <v-col cols="12" md="2" v-if="form.compras.length != 0">
-                            <v-btn elevation="4" size="x-large" @click="dialogTicketCocinero = true" color="red">Ver ticket cocinero</v-btn>
                         </v-col>
                     </v-row>
                 </v-container>
@@ -136,7 +81,7 @@ import facturaComponent from '../components/factura.vue';
 import ticketComponent from '../components/ticket.vue';
 import ticketCocineroComponent from '../components/ticketCocinero.vue';
 export default {
-    name: 'facturaVista',
+    name: 'agregarPedidoComponent',
     components: {
         facturaComponent,
         ticketComponent,
@@ -254,8 +199,11 @@ export default {
         generarFactura() {
             this.dialog = true;
         },
-        buscarCliente() {
-            console.log('Buscando cliente');
+        buscarCliente(busqueda) {
+            const indexCliente = this.clientes.findIndex(cliente => cliente === busqueda);
+            if (indexCliente == -1) {
+                this.clientes.push(busqueda);
+            }
         }
     },
     mounted() {

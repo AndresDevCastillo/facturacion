@@ -46,14 +46,14 @@
                                 <v-row class="mt-4" justify="space-between" no-gutters style="font-family: 'Roboto', sans-serif; font-size: 1.5rem;">
                                     <v-col cols="8">
                                         <h4 class="fw-600" style="font-weight: bold;">Cliente</h4>
-                                        <p>Luis Salgado</p>
-                                        <p>3123458234</p>
-                                        <p>luis@gmail.com</p>
+                                        <p>{{ datos.nombre }}</p>
+                                        <p>{{ datos.numero }}</p>
+                                        <p>{{ datos.correo }}</p>
                                     </v-col>
                                     <v-col cols="4" style="text-align: right;">
                                         <h4 class="fw-600" style="font-weight: bold;">Detalle del pago</h4>
-                                        <p style="font-weight: bold;">Total pagado:<span style="font-weight: normal;">$100.000</span></p>
-                                        <p>Método de pago: Tarjeta crédito</p>
+                                        <p style="font-weight: bold;">Total pagado: <span style="font-weight: normal;">{{ totalPagar() }}</span></p>
+                                        <p>Método de pago: <span>{{ datos.pago }}</span></p>
                                     </v-col>
                                 </v-row>
                             </v-row>
@@ -79,11 +79,11 @@
                                         </tr>
                                     </thead>
                                     <tbody id="productosTabla">
-                                        <tr v-for="(item, index) in form.compras" :key="item.name">
+                                        <tr v-for="(item, index) in datos.compras" :key="item.name">
                                             <td class="text-left">{{ index + 1 }}</td>
-                                            <td class="text-left">{{ item.name }}</td>
                                             <td class="text-left">{{ item.descripcion }}</td>
                                             <td class="text-left">{{ item.descuento }}</td>
+                                            <td class="text-left">{{ item.cantidad }}</td>
                                             <td class="text-left">{{ item.precio }}</td>
                                         </tr>
                                     </tbody>
@@ -92,8 +92,8 @@
                             <v-row no-gutters id="parte3" style="font-size: 1.5rem; font-family: 'Roboto', sans-serif;">
                                 <v-col cols="8">
                                     <h4 class="fw-600" style="font-weight: bold;">Empleado</h4>
-                                    <p class="text-dark">Pepito Peréz</p>
-                                    <p class="text-dark">Lugar: Mesa 1</p>
+                                    <p class="text-dark">{{ datos.ubicacion == 'Domicilio' ? datos.domiciliario : datos.mesero }}</p>
+                                    <p class="text-dark">Lugar: <span>{{ datos.ubicacion }}</span></p>
                                 </v-col>
                                 <v-col cols="4">
                                     <v-row justify="space-between" no-gutters>
@@ -131,6 +131,7 @@
                                     </v-row>
                                 </v-col>
                             </v-row>
+                            <pre>{{ datos }}</pre>
                             <v-row no-gutters class="w-100 flex-column" id="parteFinal">
                                 <v-divider></v-divider>
                                 <v-row>
@@ -155,7 +156,26 @@ import {
 import "jspdf-autotable";
 export default {
     name: 'facturaView',
-    props: { dialog: { type: Boolean, default: false, required:true }},
+    props: {
+        dialog: { type: Boolean, default: false, required: true }, datos: {
+            type: Object, default: () => {
+                return {
+                    "nombre": null,
+                    "cedula": null,
+                    "pago": null,
+                    "compras": [],
+                    "ubicacion": null,
+                    "mesero": null,
+                    "domiciliario": null,
+                    "direccion": null,
+                    "numero": null,
+                    "correo": null,
+                    "descuento": 0
+                }
+            },
+            required: true
+        }
+    },
     data: () => ({
         verDialog: false,
         form: {
@@ -214,13 +234,13 @@ export default {
                     //height: 200,
                     //windowHeight: 200,
                     windowWidth: 1320,
-                   /*  html2canvas: {
-                        //scale: scale_mobile,
-                        //height: 200,
-                        //width: 1320,
-                        //windowWidth: 1320,
-                        //windowHeight: 200,
-                    }, */
+                    /*  html2canvas: {
+                         //scale: scale_mobile,
+                         //height: 200,
+                         //width: 1320,
+                         //windowWidth: 1320,
+                         //windowHeight: 200,
+                     }, */
                     filename: 'factura.pdf',
                     callback: (pdf) => {
                         pdf.autoTable({
@@ -361,6 +381,13 @@ export default {
                     },
                 });
             }
+        },
+        totalPagar() {
+            let pagar = 0;
+            this.datos.compras.forEach((compraObj) => {
+                pagar += (compraObj.cantidad * compraObj.precio) - compraObj.descuento;
+            });
+            return pagar;
         }
     },
     watch: {
