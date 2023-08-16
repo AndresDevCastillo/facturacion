@@ -1,10 +1,10 @@
 <template>
     <v-card class="ma-3">
-        <v-row class="d-flex align-center px-6">
-
+        <v-row class="d-flex align-center px-6 my-4">
             <v-col cols="4" md="4">
-                <v-text-field single-line variant="underlined" label="Buscar producto" append-inner-icon="mdi-magnify"
-                    class="ma-3"></v-text-field>
+                <div class="d-flex align-center "><v-icon size="x-large" icon="mdi-food"></v-icon>
+                    <h1 class="px-3">Productos</h1>
+                </div>
             </v-col>
             <v-col cols="4" md="4">
 
@@ -13,13 +13,13 @@
                 <v-btn prepend-icon="mdi-plus" color="green" @click="dialogP = true">Producto</v-btn>
             </v-col>
             <v-col cols="2" md="2">
-                <v-btn prepend-icon="mdi-plus" color="yellow">Categoria</v-btn>
+                <v-btn prepend-icon="mdi-plus" color="yellow" @click="dialogC = true">Categoria</v-btn>
             </v-col>
 
         </v-row>
-        <v-row class="flex-column">
+        <v-row class="flex-column h-70">
             <v-card class="ma-3">
-                <v-table fixed-header fixed-footer height="400" class="w-100" v-if="productos.length > 0">
+                <v-table fixed-header fixed-footer class="w-100" v-if="productos.length > 0">
                     <thead style="z-index: 999999;" class="bg-table-header">
                         <tr>
                             <th class="text-left">
@@ -63,7 +63,6 @@
     <v-dialog v-model="dialogP" persistent width="700">
         <v-card>
             <v-card-title>
-
             </v-card-title>
             <v-card-text>
                 <v-container>
@@ -109,10 +108,77 @@
             </v-card-actions>
         </v-card>
     </v-dialog>
+    <v-dialog v-model="dialogC" width="700">
+        <v-card>
+            <v-card-title>
+
+            </v-card-title>
+            <v-card-text>
+                <v-container>
+                    <v-form ref="formCategoria">
+                        <v-row>
+                            <v-col cols="12" sm="6" md="6">
+                                <v-text-field class="inline-form-input-name" label="Nombre" type="text" required
+                                    variant="outlined" v-model="formCategoria.nombre" :rules="nombreRules"
+                                    :counter="65"></v-text-field>
+                            </v-col>
+                            <v-col cols="12" sm="6">
+                                <v-select :items="estado" label="Estado" variant="outlined" item-title="title"
+                                    item-value="estado" v-model="formCategoria.estado"
+                                    :rules="[v => v !== null || 'Seleccione un estado']"></v-select>
+                            </v-col>
+                            <v-col cols="12">
+                                <v-text-field class="inline-form-input-name" label="Descripción" type="text" required
+                                    variant="outlined" v-model="formCategoria.descripcion"
+                                    :rules="[v => !!v || 'La descripción es requerida']"></v-text-field>
+                            </v-col>
+                        </v-row>
+                    </v-form>
+                </v-container>
+            </v-card-text>
+            <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="red-darken-1" variant="tonal" @click="dialogC = false">
+                    Cerrar
+                </v-btn>
+                <v-btn color="green-darken-1" variant="tonal" @click="crearCategoria()">
+                    Crear
+                </v-btn>
+            </v-card-actions>
+            <v-table fixed-header fixed-footer height="400" class="w-100" v-if="categorias.length > 0">
+                <thead style="z-index: 999999;" class="bg-table-header">
+                    <tr>
+                        <th class="text-left">
+                            Nombre
+                        </th>
+                        <th class="text-left">
+                            Descripcion
+                        </th>
+                        <th class="text-left">
+                            Estado
+                        </th>
+                        <th colspan="2" class="text-center">Acción</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(item) in categorias" :key="item.id">
+                        <td class="text-left">{{ item.nombre }}</td>
+                        <td class="text-left">{{ item.descripcion }}</td>
+                        <td v-if="item.estado" class="text-left"><v-chip color="green">Activo</v-chip></td>
+                        <td v-else class="text-left"><v-chip color="red">No Activo</v-chip></td>
+                        <td><v-btn density="comfortable" @click="eliminarCategoria(item.id)" color="red">eliminar</v-btn>
+                        </td>
+                    </tr>
+                </tbody>
+            </v-table>
+        </v-card>
+
+    </v-dialog>
+
     <editarProductoComponent v-model="dialogEditar" @noactualizo="noactualizoProducto" @actualizo="actualizoProducto"
         @cerrar="cerrarEditarProducto" :editarProducto="actualizarProducto">
     </editarProductoComponent>
-    <v-p>{{ productos }}</v-p>
 </template>
 
 <script>
@@ -130,6 +196,7 @@ export default {
         categorias: [],
         estado: [{ title: "Activo", estado: true }, { title: "No Activo", estado: false }],
         dialogP: false,
+        dialogC: false,
         actualizarProducto: { id: null, nombre: null, descripcion: null, precio: null, estado: null, categoria: { id: null, nombre: null, descripcion: null, estado: null } },
         dialogEditar: false,
         formProducto: {
@@ -139,6 +206,11 @@ export default {
             categoria: null,
             descripcion: null
         },
+        formCategoria: {
+            nombre: null,
+            descripcion: null,
+            esatdo: null
+        },
         nombreRules: [
             v => !!v || 'El nombre es requerido',
             v => (v && v.length <= 65) || 'EL nombre no puede superar los 65 caracteres',
@@ -147,18 +219,24 @@ export default {
 
     }),
     idActualizarP: null,
-    mounted() {
+    created() {
         this.listarProductos();
         this.listarCategorias();
     },
     methods: {
         async listarProductos() {
             await axios.get(`${process.env.VUE_APP_API_URL}/producto`).then((resp) => {
+                if (resp.data.length > 0) {
+                    resp.data.sort((a, b) => a.nombre.localeCompare(b.nombre));
+                }
                 this.productos = resp.data;
             });
         },
         async listarCategorias() {
             await axios.get(`${process.env.VUE_APP_API_URL}/categoria`).then((resp) => {
+                if (resp.data.length > 0) {
+                    resp.data.sort((a, b) => a.nombre.localeCompare(b.nombre));
+                }
                 this.categorias = resp.data;
             });
         },
@@ -230,9 +308,52 @@ export default {
             this.dialogEditar = false;
             Swal.fire({ icon: 'error', title: 'No se edito correctamente', timer: 1000, showConfirmButton: false });
             this.listarProductos();
-        }
-    },
+        },
+        async crearCategoria() {
+            const { valid } = await this.$refs.formCategoria.validate();
+            if (valid) {
+                this.dialogC = false;
+                await axios.post(`${process.env.VUE_APP_API_URL}/categoria/crear`, this.formCategoria).then((resp) => {
+                    if (resp.status == 201) {
+                        return Swal.fire({
+                            icon: 'success',
+                            title: 'Exitoso',
+                            text: 'Categoria creado correctamente!'
+                        })
+                    }
 
+                }).catch(() => {
+                    return Swal.fire({ icon: 'error', title: 'No se pudo crear el producto', timer: 1000 });
+                })
+                this.listarCategorias();
+                this.formCategoria = {
+                    nombre: null,
+                    estado: null,
+                    descripcion: null
+                }
+            }
+        },
+        async eliminarCategoria(id) {
+            this.dialogC = false;
+            Swal.fire({
+                icon: 'info',
+                title: 'Seguro quiere eliminar la categoria?',
+                showDenyButton: true,
+                denyButtonText: 'No',
+                confirmButtonText: 'Eliminar',
+            }).then(async (result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    await axios.delete(`${process.env.VUE_APP_API_URL}/categoria/${id}`).then(() => {
+                        this.listarCategorias();
+                        Swal.fire({ icon: 'success', title: 'Se elimino correctamente', timer: 1000, showConfirmButton: false });
+                    })
+                }
+            }).catch(() => {
+                return Swal.fire({ icon: 'error', title: 'No se pudo eliminar la categoria', timer: 1000 });
+            });
+        },
+    }
 }
 
 </script>

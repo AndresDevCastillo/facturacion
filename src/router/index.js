@@ -4,6 +4,7 @@ import {
 } from 'vue-router';
 import facturaVista from '../views/facturaView.vue';
 import productosVista from '../views/productosView';
+import empleadoVista from '../views/empleadoView';
 //Creación de rutas a los archivos
 const routes = [{
     path: '/factura',
@@ -14,6 +15,11 @@ const routes = [{
     path: '/productos',
     name: 'productos',
     component: productosVista
+},
+{
+    path: '/empleados',
+    name: 'empleados',
+    component: empleadoVista
 }
 ];
 

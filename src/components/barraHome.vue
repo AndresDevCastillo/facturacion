@@ -22,8 +22,8 @@
 
         <v-list density="comfortable" nav>
             <v-list-item prepend-icon="mdi mdi-cash-plus" title="Facturación" class="items-bar" to="/factura"></v-list-item>
-            <v-list-item prepend-icon="mdi mdi-cart" title="Productos" class="items-bar" to="/productos"></v-list-item>
-            <v-list-item prepend-icon="mdi-account-tie" title="Empleados" class="items-bar"></v-list-item>
+            <v-list-item prepend-icon="mdi mdi-food" title="Productos" class="items-bar" to="/productos"></v-list-item>
+            <v-list-item prepend-icon="mdi-account-tie" title="Empleados" to="/empleados" class="items-bar"></v-list-item>
             <v-list-item prepend-icon="mdi-star" title="Starred" class="items-bar"></v-list-item>
         </v-list>
         <v-footer class="d-flex flex-column" v-if=!ocultar style="position: absolute;
