@@ -32,8 +32,6 @@
                                     item-value="estado" v-model="paquete.estado"
                                     :rules="[v => v !== null || 'Seleccione un estado']"></v-select>
                             </v-col>
-                            <v-p>{{ paquete }}</v-p>
-                            <v-p>{{ categoriaseditar }}</v-p>
                         </v-row>
                     </v-form>
                 </v-container>
@@ -48,7 +46,6 @@
                 </v-btn>
             </v-card-actions>
         </v-card>
-        <v-card></v-card>
     </v-dialog>
 </template>
 
