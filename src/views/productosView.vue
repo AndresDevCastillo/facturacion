@@ -47,8 +47,6 @@
                             <td class="text-left">{{ item.categoria.nombre }}</td>
                             <td class="text-left">{{ item.descripcion }}</td>
                             <td class="text-left">{{ item.precio }}</td>
-                            <td v-if="item.estado" class="text-left"><v-chip color="green">Activo</v-chip></td>
-                            <td v-else class="text-left"><v-chip color="red">No Activo</v-chip></td>
                             <td><v-btn density="comfortable" @click="eliminarProducto(item.id)" color="red">eliminar</v-btn>
                             </td>
                             <td><v-btn color="blue" density="comfortable"
@@ -68,30 +66,25 @@
                 <v-container>
                     <v-form ref="formProducto">
                         <v-row>
-                            <v-col cols="12" sm="6" md="6">
+                            <v-col cols="12">
                                 <v-text-field class="inline-form-input-name" label="Nombre" type="text" required
                                     variant="outlined" v-model="formProducto.nombre" :rules="nombreRules"
                                     :counter="65"></v-text-field>
-                            </v-col>
-                            <v-col cols="12" sm="6" md="6">
-                                <v-text-field label="Precio" type="number" variant="outlined"
-                                    hint="Sin comas o puntos (, .)" persistent-hint required v-model="(formProducto.precio)"
-                                    :rules="precioRules"></v-text-field>
                             </v-col>
                             <v-col cols="12">
                                 <v-text-field class="inline-form-input-name" label="Descripción" type="text" required
                                     variant="outlined" v-model="formProducto.descripcion"
                                     :rules="[v => !!v || 'La descripción es requerida']"></v-text-field>
                             </v-col>
+                            <v-col cols="12" sm="6" md="6">
+                                <v-text-field label="Precio" type="number" variant="outlined"
+                                    hint="Sin comas o puntos (, .)" persistent-hint required v-model="(formProducto.precio)"
+                                    :rules="precioRules"></v-text-field>
+                            </v-col>
                             <v-col cols="12" sm="6" v-if="categorias.length > 0">
                                 <v-select :items="categorias" item-title="nombre" item-value="id" variant="outlined"
                                     label="Categoría" required v-model="formProducto.categoria"
                                     :rules="[v => !!v || 'Seleccione una categoría']"></v-select>
-                            </v-col>
-                            <v-col cols="12" sm="6">
-                                <v-select :items="estado" label="Estado" variant="outlined" item-title="title"
-                                    item-value="estado" v-model="formProducto.estado"
-                                    :rules="[v => v !== null || 'Seleccione un estado']"></v-select>
                             </v-col>
                         </v-row>
                     </v-form>
@@ -117,16 +110,12 @@
                 <v-container>
                     <v-form ref="formCategoria">
                         <v-row>
-                            <v-col cols="12" sm="6" md="6">
+                            <v-col cols="12">
                                 <v-text-field class="inline-form-input-name" label="Nombre" type="text" required
                                     variant="outlined" v-model="formCategoria.nombre" :rules="nombreRules"
                                     :counter="65"></v-text-field>
                             </v-col>
-                            <v-col cols="12" sm="6">
-                                <v-select :items="estado" label="Estado" variant="outlined" item-title="title"
-                                    item-value="estado" v-model="formCategoria.estado"
-                                    :rules="[v => v !== null || 'Seleccione un estado']"></v-select>
-                            </v-col>
+
                             <v-col cols="12">
                                 <v-text-field class="inline-form-input-name" label="Descripción" type="text" required
                                     variant="outlined" v-model="formCategoria.descripcion"
@@ -154,10 +143,7 @@
                         <th class="text-left">
                             Descripcion
                         </th>
-                        <th class="text-left">
-                            Estado
-                        </th>
-                        <th colspan="2" class="text-center">Acción</th>
+                        <th class="text-center">Acción</th>
 
                     </tr>
                 </thead>
@@ -165,8 +151,6 @@
                     <tr v-for="(item) in categorias" :key="item.id">
                         <td class="text-left">{{ item.nombre }}</td>
                         <td class="text-left">{{ item.descripcion }}</td>
-                        <td v-if="item.estado" class="text-left"><v-chip color="green">Activo</v-chip></td>
-                        <td v-else class="text-left"><v-chip color="red">No Activo</v-chip></td>
                         <td><v-btn density="comfortable" @click="eliminarCategoria(item.id)" color="red">eliminar</v-btn>
                         </td>
                     </tr>
@@ -197,19 +181,17 @@ export default {
         estado: [{ title: "Activo", estado: true }, { title: "No Activo", estado: false }],
         dialogP: false,
         dialogC: false,
-        actualizarProducto: { id: null, nombre: null, descripcion: null, precio: null, estado: null, categoria: { id: null, nombre: null, descripcion: null, estado: null } },
+        actualizarProducto: { id: null, nombre: null, descripcion: null, precio: null, categoria: { id: null, nombre: null, descripcion: null, } },
         dialogEditar: false,
         formProducto: {
             nombre: null,
             precio: null,
-            estado: null,
             categoria: null,
             descripcion: null
         },
         formCategoria: {
             nombre: null,
             descripcion: null,
-            esatdo: null
         },
         nombreRules: [
             v => !!v || 'El nombre es requerido',

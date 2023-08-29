@@ -48,7 +48,7 @@
                                 <td class="text-left">{{ persona.nombre }}</td>
                                 <td class="text-left">{{ persona.telefono }}</td>
                                 <td class="text-left">{{ persona.direccion }}</td>
-                                <td class="text-left">{{ persona.tipo_cargo.cargo }}</td>
+                                <td class="text-left">{{ persona.tipoCargo.cargo }}</td>
                                 <td><v-btn color="blue" density="comfortable"
                                         @click="editarEmpleado(Object.assign({}, persona))">Editar</v-btn></td>
                                 <td><v-btn color="red" density="comfortable"
@@ -83,7 +83,7 @@
                             Crear
                         </v-btn>
                     </v-card-actions>
-                    <v-table fixed-header fixed-footer height="400" class="w-100" v-if="tipo_cargo.length > 0">
+                    <v-table fixed-header fixed-footer height="400" class="w-100" v-if="tipoCargo.length > 0">
                         <thead style="z-index: 999999;" class="bg-table-header">
                             <tr>
                                 <th class="text-left">
@@ -94,7 +94,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="(item) in tipo_cargo" :key="item.id">
+                            <tr v-for="(item) in tipoCargo" :key="item.id">
                                 <td class="text-left">{{ item.cargo }}</td>
                                 <td class="text-right"><v-btn density="comfortable" @click="eliminarCargo(item.id)"
                                         color="red">eliminar</v-btn>
@@ -128,9 +128,9 @@
                                             variant="outlined" v-model="formEmpleado.direccion"
                                             :rules="[v => !!v || 'La descripción es requerida']"></v-text-field>
                                     </v-col>
-                                    <v-col cols="12" sm="6" v-if="tipo_cargo.length > 0">
-                                        <v-select :items="tipo_cargo" item-title="cargo" item-value="id" variant="outlined"
-                                            label="Cargo" required v-model="formEmpleado.tipo_cargo"
+                                    <v-col cols="12" sm="6" v-if="tipoCargo.length > 0">
+                                        <v-select :items="tipoCargo" item-title="cargo" item-value="id" variant="outlined"
+                                            label="Cargo" required v-model="formEmpleado.tipoCargo"
                                             :rules="[v => !!v || 'Seleccione una Cargo']"></v-select>
                                     </v-col>
                                     <v-col cols="12" sm="6">
@@ -174,7 +174,7 @@ export default {
     },
     data: () => ({
         empleados: [],
-        tipo_cargo: [],
+        tipoCargo: [],
         dialogC: false,
         dialogE: false,
         ShowEditarEmpleado: false,
@@ -183,7 +183,7 @@ export default {
         },
         formEmpleado: {
             cedula: null,
-            tipo_cargo: null,
+            tipoCargo: null,
             nombre: null,
             telefono: null,
             direccion: null,
@@ -231,7 +231,7 @@ export default {
                 if (resp.data.length > 0) {
                     resp.data.sort((a, b) => a.cargo.localeCompare(b.cargo));
                 }
-                this.tipo_cargo = resp.data;
+                this.tipoCargo = resp.data;
 
             })
         },
@@ -274,7 +274,7 @@ export default {
                     await axios.post(`${process.env.VUE_APP_API_URL}/empleado/crear`, this.formEmpleado).then(() => {
                         this.formEmpleado = {
                             cedula: null,
-                            tipo_cargo: null,
+                            tipoCargo: null,
                             nombre: null,
                             telefono: null,
                             direccion: null,
