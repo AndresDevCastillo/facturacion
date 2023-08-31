@@ -34,11 +34,7 @@
                             <th class="text-left">
                                 Precio
                             </th>
-                            <th class="text-left">
-                                Estado
-                            </th>
                             <th colspan="2" class="text-center">Acción</th>
-
                         </tr>
                     </thead>
                     <tbody>
@@ -47,12 +43,12 @@
                             <td class="text-left">{{ item.categoria.nombre }}</td>
                             <td class="text-left">{{ item.descripcion }}</td>
                             <td class="text-left">{{ item.precio }}</td>
-                            <td v-if="item.estado" class="text-left"><v-chip color="green">Activo</v-chip></td>
-                            <td v-else class="text-left"><v-chip color="red">No Activo</v-chip></td>
-                            <td><v-btn density="comfortable" @click="eliminarProducto(item.id)" color="red">eliminar</v-btn>
+                            <td>
+                                <v-btn density="comfortable" @click="eliminarProducto(item.id)" color="red">eliminar</v-btn>
                             </td>
-                            <td><v-btn color="blue" density="comfortable"
-                                    @click="editarProductoFunction(Object.assign({}, item))">Editar</v-btn></td>
+                            <td>
+                                <v-btn color="blue" density="comfortable" @click="editarProductoFunction(Object.assign({}, item))">Editar</v-btn>
+                            </td>
                         </tr>
                     </tbody>
                 </v-table>
@@ -87,11 +83,6 @@
                                 <v-select :items="categorias" item-title="nombre" item-value="id" variant="outlined"
                                     label="Categoría" required v-model="formProducto.categoria"
                                     :rules="[v => !!v || 'Seleccione una categoría']"></v-select>
-                            </v-col>
-                            <v-col cols="12" sm="6">
-                                <v-select :items="estado" label="Estado" variant="outlined" item-title="title"
-                                    item-value="estado" v-model="formProducto.estado"
-                                    :rules="[v => v !== null || 'Seleccione un estado']"></v-select>
                             </v-col>
                         </v-row>
                     </v-form>
@@ -193,23 +184,20 @@ export default {
     },
     data: () => ({
         productos: [],
-        categorias: [],
-        estado: [{ title: "Activo", estado: true }, { title: "No Activo", estado: false }],
-        dialogP: false,
+        categorias: [], dialogP: false,
         dialogC: false,
         actualizarProducto: { id: null, nombre: null, descripcion: null, precio: null, estado: null, categoria: { id: null, nombre: null, descripcion: null, estado: null } },
         dialogEditar: false,
         formProducto: {
             nombre: null,
             precio: null,
-            estado: null,
             categoria: null,
             descripcion: null
         },
         formCategoria: {
             nombre: null,
             descripcion: null,
-            esatdo: null
+            estado: null
         },
         nombreRules: [
             v => !!v || 'El nombre es requerido',

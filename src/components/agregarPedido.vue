@@ -1,51 +1,44 @@
 <template>
     <div>
         <v-card class="ma-3">
-            <v-row no-gutters class="flex-column px-2">
-                <v-col cols="12">
-                    <h2>Buscar cliente</h2>
-                </v-col>
-                <v-col cols="5">
-                    <v-autocomplete persistent-hint density="compact" return-object
-                        label="Buscar nombre del cliente"
-                        :items="clientes" item-title="nombre" variant="outlined" hint="Si no lo encuentra puede escribirlo en el campo de abajo" v-model="buscandoCliente" @update:modelValue="clienteSeleccionado"></v-autocomplete>
-                </v-col>
-            </v-row>
-            <v-form ref="form">
-                <v-container>
-                    <v-row>
-                        <v-col cols="12" md="3">
-                            <v-text-field v-model="this.form.nombre" label="Nombre del cliente" placeholder="Pepito pérez" required
-                                variant="outlined" @keyup="quitarIdCliente"></v-text-field>
-                        </v-col>
-                        <v-col cols="12" md="3">
-                            <v-autocomplete :items="this.ubicaciones" item-title="ubicacion" item-value="id" v-model="this.form.ubicacion" label="Mesa" placeholder="Escoja mesa" required
-                                variant="outlined"></v-autocomplete>
-                        </v-col>
-                        <v-col cols="12" md="3">
-                            <v-select :items="this.meseros" item-title="nombre" item-value="id" v-model="this.form.mesero" label="Mesero" placeholder="Escoja mesero" required
-                                variant="outlined"></v-select>
-                        </v-col>
-                    </v-row>
-                    <v-row>
-                        <v-col cols="12" md="3">
-                            <v-autocomplete v-model="add" :items="productos" label="Productos" no-data-text="Sin productos" item-title="nombre" return-object
-                                placeholder="Escoja producto" required variant="outlined">
-                            </v-autocomplete>
-                        </v-col>
-
-                        <v-col cols="12" md="3">
-                            <v-text-field v-model="cantidad" label="Cantidad" type="number"
-                                placeholder="Ingrese cantidad del producto" required variant="outlined"></v-text-field>
-                        </v-col>
-                        <v-col cols="6" md="2">
-                            <v-btn elevation="4" size="x-large" @click="addCompra" color="primary">Añadir</v-btn>
-                        </v-col>
-                    </v-row>
-                </v-container>
-            </v-form>
+            <v-card-title>
+                <div class="d-flex align-center ">
+                    <v-icon size="x-large">mdi mdi-cart-plus</v-icon>
+                    <h1 class="px-3">Agregar pedido</h1>
+                </div>
+            </v-card-title>
+            <v-card-text>
+                <v-form ref="form">
+                    <v-container>
+                        <v-row>
+                            <v-col cols="12" md="6">
+                                <v-autocomplete :items="this.ubicaciones" item-title="ubicacion" item-value="id" v-model="this.form.ubicacion" label="Mesa" placeholder="Escoja mesa" required
+                                    variant="outlined"></v-autocomplete>
+                            </v-col>
+                            <v-col cols="12" md="6">
+                                <v-select :items="this.meseros" item-title="nombre" item-value="id" v-model="this.form.mesero" label="Mesero" placeholder="Escoja mesero" required
+                                    variant="outlined"></v-select>
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col cols="12" md="3">
+                                <v-autocomplete v-model="add" :items="productos" label="Productos" no-data-text="Sin productos" item-title="nombre" return-object
+                                    placeholder="Escoja producto" required variant="outlined">
+                                </v-autocomplete>
+                            </v-col>
+                            <v-col cols="12" md="3">
+                                <v-text-field v-model="cantidad" label="Cantidad" type="number"
+                                    placeholder="Ingrese cantidad del producto" required variant="outlined"></v-text-field>
+                            </v-col>
+                            <v-col cols="6" md="2">
+                                <v-btn elevation="4" size="x-large" @click="addCompra" color="primary">Añadir</v-btn>
+                            </v-col>
+                        </v-row>
+                    </v-container>
+                </v-form>
+            </v-card-text>
         </v-card>
-        <v-table class="pb-5" fixed-header fixed-footer height="360" v-if="form.compras.length != 0">
+        <v-table class="pb-5" fixed-header fixed-footer v-if="form.compras.length != 0">
             <thead style="z-index: 999999;">
                 <tr>
                     <th class="text-left">
@@ -70,13 +63,16 @@
             </tbody>
             <tfoot style="z-index: 999999;">
                 <tr>
-                    <td class="text-left footer-table" colspan="2"><strong> Pagar : {{ pagarNeto }}</strong></td>
-                    <td colspan="2" class="text-center">
-                        <v-btn elevation="4" @click="guardarPedido()" color="primary">Guardar pedido</v-btn>
+                    <td class="text-left footer-table" colspan="4">
+                        <strong> Pagar : {{ pagarNeto }}</strong>
                     </td>
                 </tr>
             </tfoot>
         </v-table>
+        <v-row no-gutters justify="space-evenly" class="mb-4" v-if="this.form.compras.length != 0">
+            <v-btn elevation="4" @click="cancelarPedido()" color="blue" size="x-large">Cancelar</v-btn>
+            <v-btn elevation="4" @click="guardarPedido()" color="green" size="x-large" class="mr-2 mb-2">Guardar</v-btn>
+        </v-row>
     </div>
 </template>
   
@@ -96,8 +92,6 @@ export default {
         cantidad: null,
         pagos: ['Efectivo', 'Tarjeta Credito', 'Tarjeta Debito', 'Transferencia'],
         form: {
-            idCliente: null,//Si va vacío es porque no existe en la bd
-            nombre: null,
             compras: [],
             ubicacion: null,
             mesero: null,
@@ -127,14 +121,13 @@ export default {
         },
         eliminarCompra(posicion = null) {
             this.form.compras.splice(posicion, 1);
-
         },
         guardarPedido() {
-            if (this.form.nombre == null || this.form.nombre.length == 0) {
+            if (this.form.ubicacion == null || this.form.ubicacion.length == 0) {
                 return Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
-                    text: 'El nombre del cliente no puede estar vacío',
+                    text: 'La ubicación no puede estar vacía',
                     timer: 1500,
                     showConfirmButton: false,
                 });
@@ -142,19 +135,22 @@ export default {
             //Envio al backend
             console.log(this.form);
         },
+        cancelarPedido() {
+            Swal.fire({ title: 'Cancelar pedido', text: '¿Seguro de qué quiere cancelar el pedido?', icon: 'warning', showCancelButton: true, cancelButtonText: 'No, cerrar', confirmButtonText: 'Sí, cancelar' }).then(resp => {
+                if (resp.value) {
+                    this.form = {
+                        compras: [],
+                        ubicacion: null,
+                        mesero: null
+                    };
+                }
+            });
+        },
         buscarCliente(busqueda) {
             const indexCliente = this.clientes.findIndex(cliente => cliente === busqueda);
             if (indexCliente == -1) {
                 this.form.nombre = busqueda;
             }
-        },
-        quitarIdCliente() {
-            this.form.idCliente = null;
-        }
-        ,
-        clienteSeleccionado(cliente) {
-            this.form.nombre = cliente.nombre;
-            this.form.idCliente = cliente.id;
         },
         async obtenerProductos() {
             let prod;
