@@ -1,12 +1,13 @@
 <template>
     <div class="ganancias">
-        <v-card class="ma-3">
-            <div>
-                <v-btn @click="cambiarDatosGraficaPie()" variant="elevated" color="red">Pie</v-btn>
-                <v-btn @click="cambiarDatosGraficaBar()" variant="elevated" color="green">Bar</v-btn>
-                <canvas id="myChart"></canvas>
-            </div>
-        </v-card>
+        <v-row class="ma-6">
+            <v-col md="12" sm="12">
+                <v-card>
+                    <canvas id="myChart"></canvas>
+                </v-card>
+            </v-col>
+        </v-row>
+
     </div>
 </template>
 
@@ -16,10 +17,11 @@ import Axios from 'axios';
 export default {
     name: 'gananciasVista',
     data: () => ({
-        mes: null,
         semana: null,
         nombre: null,
         chart: null,
+        datosCharts: null,
+        referenciaChart: null,
 
 
 
@@ -40,53 +42,28 @@ export default {
                     labels: this.nombre,
                     datasets: [{
                         label: 'Productos mas Vendidos Semanales',
-                        data: Array(52).fill().map(() => Math.floor(Math.random() * 100) + 1),
+                        data: this.datosCharts,
                         borderWidth: 1
                     }]
                 },
                 options: {
+
                     scales: {
                         y: {
                             beginAtZero: true
-                        }
-                    }
+                        },
+                    },
                 }
 
             }
-            this.mes = {
-                type: 'pie',
-                data: {
-                    labels: this.nombre,
-                    datasets: [{
-                        label: 'Productos mas Vendidos Mensuales',
-                        data: Array(52).fill().map(() => Math.floor(Math.random() * 100) + 1),
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
-                    }
-                }
 
-            }
             this.chart = new Chart(ctx, this.semana);
-        },
-        cambiarDatosGraficaPie() {
-            this.chart.destroy();
-            let ctx2 = document.getElementById('myChart');
-            this.chart = new Chart(ctx2, this.mes);
-        },
-        cambiarDatosGraficaBar() {
-            this.chart.destroy();
-            let ctx3 = document.getElementById('myChart');
-            this.chart = new Chart(ctx3, this.semana);
         }
     },
 
     async mounted() {
+        this.datosCharts = Array(52).fill().map(() => Math.floor(Math.random() * 100) + 1);
+        this.referenciaChart = document.getElementById('myChart');
         await this.listarGrafica();
 
     }
