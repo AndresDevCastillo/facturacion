@@ -21,9 +21,11 @@
         <v-divider></v-divider>
 
         <v-list density="comfortable" nav>
+            <v-list-item prepend-icon="mdi mdi-chef-hat" title="Pedido" class="items-bar" to="/pedido"></v-list-item>
             <v-list-item prepend-icon="mdi mdi-cash-plus" title="Facturación" class="items-bar" to="/factura"></v-list-item>
             <v-list-item prepend-icon="mdi mdi-food" title="Productos" class="items-bar" to="/productos"></v-list-item>
             <v-list-item prepend-icon="mdi-account-tie" title="Empleados" to="/empleados" class="items-bar"></v-list-item>
+            <v-list-item prepend-icon="mdi mdi-chart-bar" title="Ganacias" class="items-bar" to="/ganancias"></v-list-item>
             <v-list-item prepend-icon="mdi-star" title="Starred" class="items-bar"></v-list-item>
         </v-list>
         <v-footer class="d-flex flex-column" v-if=!ocultar style="position: absolute;

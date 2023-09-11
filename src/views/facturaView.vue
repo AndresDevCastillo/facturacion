@@ -5,9 +5,8 @@
                 <v-container>
                     <v-row>
                         <v-col cols="12" md="3">
-                            <v-autocomplete
-                                label="Nombre del cliente"
-                                :items="clientes" variant="outlined" v-model="form.nombre" @keyup="buscarCliente()"></v-autocomplete>
+                            <v-autocomplete label="Nombre del cliente" item-value="id" :items="clientes" item-title="nombre"
+                                variant="outlined" v-model="form.cliente" @keyup="buscarCliente()"></v-autocomplete>
                             <!-- <v-text-field v-model="form.nombre" label="Nombre del cliente" placeholder="Pepito pérez" required
                                 variant="outlined"></v-text-field> -->
                         </v-col>
@@ -16,7 +15,7 @@
                                 placeholder="1062123536" required variant="outlined"></v-text-field>
                         </v-col>
                         <v-col cols="12" md="3">
-                            <v-text-field v-model="form.numero" label="Teléfono" placeholder="3104205923" required
+                            <v-text-field v-model="form.telefono" label="Teléfono" placeholder="3104205923" required
                                 variant="outlined"></v-text-field>
                         </v-col>
 
@@ -37,29 +36,30 @@
                             </v-select>
                         </v-col>
                         <v-col cols="12" md="3" v-if="form.ubicacion === 'Domicilio'">
-                            <v-select v-model="form.domiciliario" :items="domiciliarios" label="Domiciliario" placeholder="Escoja domicialiario" required
-                                variant="outlined">
+                            <v-select v-model="form.domiciliario" :items="domiciliarios" label="Domiciliario"
+                                placeholder="Escoja domicialiario" required variant="outlined">
                             </v-select>
                         </v-col>
                         <v-col cols="12" md="3" v-if="form.ubicacion === 'Domicilio'">
-                            <v-text-field v-model="form.direccion" label="Dirección domicilio" placeholder="Ingrese dirección del domicilio" required
-                                variant="outlined">
+                            <v-text-field v-model="form.direccion" label="Dirección domicilio"
+                                placeholder="Ingrese dirección del domicilio" required variant="outlined">
                             </v-text-field>
                         </v-col>
-                        <v-col cols="12" md="3" v-if="form.ubicacion != 'Domicilio' && form.ubicacion != 'Recogido en persona'">
-                            <v-select v-model="form.mesero" :items="meseros" label="Mesero" placeholder="Escoja mesero" required
-                                variant="outlined">
+                        <v-col cols="12" md="3"
+                            v-if="form.ubicacion != 'Domicilio' && form.ubicacion != 'Recogido en persona'">
+                            <v-select v-model="form.mesero" item-title="nombre" item-value="id" :items="trabajadores"
+                                label="Mesero" placeholder="Escoja mesero" required variant="outlined">
                             </v-select>
                         </v-col>
 
                         <v-col cols="12" md="3">
-                            <v-text-field v-model="form.descuento" label="Descuento(%)" placeholder="Porcentaje de descuento"
-                                required variant="outlined"></v-text-field>
+                            <v-text-field v-model="form.descuento" label="Descuento(%)"
+                                placeholder="Porcentaje de descuento" required variant="outlined"></v-text-field>
                         </v-col>
 
                         <v-col cols="12" md="3">
-                            <v-select v-model="add" :items="products" label="Productos" item-title="name" return-object=""
-                                placeholder="Escoja producto" required variant="outlined">
+                            <v-select v-model="add" :items="productos" label="Productos" item-title="nombre"
+                                return-object="" placeholder="Escoja producto" required variant="outlined">
                             </v-select>
                         </v-col>
 
@@ -74,26 +74,22 @@
                             <v-btn elevation="4" size="x-large" @click="dialogTicket = true" color="red">Ver ticket</v-btn>
                         </v-col>
                         <v-col cols="12" md="2" v-if="form.compras.length != 0">
-                            <v-btn elevation="4" size="x-large" @click="generarFactura()" color="red">Enviar</v-btn>
+                            <v-btn elevation="4" size="x-large" @click="generarFactura()" color="red">Comprar</v-btn>
                         </v-col>
                         <v-col cols="12" md="2" v-if="form.compras.length != 0">
-                            <v-btn elevation="4" size="x-large" @click="dialogTicketCocinero = true" color="red">Ver ticket cocinero</v-btn>
+                            <v-btn elevation="4" size="x-large" @click="dialogTicketCocinero = true" color="red">Ver ticket
+                                cocinero</v-btn>
                         </v-col>
                     </v-row>
                 </v-container>
             </v-form>
+            {{ form }}
         </v-card>
         <v-table fixed-header fixed-footer height="400" v-if="form.compras.length != 0">
             <thead style="z-index: 999999;">
                 <tr>
-                    <th class="text-left">
-                        Name
-                    </th>
-                    <th class="text-left">
-                        Descripcion
-                    </th>
-                    <th class="text-left">
-                        Descuento
+                    <th class="text-left" colspan="2">
+                        Nombres
                     </th>
                     <th class="text-left">
                         Cantidad
@@ -107,9 +103,7 @@
             </thead>
             <tbody>
                 <tr v-for="(item, index) in form.compras" :key="item.name">
-                    <td class="text-left">{{ item.name }}</td>
-                    <td class="text-left">{{ item.descripcion }}</td>
-                    <td class="text-left">{{ item.descuento }}</td>
+                    <td class="text-left" colspan="2">{{ item.nombre }}</td>
                     <td class="text-left">{{ item.cantidad }}</td>
                     <td class="text-left">{{ item.precio }}</td>
                     <td><v-btn elevation="4" @click="eliminarCompra(index)">eliminar</v-btn> </td>
@@ -118,15 +112,16 @@
             <tfoot>
                 <tr>
                     <td class="text-left footer-table" colspan="2">Pago : {{ total.total }}</td>
-                    <td class="text-left footer-table" colspan="1">{{ total.descuento }}</td>
                     <td class="text-left footer-table" colspan="1">{{ total.cantidad }}</td>
-                    <td class="text-left footer-table" colspan="2">{{ total.neto }}</td>
+                    <td class="text-left footer-table" colspan="1">{{ total.neto }}</td>
+                    <td class="text-left footer-table" colspan="1">Descuento {{ total.descuento }}%</td>
                 </tr>
             </tfoot>
         </v-table>
         <facturaComponent :dialog="dialog" :datos="form" @cerrarDialogo="dialog = false" />
         <ticketComponent :dialog="dialogTicket" @cerrarDialogoTicket="dialogTicket = false"></ticketComponent>
-        <ticketCocineroComponent :dialog2="dialogTicketCocinero" @cerrarDialogoTicketCocinero="dialogTicketCocinero = false"></ticketCocineroComponent>
+        <ticketCocineroComponent :dialog2="dialogTicketCocinero"
+            @cerrarDialogoTicketCocinero="dialogTicketCocinero = false"></ticketCocineroComponent>
     </div>
 </template>
   
@@ -135,6 +130,7 @@ import Swal from 'sweetalert2';
 import facturaComponent from '../components/factura.vue';
 import ticketComponent from '../components/ticket.vue';
 import ticketCocineroComponent from '../components/ticketCocinero.vue';
+import axios from 'axios';
 export default {
     name: 'facturaVista',
     components: {
@@ -143,7 +139,7 @@ export default {
         ticketCocineroComponent
     },
     data: () => ({
-        clientes: ['Luis', 'Juan', 'José'],
+        clientes: [],
         bCliente: null,
         valid: null,
         dialog: false,
@@ -155,53 +151,24 @@ export default {
         group: null,
         pagos: ['Efectivo', 'Tarjeta Credito', 'Tarjeta Debito', 'Transferencia'],
         form: {
+            cliente: null,
             nombre: null,
             cedula: null,
+            telefono: null,
             pago: null,
             compras: [],
             ubicacion: null,
             mesero: null,
             domiciliario: null,
             direccion: null,
-            numero: null,
             correo: null,
             descuento: 0,
 
         },
-        meseros: ['Javier Gómez', 'María Rodríguez', 'Carlos Pérez', 'Ana Martínez', 'Luis Ramírez'],
-        domiciliarios: ['Carlos Lopéz', 'Daver Mercado', 'José Armando Ortega'],
+        trabajadores: [],
         ubicaciones: ['Domicilio', 'Recogido en persona', 'Restaurante'],
         defect: 'No hay medios disponibles',
-        products: [{
-            name: "Manzanas",
-            descripcion: "Frescas manzanas rojas.",
-            precio: 1000,
-            descuento: 30,
-        },
-        {
-            name: "Arroz",
-            descripcion: "Arroz de grano largo, 1kg.",
-            precio: 1800,
-            descuento: 0,
-        },
-        {
-            name: "Leche",
-            descripcion: "Leche semidesnatada, 1L.",
-            precio: 2200,
-            descuento: 0,
-        },
-        {
-            name: "Pan",
-            descripcion: "Pan blanco recién horneado.",
-            precio: 500,
-            descuento: 900,
-        },
-        {
-            name: "Huevos",
-            descripcion: "Huevos frescos, docena.",
-            precio: 200,
-            descuento: 700,
-        },],
+        productos: [],
         total: {
             total: null,
             descuento: null,
@@ -222,9 +189,8 @@ export default {
                 })
             }
             this.add.precio = this.add.precio * this.cantidad;
-            this.add.descuento = this.add.descuento * this.cantidad;
             this.add.cantidad = parseInt(this.cantidad);
-            this.form.compras.push(this.add);
+            this.form.compras.push(Object.assign({}, this.add));
             this.add = null;
             this.cantidad = null;
             this.calcularMonto();
@@ -237,16 +203,20 @@ export default {
         },
         calcularMonto() {
 
-            let descuentoTemp = 0;
+            let descuentoTemp = this.form.descuento;
             let cantidadTemp = 0;
             let netoTemp = 0;
             for (let item of this.form.compras) {
                 console.log(item);
-                descuentoTemp += item.descuento;
                 cantidadTemp += item.cantidad;
                 netoTemp += item.precio;
             }
-            this.total.total = netoTemp - descuentoTemp;
+            if (descuentoTemp == 0) {
+                this.total.total = netoTemp;
+            }
+            else {
+                this.total.total = (netoTemp - (descuentoTemp / 100) * netoTemp);
+            }
             this.total.descuento = descuentoTemp;
             this.total.neto = netoTemp;
             this.total.cantidad = cantidadTemp;
@@ -256,11 +226,57 @@ export default {
         },
         buscarCliente() {
             console.log('Buscando cliente');
+        },
+        async buscarEmpleados() {
+            try {
+                await axios.get(`${process.env.VUE_APP_API_URL}/empleado`).then(data => {
+                    this.trabajadores = data.data;
+                })
+            }
+            catch (error) {
+                console.log(error);
+            }
+        },
+        async buscarProductos() {
+            try {
+                await axios.get(`${process.env.VUE_APP_API_URL}/producto`).then(data => {
+                    this.productos = data.data;
+                });
+            }
+            catch (error) {
+                console.log(error);
+            }
+        },
+        async buscarClientes() {
+            try {
+                await axios.get(`${process.env.VUE_APP_API_URL}/cliente`).then(data => {
+                    this.clientes = data.data;
+                });
+            }
+            catch (error) {
+                console.log(error);
+            }
         }
     },
-    mounted() {
-
-
+    watch: {
+        'form.cliente': {
+            handler(newNombre, oldNombre) {
+                // Esta función se ejecutará cuando 'form.nombre' cambie
+                console.log(`El valor de 'nombre' cambió de "${oldNombre}" a "${newNombre}"`);
+                this.clientes.map(cliente => {
+                    if (this.form.cliente == cliente.id) {
+                        this.form.cedula = cliente.cedula;
+                        this.form.correo = cliente.correo;
+                        this.form.telefono = cliente.telefono;
+                    }
+                })
+            },
+        },
+    },
+    async mounted() {
+        await this.buscarEmpleados();
+        await this.buscarProductos();
+        await this.buscarClientes();
     }
 }
 </script>

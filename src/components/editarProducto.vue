@@ -27,11 +27,6 @@
                                     label="Categoría" required v-model="paquete.categoria"
                                     :rules="[v => !!v || 'Seleccione una categoría']"></v-select>
                             </v-col>
-                            <v-col cols="12" sm="6">
-                                <v-select :items="estado" label="Estado" variant="outlined" item-title="title"
-                                    item-value="estado" v-model="paquete.estado"
-                                    :rules="[v => v !== null || 'Seleccione un estado']"></v-select>
-                            </v-col>
                         </v-row>
                     </v-form>
                 </v-container>
@@ -63,8 +58,7 @@ export default {
     precioRules: [v => !!v || 'El precio es requerido', v => (v && /^[0-9]+$/.test(v)) || 'El numero no debe contener caracteres'],
     data: () => ({
         paquete:
-            { id: null, nombre: null, descripcion: null, precio: null, estado: null, categoria: null },
-        estado: [{ title: "Activo", estado: true }, { title: "No Activo", estado: false }],
+            { id: null, nombre: null, descripcion: null, precio: null, categoria: null },
         categoriaseditar: []
     }),
     methods: {
