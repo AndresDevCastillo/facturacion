@@ -228,9 +228,6 @@ export default {
         },
         async listarCargos() {
             await axios.get(`${process.env.VUE_APP_API_URL}/tipo-cargo`).then((resp) => {
-                if (resp.data.length > 0) {
-                    resp.data.sort((a, b) => a.cargo.localeCompare(b.cargo));
-                }
                 this.tipoCargo = resp.data;
 
             })

@@ -45,45 +45,21 @@
                                 placeholder="Ingrese dirección del domicilio" required variant="outlined">
                             </v-text-field>
                         </v-col>
-                        <v-col cols="12" md="3"
-                            v-if="form.ubicacion != 'Domicilio' && form.ubicacion != 'Recogido en persona'">
-                            <v-select v-model="form.mesero" item-title="nombre" item-value="id" :items="trabajadores"
-                                label="Mesero" placeholder="Escoja mesero" required variant="outlined">
-                            </v-select>
-                        </v-col>
 
-                        <v-col cols="12" md="3">
-                            <v-text-field v-model="form.descuento" label="Descuento(%)"
-                                placeholder="Porcentaje de descuento" required variant="outlined"></v-text-field>
-                        </v-col>
-
-                        <v-col cols="12" md="3">
-                            <v-select v-model="add" :items="productos" label="Productos" item-title="nombre"
-                                return-object="" placeholder="Escoja producto" required variant="outlined">
-                            </v-select>
-                        </v-col>
-
-                        <v-col cols="12" md="3">
-                            <v-text-field v-model="cantidad" label="Cantidad" type="number"
-                                placeholder="Ingrese cantidad del producto" required variant="outlined"></v-text-field>
-                        </v-col>
-                        <v-col cols="6" md="2">
-                            <v-btn elevation="4" size="x-large" @click="addCompra" color="primary">Añadir</v-btn>
-                        </v-col>
-                        <v-col cols="12" md="2" v-if="form.compras.length != 0">
+                        <v-col cols="12" md="2">
                             <v-btn elevation="4" size="x-large" @click="dialogTicket = true" color="red">Ver ticket</v-btn>
                         </v-col>
-                        <v-col cols="12" md="2" v-if="form.compras.length != 0">
+                        <v-col cols="12" md="2">
                             <v-btn elevation="4" size="x-large" @click="generarFactura()" color="red">Comprar</v-btn>
                         </v-col>
-                        <v-col cols="12" md="2" v-if="form.compras.length != 0">
+                        <v-col cols="12" md="2">
                             <v-btn elevation="4" size="x-large" @click="dialogTicketCocinero = true" color="red">Ver ticket
                                 cocinero</v-btn>
                         </v-col>
                     </v-row>
                 </v-container>
             </v-form>
-            {{ form }}
+            {{ pedidos }}
         </v-card>
         <v-table fixed-header fixed-footer height="400" v-if="form.compras.length != 0">
             <thead style="z-index: 999999;">
@@ -140,6 +116,7 @@ export default {
     },
     data: () => ({
         clientes: [],
+        pedidos: [],
         bCliente: null,
         valid: null,
         dialog: false,
@@ -256,6 +233,16 @@ export default {
             catch (error) {
                 console.log(error);
             }
+        },
+        async cargarPedidos() {
+            try {
+                axios.get(`${process.env.VUE_APP_API_URL}/pedido`).then(data => {
+                    this.pedidos = data.data;
+                })
+            }
+            catch (error) {
+                console.log(error);
+            }
         }
     },
     watch: {
@@ -277,6 +264,7 @@ export default {
         await this.buscarEmpleados();
         await this.buscarProductos();
         await this.buscarClientes();
+        await this.cargarPedidos();
     }
 }
 </script>
