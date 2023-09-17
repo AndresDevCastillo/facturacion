@@ -57,6 +57,32 @@ export default {
     font-weight: bold;
 }
 
+.fw-bold-important {
+    font-weight: bold !important;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+
+}
+
+.no-select {
+    user-select: none !important;
+}
+
+.cursor-not-allowed {
+    cursor: not-allowed !important;
+}
+
+.no-pointer-events {
+    pointer-events: none !important;
+}
+
 .divider-dotted {
     border-style: dotted !important;
+}
+
+/* Para que las alertas de Swal se vean delante de los dialogs */
+.swal2-container.swal2-backdrop-show {
+    z-index: 99999 !important;
 }</style>
