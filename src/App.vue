@@ -82,7 +82,7 @@ export default {
     border-style: dotted !important;
 }
 
-/* Para que las alertas de Swal se vean delante de los dialogs */
+/* Para que las alertas de Swal se vean adelante de los dialogs */
 .swal2-container.swal2-backdrop-show {
     z-index: 99999 !important;
 }</style>

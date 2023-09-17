@@ -123,8 +123,9 @@ export default {
         add: null,
         cantidad: null,
         form: {
+            mesa: null,
+            empleado: 1,
             detallePedido: [],
-            mesa: null
         },
         compras: [],
         ubicaciones: [],
@@ -136,7 +137,7 @@ export default {
         agregarProducto() {
             if (this.cantidad != null && this.cantidad > 0 && this.add != null) {
                 this.compras.push({ nombre: this.add.nombre, cantidad: parseInt(this.cantidad), precioU: this.add.precio });
-                this.form.detallePedido.push({ producto: this.add.id, cantidad: parseInt(this.cantidad) });
+                this.form.detallePedido.push({ pedido: 1, producto: this.add.id, cantidad: parseInt(this.cantidad) });
                 this.cantidad = null;
                 this.add = null;
             } else {
