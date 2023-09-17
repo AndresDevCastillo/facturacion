@@ -189,6 +189,7 @@ export default {
       neto: null,
     },
     facturaImpresa: null,
+    idEliminarPedidos: null,
   }),
   methods: {
     addCompra() {
@@ -292,7 +293,7 @@ export default {
       this.formFactura.descuento = parseInt(this.form.descuento);
       this.formFactura.propina = parseInt(this.formFactura.propina);
       await axios
-        .post(`${process.env.VUE_APP_API_URL}/factura/crear`, this.formFactura)
+        .post(`${process.env.VUE_APP_API_URL}/factura/crear/${this.idEliminarPedidos}`, this.formFactura)
         .then((data) => {
           this.facturaImpresa = data.data;
           Swal.fire({
@@ -301,8 +302,9 @@ export default {
             showConfirmButton: false,
             showCancelButton: false,
             timer: 2000,
-          }).finally(() => {
+          }).finally(async () => {
             this.dialogTicket = true;
+            await this.cargarPedidos();
           });
         })
         .catch((error) => {
@@ -332,6 +334,7 @@ export default {
         console.log(newPedido);
         this.form.compras.splice(0, 1);
         this.form.compras.push(newPedido);
+        this.idEliminarPedidos = newPedido.ticket;
         this.formFactura.empleado = newPedido.empleado.id;
         this.formFactura.mesa = newPedido.mesa.id;
         this.formFactura.descuento = parseInt(this.form.descuento);
