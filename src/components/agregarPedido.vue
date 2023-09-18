@@ -15,6 +15,10 @@
                     <v-row justify="start">
                         <p class="fw-bold text-dark w-100 text-center" v-if="ubicaciones.length == 0">No hay mesas, por favor regístrelas</p>
                         <v-col v-for="(ubicacion, index) in ubicaciones" :key="index" sm="4" md="3" xl="3" xxl="4">
+                            <v-tooltip
+                                activator="parent"
+                                location="top" contained eager max-width="300">{{ this.mesaOcupada(ubicacion.id) ? 'No puedes escoger esta mesa, tiene un pedido en curso' : 'Agregar pedido a esta mesa' }}
+                            </v-tooltip>
                             <v-card elevation="10" :color="obtenerColor(ubicacion.id)" :class="[obtenerClases(ubicacion.id)]" @click="agregarPedidoMesa(ubicacion.id)">
                                 <v-card-text class="fw-bold-important text-center">
                                     {{ ubicacion.nombre }}
@@ -36,24 +40,23 @@
                     <v-card-title class="text-h5">
                         Agregar productos
                     </v-card-title>
-                    <v-card-text>
+                    <v-card-text class="pa-md-5">
                         <v-form ref="form">
-                            <v-container>
-                                <v-row>
-                                    <v-col cols="4" md="4">
-                                        <v-autocomplete v-model="add" :items="productos" label="Productos" no-data-text="Sin productos" item-title="nombre" return-object
-                                            placeholder="Escoja producto" required variant="outlined">
-                                        </v-autocomplete>
-                                    </v-col>
-                                    <v-col cols="4" md="4">
-                                        <v-text-field v-model="cantidad" label="Cantidad" type="number" min="1"
-                                            placeholder="Ingrese cantidad del producto" required variant="outlined"></v-text-field>
-                                    </v-col>
-                                    <v-col cols="4" md="4">
-                                        <v-btn elevation="4" size="x-large" @click="agregarProducto" color="primary">Añadir</v-btn>
-                                    </v-col>
-                                </v-row>
-                            </v-container>
+                            <v-row>
+                                <v-col :cols="cols[0]">
+                                    <v-autocomplete v-model="add" :items="productos" label="Productos" no-data-text="Sin productos" item-title="nombre" return-object
+                                        placeholder="Escoja producto" required variant="outlined">
+                                    </v-autocomplete>
+                                </v-col>
+                                <v-col :cols="cols[1]">
+                                    <v-text-field v-model="cantidad" label="Cantidad" type="number" min="1"
+                                        placeholder="Ingrese cantidad del producto" required variant="outlined"></v-text-field>
+
+                                </v-col>
+                                <v-col :cols="cols[2]">
+                                    <v-btn elevation="4" size="x-large" @click="agregarProducto" color="primary">Añadir</v-btn>
+                                </v-col>
+                            </v-row>
                         </v-form>
                         <v-table class="pb-5" fixed-header fixed-footer v-if="compras.length != 0">
                             <thead style="z-index: 999999;">
@@ -91,7 +94,7 @@
                             </tfoot>
                         </v-table>
                         <v-row no-gutters justify="space-evenly" class="mb-4" v-if="compras.length != 0">
-                            <v-btn elevation="4" @click="cancelarPedido" color="blue" size="x-large">Cancelar</v-btn>
+                            <v-btn elevation="4" @click="cancelarPedido" color="blue" size="x-large" class="mb-3">Cancelar</v-btn>
                             <v-btn elevation="4" @click="guardarPedido" color="green" size="x-large" class="mr-2 mb-2">Guardar</v-btn>
                         </v-row>
                     </v-card-text>
@@ -264,6 +267,18 @@ export default {
                 pagoN += parseInt(item.cantidad * item.precioU);
             }
             return pagoN;
+        },
+        cols() {
+            //Para que los input del modal sean responsive
+            const { xxl, xl, lg, md } = this.$vuetify.display;
+            let resp = [12, 12, 4];
+            if (xxl || xl || lg) {
+                resp = [4, 4, 4];
+            }
+            else if (md) {
+                resp = [5, 5, 2];
+            }
+            return resp;
         }
     },
     mounted() {
