@@ -81,15 +81,7 @@
                           ">
                                                     Descripción
                                                 </th>
-                                                <th class="text-left" style="
-                            font-size: 1.2rem;
-                            color: #000;
-                            border-bottom-style: dotted !important;
-                            border-bottom-width: 1px !important;
-                            box-shadow: none !important;
-                          ">
-                                                    P.U
-                                                </th>
+
                                                 <th class="text-left" style="
                             font-size: 1.2rem;
                             color: #000;
@@ -102,7 +94,7 @@
                                             </tr>
                                         </thead>
                                         <tbody id="productosTicket">
-                                            <tr v-for="(item, index) in datos.dextalleFactura" :key="index">
+                                            <tr v-for="(item, index) in datos.detalleFactura" :key="index">
                                                 <td class="text-left" style="
                             font-size: 1.2rem;
                             border-style: none !important;
@@ -116,12 +108,7 @@
                           ">
                                                     {{ item.producto.nombre }}
                                                 </td>
-                                                <td class="text-left" style="
-                            font-size: 1.2rem;
-                            border-style: none !important;
-                          ">
-                                                    {{ item.producto.precio }}
-                                                </td>
+
                                                 <td class="text-left" style="
                             font-size: 1.2rem;
                             border-style: none !important;
@@ -141,28 +128,22 @@
                               font-weight: bold;
                               text-align: right;
                             ">
-                                                        VALOR VENTA: $<span>{{ valorVenta() }}</span>
+                                                        VALOR VENTA: $<span>preo</span>
                                                     </p>
+
                                                     <p style="
                               font-size: 1.2rem;
                               font-weight: bold;
                               text-align: right;
                             ">
-                                                        IVA: $<span>{{ iva }}</span>
-                                                    </p>
-                                                    <p style="
-                              font-size: 1.2rem;
-                              font-weight: bold;
-                              text-align: right;
-                            ">
-                                                        PROPINA: $<span>{{ propina }}</span>
+                                                        PROPINA: $<span>{{ datos.propina }}</span>
                                                     </p>
                                                     <p style="
                               font-weight: bold;
                               text-align: right;
                               font-size: 1.4rem;
                             ">
-                                                        TOTAL: $<span>{{ totalPagar() }}</span>
+                                                        TOTAL: $<span>{{ datos.total }}</span>
                                                     </p>
                                                 </th>
                                             </tr>
@@ -170,8 +151,9 @@
                                     </v-table>
                                 </v-row>
                                 <v-row class="w-100 flex-column" no-gutters id="infoVendedores">
-                                    <p>MESERO: <span>Catalina Manjarrez</span></p>
-                                    <p>CAJERO: <span>EngineerSoft</span></p>
+                                    <p>
+                                        MESERO: <span>{{ datos.empleado.nombre }}</span>
+                                    </p>
                                     <v-divider class="divider-dotted" style="
                       border-style: dotted !important;
                       color: #000;
@@ -180,19 +162,12 @@
                                 </v-row>
                                 <v-row no-gutters class="w-100 flex-column" id="terminos">
                                     <p style="
-                      text-transform: uppercase;
-                      margin-top: 6px;
-                      font-family: 'Helvetica', Arial, sans-serif;
-                    ">
-                                        Por favor pagar lo mas pronto posible
-                                    </p>
-                                    <p style="
                       margin-top: 14px;
                       text-align: center;
                       font-weight: bold;
                       text-transform: uppercase;
                     " id="agradecimiento">
-                                        *** Gracias por su compra Ronaldo ***
+                                        *** Gracias por su compra {{ datos.cliente.nombre }} ***
                                     </p>
                                 </v-row>
                             </v-row>
@@ -212,23 +187,24 @@ export default {
     props: {
         dialog: { type: Boolean, default: false, required: true },
         datos: {
-            type: Object, default: () => {
+            type: Object,
+            default: () => {
                 return {
-                    "codigo": null,
-                    "medio_pago": null,
-                    "descuento": 0,
-                    "total": 0,
-                    "propina": 0,
-                    "lugar": null,
-                    "fecha": null,
-                    "hora": null,
-                    "detalleFactura": [],
-                    "empleado": null,
-                    "cliente": null,
-                    "mesa": null,
-                }
+                    codigo: null,
+                    medio_pago: null,
+                    descuento: 0,
+                    total: 0,
+                    propina: 0,
+                    lugar: null,
+                    fecha: null,
+                    hora: null,
+                    detalleFactura: [],
+                    empleado: null,
+                    cliente: null,
+                    mesa: null,
+                };
             },
-            required: true
+            required: true,
         },
     },
 
@@ -290,72 +266,72 @@ export default {
                     //windowHeight: 200,
                     //windowWidth: 1320,
                     /* html2canvas: {
-                                  scale: scale_mobile,
-                                  //height: 200,
-                                  //width: 1320,
-                                  //windowWidth: 1320,
-                                  //windowHeight: 200,
-                              }, */
+                                            scale: scale_mobile,
+                                            //height: 200,
+                                            //width: 1320,
+                                            //windowWidth: 1320,
+                                            //windowHeight: 200,
+                                        }, */
                     filename: "ticket.pdf",
                     callback: (pdf) => {
                         /*  pdf.autoTable({
-                                         html: tabla,
-                                         head: [['Producto', 'Descripcion', 'Precio', 'Descuento']],
-                                         useCss: true,
-                                         startY: 150,
-                                         styles: { overflow: 'ellipsize', cellWidth: 'wrap' },
-                                         // Override the default above for the text column
-                                         columnStyles: { text: { cellWidth: 'auto' } },
-                                         margin: { left: margin },
-                                         bodyStyles: { textColor: '#00000' },
-                                         headStyles: {
-                                             fillColor: '#F3F2F7',
-                                             textColor: '#00000',
-                                             fontStyle: '"Roboto" sans-serif',
-                                             lineWidth: {
-                                                 bottom: 1
-                                             }
-                                         },
-                                     });
-                                     finalY = pdf.lastAutoTable.finalY; */
+                                                     html: tabla,
+                                                     head: [['Producto', 'Descripcion', 'Precio', 'Descuento']],
+                                                     useCss: true,
+                                                     startY: 150,
+                                                     styles: { overflow: 'ellipsize', cellWidth: 'wrap' },
+                                                     // Override the default above for the text column
+                                                     columnStyles: { text: { cellWidth: 'auto' } },
+                                                     margin: { left: margin },
+                                                     bodyStyles: { textColor: '#00000' },
+                                                     headStyles: {
+                                                         fillColor: '#F3F2F7',
+                                                         textColor: '#00000',
+                                                         fontStyle: '"Roboto" sans-serif',
+                                                         lineWidth: {
+                                                             bottom: 1
+                                                         }
+                                                     },
+                                                 });
+                                                 finalY = pdf.lastAutoTable.finalY; */
                         pdf.html(datosGenerales, {
                             x: margin,
                             y: 40,
                             /*  width: 1320,
-                                           windowWidth: 1320, */
+                                                         windowWidth: 1320, */
                             /* html2canvas: {
-                                              scale: scale_mobile,
-                                              //height: 200,
-                                              // width: 1320,
-                                              // windowWidth: 1320,
-                                              //windowHeight: 200,
-                                          }, */
+                                                            scale: scale_mobile,
+                                                            //height: 200,
+                                                            // width: 1320,
+                                                            // windowWidth: 1320,
+                                                            //windowHeight: 200,
+                                                        }, */
                             filename: "ticket.pdf",
                             callback: (newPdf) => {
                                 newPdf.autoPrint();
                                 newPdf.output("dataurlnewwindow", { filename: "ticket.pdf" });
                                 /*  newPdf.html(parteFinal, {
-                                                     x: margin,
-                                                     y: finalY + 80,
-                                                     width: 1320,
-                                                     windowWidth: 1320,
-                                                     html2canvas: {
-                                                         scale: scale_mobile,
-                                                         //height: 200,
-                                                         width: 1320,
-                                                         windowWidth: 1320,
-                                                         //windowHeight: 200,
-                                                     },
-                                                     filename: 'factura.pdf',
-                                                     callback: (newPdf2) => {
-                                                         newPdf2.autoPrint();
-                                                         newPdf2.output('dataurlnewwindow', {
-                                                             filename: 'factura.pdf'
-                                                         });
-                                                         return newPdf2;
-                                                     }
-                                                 });
-                                              */
+                                                                     x: margin,
+                                                                     y: finalY + 80,
+                                                                     width: 1320,
+                                                                     windowWidth: 1320,
+                                                                     html2canvas: {
+                                                                         scale: scale_mobile,
+                                                                         //height: 200,
+                                                                         width: 1320,
+                                                                         windowWidth: 1320,
+                                                                         //windowHeight: 200,
+                                                                     },
+                                                                     filename: 'factura.pdf',
+                                                                     callback: (newPdf2) => {
+                                                                         newPdf2.autoPrint();
+                                                                         newPdf2.output('dataurlnewwindow', {
+                                                                             filename: 'factura.pdf'
+                                                                         });
+                                                                         return newPdf2;
+                                                                     }
+                                                                 });
+                                                              */
                             },
                         });
                     },
@@ -382,12 +358,12 @@ export default {
                             x: margin,
                             y: 40,
                             /*  width: 1320,
-                                           windowWidth: 1320, */
+                                                         windowWidth: 1320, */
                             html2canvas: {
                                 scale: scale,
                                 //height: 200,
                                 /*  width: 1320,
-                                                 windowWidth: 1320, */
+                                                                 windowWidth: 1320, */
                                 //windowHeight: 200,
                             },
                             filename: "ticket.pdf",
@@ -398,86 +374,73 @@ export default {
                         });
 
                         /* pdf.autoTable({
-                                        html: tabla,
-                                        head: [['Producto', 'Descripcion', 'Precio', 'Descuento']],
-                                        useCss: true,
-                                        startY: 150,
-                                        styles: { overflow: 'ellipsize', cellWidth: 'wrap' },
-                                        // Override the default above for the text column
-                                        columnStyles: { text: { cellWidth: 'auto' } },
-                                        margin: { left: margin },
-                                        bodyStyles: { textColor: '#00000' },
-                                        headStyles: {
-                                            fillColor: '#F3F2F7',
-                                            textColor: '#00000',
-                                            fontStyle: '"Roboto" sans-serif',
-                                            lineWidth: {
-                                                bottom: 1
-                                            }
-                                        },
-                                    });
-                                    finalY = pdf.lastAutoTable.finalY;
-                                    pdf.html(parte3, {
-                                        x: margin,
-                                        y: finalY + 20,
-                                        width: 1320,
-                                        windowWidth: 1320,
-                                        html2canvas: {
-                                            scale: scale,
-                                            //height: 200,
-                                            width: 1320,
-                                            windowWidth: 1320,
-                                            //windowHeight: 200,
-                                        },
-                                        filename: 'factura.pdf',
-                                        callback: (newPdf) => {
-                                            newPdf.html(parteFinal, {
-                                                x: margin,
-                                                y: finalY + 80,
-                                                width: 1320,
-                                                windowWidth: 1320,
-                                                html2canvas: {
-                                                    scale: scale,
-                                                    //height: 200,
+                                                    html: tabla,
+                                                    head: [['Producto', 'Descripcion', 'Precio', 'Descuento']],
+                                                    useCss: true,
+                                                    startY: 150,
+                                                    styles: { overflow: 'ellipsize', cellWidth: 'wrap' },
+                                                    // Override the default above for the text column
+                                                    columnStyles: { text: { cellWidth: 'auto' } },
+                                                    margin: { left: margin },
+                                                    bodyStyles: { textColor: '#00000' },
+                                                    headStyles: {
+                                                        fillColor: '#F3F2F7',
+                                                        textColor: '#00000',
+                                                        fontStyle: '"Roboto" sans-serif',
+                                                        lineWidth: {
+                                                            bottom: 1
+                                                        }
+                                                    },
+                                                });
+                                                finalY = pdf.lastAutoTable.finalY;
+                                                pdf.html(parte3, {
+                                                    x: margin,
+                                                    y: finalY + 20,
                                                     width: 1320,
                                                     windowWidth: 1320,
-                                                    //windowHeight: 200,
-                                                },
-                                                filename: 'factura.pdf',
-                                                callback: (newPdf2) => {
-                                                    newPdf2.autoPrint();
-                                                    newPdf2.output('dataurlnewwindow', {
-                                                        filename: 'factura.pdf'
-                                                    });
-                                                    return newPdf2;
-                                                }
-                                            });
-                                        }
-                                    }); */
+                                                    html2canvas: {
+                                                        scale: scale,
+                                                        //height: 200,
+                                                        width: 1320,
+                                                        windowWidth: 1320,
+                                                        //windowHeight: 200,
+                                                    },
+                                                    filename: 'factura.pdf',
+                                                    callback: (newPdf) => {
+                                                        newPdf.html(parteFinal, {
+                                                            x: margin,
+                                                            y: finalY + 80,
+                                                            width: 1320,
+                                                            windowWidth: 1320,
+                                                            html2canvas: {
+                                                                scale: scale,
+                                                                //height: 200,
+                                                                width: 1320,
+                                                                windowWidth: 1320,
+                                                                //windowHeight: 200,
+                                                            },
+                                                            filename: 'factura.pdf',
+                                                            callback: (newPdf2) => {
+                                                                newPdf2.autoPrint();
+                                                                newPdf2.output('dataurlnewwindow', {
+                                                                    filename: 'factura.pdf'
+                                                                });
+                                                                return newPdf2;
+                                                            }
+                                                        });
+                                                    }
+                                                }); */
                     },
                 });
             }
         },
-        valorVenta() {
-            let venta = 0;
-            this.compras.forEach((compraObj) => {
-                venta += compraObj.cantidad * compraObj.precioU;
-            });
-            return venta;
-        },
-        totalPagar() {
-            let pagar = 0;
-            this.compras.forEach((compraObj) => {
-                pagar += compraObj.cantidad * compraObj.precioU;
-            });
-            pagar += this.iva + this.propina;
-            return pagar;
-        },
+
     },
     watch: {
         dialog() {
             console.log("Cambio");
             this.verDialogTicket = this.$props.dialog;
+
         },
     },
 };

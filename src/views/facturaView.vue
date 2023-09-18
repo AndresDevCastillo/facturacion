@@ -71,7 +71,7 @@
         </v-container>
       </v-form>
     </v-card>
-    <v-table fixed-header fixed-footer height="400" v-if="form.compras.length != 0">
+    <v-table fixed-header style="margin-bottom: 100px;" v-if="form.compras.length != 0">
       <thead style="z-index: 999999">
         <tr>
           <th class="text-left" colspan="2">Nombres</th>
@@ -100,7 +100,7 @@
             <b>{{ total.neto }}</b>
           </td>
           <td class="text-left footer-table" colspan="1">
-            <b>{{ total.total }}</b>
+            <b style="font-size: 1.3rem;">{{ total.total }}</b>
           </td>
         </tr>
       </tfoot>
