@@ -1,45 +1,48 @@
 <template>
-    <v-app-bar theme="dark" prominent app>
-        <v-app-bar-nav-icon variant="text" @click.stop="ocultar = !ocultar"></v-app-bar-nav-icon>
+    <div>
 
-        <v-toolbar-title><router-link to="/" class="Titulo-Home">Empresa X</router-link></v-toolbar-title>
+        <v-app-bar theme="dark" prominent app>
+            <v-app-bar-nav-icon variant="text" @click.stop="ocultar = !ocultar"></v-app-bar-nav-icon>
 
-        <v-spacer></v-spacer>
+            <v-toolbar-title><router-link to="/" class="Titulo-Home">Empresa X</router-link></v-toolbar-title>
 
-        <v-btn variant="text" icon="mdi-magnify"></v-btn>
+            <v-spacer></v-spacer>
 
-        <v-btn variant="text" icon="mdi mdi-bell"></v-btn>
+            <v-btn variant="text" icon="mdi-magnify"></v-btn>
 
-        <v-btn variant="text" icon="mdi mdi-help"></v-btn>
-    </v-app-bar>
-    <v-navigation-drawer app theme="dark" :rail=ocultar>
-        <v-list>
-            <v-list-item prepend-avatar="https://randomuser.me/api/portraits/women/85.jpg" title="Andrea López"
-                subtitle="Empleado"></v-list-item>
-        </v-list>
+            <v-btn variant="text" icon="mdi mdi-bell"></v-btn>
 
-        <v-divider></v-divider>
+            <v-btn variant="text" icon="mdi mdi-help"></v-btn>
+        </v-app-bar>
+        <v-navigation-drawer app theme="dark" :rail=ocultar>
+            <v-list>
+                <v-list-item prepend-avatar="https://randomuser.me/api/portraits/women/85.jpg" title="Andrea López"
+                    subtitle="Empleado"></v-list-item>
+            </v-list>
 
-        <v-list density="comfortable" nav>
-            <v-list-item prepend-icon="mdi mdi-chef-hat" title="Pedido" class="items-bar" to="/pedido"></v-list-item>
-            <v-list-item prepend-icon="mdi mdi-cash-plus" title="Facturación" class="items-bar" to="/factura"></v-list-item>
-            <v-list-item prepend-icon="mdi mdi-food" title="Productos" class="items-bar" to="/productos"></v-list-item>
-            <v-list-item prepend-icon="mdi-account-tie" title="Empleados" to="/empleados" class="items-bar"></v-list-item>
-            <v-list-item prepend-icon="mdi mdi-chart-bar" title="Ganacias" class="items-bar" to="/ganancias"></v-list-item>
-            <v-list-item prepend-icon="mdi-star" title="Starred" class="items-bar"></v-list-item>
-        </v-list>
-        <v-footer class="d-flex flex-column" v-if=!ocultar style="position: absolute;
+            <v-divider></v-divider>
+
+            <v-list density="comfortable" nav>
+                <v-list-item prepend-icon="mdi mdi-chef-hat" title="Pedido" class="items-bar" to="/inicio/pedido"></v-list-item>
+                <v-list-item prepend-icon="mdi mdi-cash-plus" title="Facturación" class="items-bar" to="/inicio/factura"></v-list-item>
+                <v-list-item prepend-icon="mdi mdi-food" title="Productos" class="items-bar" to="/inicio/productos"></v-list-item>
+                <v-list-item prepend-icon="mdi-account-tie" title="Empleados" to="/inicio/empleados" class="items-bar"></v-list-item>
+                <v-list-item prepend-icon="mdi mdi-chart-bar" title="Ganacias" class="items-bar" to="/inicio/ganancias"></v-list-item>
+                <v-list-item prepend-icon="mdi-star" title="Starred" class="items-bar"></v-list-item>
+            </v-list>
+            <v-footer class="d-flex flex-column" v-if=!ocultar style="position: absolute;
         bottom: 0; width: 100%;">
-            <div class="d-flex w-100 align-center px-2">
+                <div class="d-flex w-100 align-center px-2">
 
-                <v-btn v-for="icon in icons" :key="icon" class="mx-2" :icon="icon" variant="plain" size="small"></v-btn>
-            </div>
+                    <v-btn v-for="icon in icons" :key="icon" class="mx-2" :icon="icon" variant="plain" size="small"></v-btn>
+                </div>
 
-            <div class=" py-2  text-center w-100">
-                {{ new Date().getFullYear() }} — Engineersoft
-            </div>
-        </v-footer>
-    </v-navigation-drawer>
+                <div class=" py-2  text-center w-100">
+                    {{ new Date().getFullYear() }} — Engineersoft
+                </div>
+            </v-footer>
+        </v-navigation-drawer>
+    </div>
 </template>
 
 <script>

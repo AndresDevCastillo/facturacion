@@ -8,37 +8,51 @@ import empleadoVista from '../views/empleadoView';
 import agregarPedidoVista from '../views/agregarPedidoView.vue';
 /* import crearPedidoVista from '../views/crearPedidoView.vue' */
 import gananciasVista from '../views/gananciasView.vue';
+import loginVista from '../views/loginView.vue';
+import inicioVista from '../views/inicio.vue';
 //Creación de rutas a los archivos
 const routes = [{
-    path: '/factura',
-    name: 'factura',
-    component: facturaVista,
-},
-{
-    path: '/productos',
-    name: 'productos',
-    component: productosVista
-},
-{
-    path: '/empleados',
-    name: 'empleados',
-    component: empleadoVista
-},
-{
-    path: '/',
-    name: 'agregarPedido',
-    component: agregarPedidoVista,
-},
-{
-    path: '/pedido',
-    name: 'crearPedidoVista',
-    component: agregarPedidoVista,
-},
-{
-    path: '/ganancias',
-    name: 'gananciasVista',
-    component: gananciasVista,
-}
+        path: '/',
+        name: 'login',
+        component: loginVista
+    },
+    {
+        path: '/inicio',
+        name: 'inicio',
+        component: inicioVista,
+        children: [{
+                path: '/inicio/factura',
+                name: 'factura',
+                component: facturaVista,
+            },
+            {
+                path: '/inicio/productos',
+                name: 'productos',
+                component: productosVista
+            },
+            {
+                path: '/inicio/empleados',
+                name: 'empleados',
+                component: empleadoVista
+            },
+            {
+                path: '/inicio/agregarPedido',
+                name: 'agregarPedido',
+                component: agregarPedidoVista,
+            },
+            {
+                path: '/inicio/pedido',
+                name: 'crearPedidoVista',
+                component: agregarPedidoVista,
+            },
+            {
+                path: '/inicio/ganancias',
+                name: 'gananciasVista',
+                component: gananciasVista,
+            }
+        ]
+    },
+
 ];
 
 const router = createRouter({

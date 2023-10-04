@@ -1,21 +1,11 @@
 <template>
-    <v-card>
-        <v-layout>
-            <barra-home></barra-home>
-            <v-main>
-                <router-view></router-view>
-            </v-main>
-        </v-layout>
-    </v-card>
+    <router-view />
 </template>
 
 <script>
-import barraHome from './components/barraHome.vue';
+
 export default {
     name: 'App',
-    components: {
-        barraHome
-    },
     data: () => ({
 
     }),
@@ -23,12 +13,16 @@ export default {
 
     },
     mounted() {
-        // this.$router.push('/inicio');
     },
 }
 </script>
 
 <style>
+body,
+html {
+    height: 100vh;
+}
+
 :root {
     --bg-table-header: #f3f2f7;
 
@@ -40,7 +34,7 @@ export default {
 }
 
 #app {
-
+    height: 100%;
     color: #2c3e50;
 }
 
@@ -85,4 +79,5 @@ export default {
 /* Para que las alertas de Swal se vean adelante de los dialogs */
 .swal2-container.swal2-backdrop-show {
     z-index: 99999 !important;
-}</style>
+}
+</style>

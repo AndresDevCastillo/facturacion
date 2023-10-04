@@ -352,11 +352,13 @@ export default {
     },
     "form.descuento": {
       handler(newDescuento, oldDescuento) {
+        console.log(newDescuento, oldDescuento);
         this.calcularMonto();
       },
     },
     "formFactura.propina": {
       handler(newDescuento, oldDescuento) {
+        console.log(newDescuento, oldDescuento);
         this.calcularMonto();
       },
     },
