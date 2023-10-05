@@ -2,7 +2,7 @@
     <div class="login d-flex">
         <v-card width="450" class="pt-6 mx-auto my-auto" elevation="5">
             <v-card-title primary-title>
-                <h3 class="headline text-center">Iniciar sesión</h3>
+                <h3 class="headline text-center text-wrap">Iniciar sesión</h3>
             </v-card-title>
             <v-card-text class="px-4">
                 <form ref="form">
@@ -41,7 +41,7 @@ export default {
     methods: {
         async ingresar() {
             if (this.paquete.usuario != null && this.paquete.usuario.trim().length > 0) {
-                axios.post(`${process.env.VUE_APP_API_URL}/auth/login`, this.paquete).then(response => {
+               await axios.post(`${process.env.VUE_APP_API_URL}/auth/login`, this.paquete).then(response => {
                     switch (response.status) {
                         case 401:
                             Swal.fire({ icon: 'warning', text: 'Algo paso, intenta otra vez o contacta con soporte', showConfirmButton: false, timer: 1740 });
@@ -52,7 +52,7 @@ export default {
                                 case 'Mesero':
                                     this.$router.push('/inicio/agregarPedido');
                                     break;
-                                case 'Admin':
+                                case 'Admin' || 'Engineersoft':
                                     this.$router.push('/inicio/empleado');
                                     break;
                                 case 'Cajero':
