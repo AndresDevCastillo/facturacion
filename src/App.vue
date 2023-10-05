@@ -20,7 +20,7 @@ export default {
 <style>
 body,
 html {
-    height: 100vh;
+    height: 100vh !important;
 }
 
 :root {
@@ -79,5 +79,8 @@ html {
 /* Para que las alertas de Swal se vean adelante de los dialogs */
 .swal2-container.swal2-backdrop-show {
     z-index: 99999 !important;
+}
+body.swal2-shown.swal2-height-auto{
+    height: 100vh !important;
 }
 </style>

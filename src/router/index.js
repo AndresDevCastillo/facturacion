@@ -41,11 +41,6 @@ const routes = [{
                 component: agregarPedidoVista,
             },
             {
-                path: '/inicio/pedido',
-                name: 'crearPedidoVista',
-                component: agregarPedidoVista,
-            },
-            {
                 path: '/inicio/ganancias',
                 name: 'gananciasVista',
                 component: gananciasVista,

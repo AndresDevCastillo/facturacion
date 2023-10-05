@@ -18,8 +18,10 @@
     "sweetalert2": "^11.7.20",
     "vue": "^3.2.13",
     "vue-chartjs": "^5.2.0",
+    "vue-persistedstate": "^1.2.5",
     "vue-router": "^4.2.4",
-    "vuetify": "^3.3.10"
+    "vuetify": "^3.3.10",
+    "vuex": "4.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",

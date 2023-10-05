@@ -259,6 +259,7 @@ export default {
         this.getMesasOcupadas();
         this.getMesas();
         this.getProductos();
+        this.form.empleado = this.$store.getters.usuario.empleado.id;
     },
     computed: {
         pagarNeto() {

@@ -7,28 +7,32 @@
             <v-toolbar-title><router-link to="/" class="Titulo-Home">Empresa X</router-link></v-toolbar-title>
 
             <v-spacer></v-spacer>
-
-            <v-btn variant="text" icon="mdi-magnify"></v-btn>
+            <v-btn icon @click="cerrarSesion">
+                <v-icon>mdi mdi-exit-to-app</v-icon>
+                <v-tooltip
+                    activator="parent"
+                    location="bottom">Cerrar sesión</v-tooltip>
+            </v-btn>
+            <!-- <v-btn variant="text" icon="mdi-magnify"></v-btn>
 
             <v-btn variant="text" icon="mdi mdi-bell"></v-btn>
 
-            <v-btn variant="text" icon="mdi mdi-help"></v-btn>
+            <v-btn variant="text" icon="mdi mdi-help"></v-btn> -->
+
         </v-app-bar>
         <v-navigation-drawer app theme="dark" :rail=ocultar>
             <v-list>
-                <v-list-item prepend-avatar="https://randomuser.me/api/portraits/women/85.jpg" title="Andrea López"
-                    subtitle="Empleado"></v-list-item>
+                <v-list-item prepend-avatar="https://randomuser.me/api/portraits/women/85.jpg" :title="title"
+                    :subtitle="subtitle"></v-list-item>
             </v-list>
 
             <v-divider></v-divider>
 
             <v-list density="comfortable" nav>
-                <v-list-item prepend-icon="mdi mdi-chef-hat" title="Pedido" class="items-bar" to="/inicio/pedido"></v-list-item>
-                <v-list-item prepend-icon="mdi mdi-cash-plus" title="Facturación" class="items-bar" to="/inicio/factura"></v-list-item>
-                <v-list-item prepend-icon="mdi mdi-food" title="Productos" class="items-bar" to="/inicio/productos"></v-list-item>
-                <v-list-item prepend-icon="mdi-account-tie" title="Empleados" to="/inicio/empleados" class="items-bar"></v-list-item>
-                <v-list-item prepend-icon="mdi mdi-chart-bar" title="Ganacias" class="items-bar" to="/inicio/ganancias"></v-list-item>
-                <v-list-item prepend-icon="mdi-star" title="Starred" class="items-bar"></v-list-item>
+                <div v-for="(item, index) in this.menu" :key="index">
+                    <v-list-item :prepend-icon="item.icon" :title="item.title" class="items-bar" :to="item.href"></v-list-item>
+                </div>
+                <!-- <v-list-item prepend-icon="mdi-star" title="Starred" class="items-bar"></v-list-item> -->
             </v-list>
             <v-footer class="d-flex flex-column" v-if=!ocultar style="position: absolute;
         bottom: 0; width: 100%;">
@@ -46,15 +50,18 @@
 </template>
 
 <script>
-
+const menuJSON = require('../json/menu');
 export default {
     name: 'barraHome',
     components: {
 
     },
     data: () => ({
-
+        title: null,
+        subtitle: null,
+        menu: [],
         ocultar: false,
+        link: { icon: null, title: null, href: null },
         icons: [
             'mdi-facebook',
             'mdi-twitter',
@@ -63,9 +70,29 @@ export default {
         ],
     }),
     methods: {
-
+        ponerLink(item) {
+            this.link = { ...item };
+        },
+        cerrarSesion() {
+            this.$store.commit('setusuario', null);
+            this.$router.push('/');
+        }
     },
-    mounted() {
+    created() {
+        if (this.$store.getters.usuario) {
+            this.title = this.$store.getters.usuario.empleado.nombre;
+            this.subtitle = this.$store.getters.usuario.empleado.tipoCargo.cargo;
+            const cargo = this.$store.getters.usuario.empleado.tipoCargo.cargo;
+            console.log(cargo);
+            menuJSON.default.filter(menu => {
+                console.log(menu);
+                if (menu.cargo == cargo) {
+                    console.log('entro: ', menu);
+                    this.menu = menu.menu;
+                }
+            })
+            console.log(this.menu);
+        }
     },
 }
 </script>

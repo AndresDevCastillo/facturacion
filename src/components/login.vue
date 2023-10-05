@@ -24,6 +24,7 @@
 </template>
 <script>
 import Swal from 'sweetalert2';
+import axios from 'axios';
 export default {
     name: 'loginComponent',
     data: () => ({
@@ -38,9 +39,31 @@ export default {
         }
     }),
     methods: {
-        ingresar() {
+        async ingresar() {
             if (this.paquete.usuario != null && this.paquete.usuario.trim().length > 0) {
-                console.log('vl');
+                axios.post(`${process.env.VUE_APP_API_URL}/auth/login`, this.paquete).then(response => {
+                    switch (response.status) {
+                        case 401:
+                            Swal.fire({ icon: 'warning', text: 'Algo paso, intenta otra vez o contacta con soporte', showConfirmButton: false, timer: 1740 });
+                            break;
+                        case 200:
+                            this.$store.commit('setusuario', response.data);
+                            switch (response.data.empleado.tipoCargo.cargo) {
+                                case 'Mesero':
+                                    this.$router.push('/inicio/agregarPedido');
+                                    break;
+                                case 'Admin':
+                                    this.$router.push('/inicio/empleado');
+                                    break;
+                                case 'Cajero':
+                                    this.$router.push('/inicio/factura');
+                                    break;
+                            }
+                            break;
+                    }
+                }).catch(error => {
+                    Swal.fire({ icon: 'error', text: error.response.data.message, showConfirmButton: false, timer: 1600 });
+                });
             } else {
                 Swal.fire({ icon: 'error', text: 'Debes ingresar usuario y contraseña', showConfirmButton: false, timer: 1600 });
             }
@@ -54,9 +77,11 @@ export default {
 }
 </script>
 <style>
-body,html{
+body,
+html {
     overflow: hidden;
 }
+
 .login {
     width: 100%;
     height: 100%;
