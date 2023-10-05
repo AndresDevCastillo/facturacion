@@ -29,7 +29,6 @@ export default {
     name: 'loginComponent',
     data: () => ({
         visible: false,
-        img: null,
         usuarioRule: [
             v => !!v || 'Usuario es requerido',
         ],
@@ -41,7 +40,7 @@ export default {
     methods: {
         async ingresar() {
             if (this.paquete.usuario != null && this.paquete.usuario.trim().length > 0) {
-               await axios.post(`${process.env.VUE_APP_API_URL}/auth/login`, this.paquete).then(response => {
+                await axios.post(`${process.env.VUE_APP_API_URL}/auth/login`, this.paquete).then(response => {
                     switch (response.status) {
                         case 401:
                             Swal.fire({ icon: 'warning', text: 'Algo paso, intenta otra vez o contacta con soporte', showConfirmButton: false, timer: 1740 });
@@ -49,11 +48,14 @@ export default {
                         case 200:
                             this.$store.commit('setusuario', response.data);
                             switch (response.data.empleado.tipoCargo.cargo) {
+                                case 'Engineersoft':
+                                    this.$router.push('/inicio/empleados');
+                                    break;
                                 case 'Mesero':
                                     this.$router.push('/inicio/agregarPedido');
                                     break;
-                                case 'Admin' || 'Engineersoft':
-                                    this.$router.push('/inicio/empleado');
+                                case 'Admin':
+                                    this.$router.push('/inicio/empleados');
                                     break;
                                 case 'Cajero':
                                     this.$router.push('/inicio/factura');
@@ -71,7 +73,6 @@ export default {
 
     },
     created() {
-        this.img = require('@/assets/login/fondo.jpg');
     }
 
 }
