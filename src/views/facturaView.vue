@@ -195,7 +195,6 @@ export default {
   methods: {
     addCompra() {
       this.cantidad = parseFloat(this.cantidad);
-      console.log(typeof this.cantidad);
       if (
         this.cantidad <= 0 ||
         !Number.isInteger(this.cantidad) ||
@@ -246,7 +245,7 @@ export default {
       this.dialog = true;
     },
     buscarCliente() {
-      console.log("Buscando cliente");
+      console.log('busca cliente');
     },
     async buscarEmpleados() {
       try {
@@ -388,5 +387,3 @@ export default {
   },
 };
 </script>
-
-<style></style>

@@ -438,7 +438,6 @@ export default {
     },
     watch: {
         dialog() {
-            console.log("Cambio");
             this.verDialogTicket = this.$props.dialog;
 
         },

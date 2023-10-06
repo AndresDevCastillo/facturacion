@@ -61,7 +61,8 @@
                                         </tbody>
                                         <tfoot>
                                             <tr>
-                                                <th colspan="2" style="border-style: none !important; height: 20px !important; padding: 0 0;">
+                                                <th colspan="2"
+                                                    style="border-style: none !important; height: 20px !important; padding: 0 0;">
                                                     <v-divider class="divider-dotted"
                                                         style="border-style: dotted !important; color: #000; opacity: 1;"></v-divider>
                                                 </th>
@@ -70,7 +71,8 @@
                                     </v-table>
                                 </v-row>
                                 <v-row no-gutters class="w-100 flex-column" id="terminos">
-                                    <p style="font-size:1.27rem; text-transform: uppercase; margin-top: 6px; font-family: 'Helvetica', Arial, sans-serif;">
+                                    <p
+                                        style="font-size:1.27rem; text-transform: uppercase; margin-top: 6px; font-family: 'Helvetica', Arial, sans-serif;">
                                         <strong>NOTA: </strong>
                                         Por favor pagar lo mas pronto posible
                                     </p>
@@ -316,7 +318,6 @@ export default {
     },
     watch: {
         dialog() {
-            console.log('Cambio');
             this.verDialogTicketCocinero = this.$props.dialog;
         }
     },

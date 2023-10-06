@@ -94,7 +94,6 @@ export default {
         editarEmpleado() {
             this.listarCargos();
             this.paquete = this.$props.editarEmpleado;
-            console.log(this.paquete)
             this.paquete.tipoCargo = this.$props.editarEmpleado.tipoCargo.id;
         }
     }

@@ -2,18 +2,13 @@
     <v-row justify="center">
         <v-dialog v-model="verDialog" fullscreen :scrim="false" transition="dialog-bottom-transition">
             <v-card>
-                <v-toolbar
-                    dark
-                    theme="dark" class="noImprimir">
-                    <v-btn
-                        icon
-                        dark @click="cerrarDialogo()">
+                <v-toolbar dark theme="dark" class="noImprimir">
+                    <v-btn icon dark @click="cerrarDialogo()">
                         <v-icon>mdi-close</v-icon>
                     </v-btn>
                     <v-spacer></v-spacer>
                     <v-toolbar-items>
-                        <v-btn
-                            variant="text" @click="imprimir()">
+                        <v-btn variant="text" @click="imprimir()">
                             Imprimir
                         </v-btn>
                     </v-toolbar-items>
@@ -21,14 +16,17 @@
                 <v-card-text>
                     <v-col md="8" xl="9" cols="12" class="ma-auto">
                         <v-card rounded="4" class="pa-4 mt-2" ref="imprimir" id="imprimir">
-                            <v-row class="w-100 flex-column" id="parte1" no-gutters style="font-family: 'Roboto', sans-serif;">
+                            <v-row class="w-100 flex-column" id="parte1" no-gutters
+                                style="font-family: 'Roboto', sans-serif;">
                                 <v-row justify="space-between" no-gutters>
                                     <v-col cols="4">
-                                        <v-img width="40" ref="logo" cover :src="require('@/assets/logo.png')" :lazy-src="require('@/assets/logo.png')"></v-img>
+                                        <v-img width="40" ref="logo" cover :src="require('@/assets/logo.png')"
+                                            :lazy-src="require('@/assets/logo.png')"></v-img>
                                     </v-col>
                                     <v-col cols="8" class="text-right" style="font-size: 1.6rem;">
                                         <label class="text-dark pr-1">Factura</label>
-                                        <label class="text-muted fw-600 mb-0 pb-0" style="font-weight:bold; color: #000;">#123</label>
+                                        <label class="text-muted fw-600 mb-0 pb-0"
+                                            style="font-weight:bold; color: #000;">#123</label>
                                     </v-col>
                                 </v-row>
                                 <v-row justify="space-between" no-gutters>
@@ -37,13 +35,15 @@
                                         <p class="text-dark">Nombre empresa</p>
                                         <p class="text-dark">3101004354 - empresa@gmail.com</p>
                                     </v-col>
-                                    <v-col cols="6" class="text-right" style="font-size: 1.5rem; font-family: 'Roboto', sans-serif;">
+                                    <v-col cols="6" class="text-right"
+                                        style="font-size: 1.5rem; font-family: 'Roboto', sans-serif;">
                                         <p class=" text-dark">Fecha generación</p>
                                         <p class="text-dark fw-600" style="font-weight: bold; color: #000;">03-06-2023</p>
                                     </v-col>
                                 </v-row>
                                 <v-divider></v-divider>
-                                <v-row class="mt-4" justify="space-between" no-gutters style="font-family: 'Roboto', sans-serif; font-size: 1.5rem;">
+                                <v-row class="mt-4" justify="space-between" no-gutters
+                                    style="font-family: 'Roboto', sans-serif; font-size: 1.5rem;">
                                     <v-col cols="8">
                                         <h4 class="fw-600" style="font-weight: bold;">Cliente</h4>
                                         <p>{{ datos.nombre }}</p>
@@ -52,13 +52,15 @@
                                     </v-col>
                                     <v-col cols="4" style="text-align: right;">
                                         <h4 class="fw-600" style="font-weight: bold;">Detalle del pago</h4>
-                                        <p style="font-weight: bold;">Total pagado: <span style="font-weight: normal;">{{ totalPagar() }}</span></p>
+                                        <p style="font-weight: bold;">Total pagado: <span style="font-weight: normal;">{{
+                                            totalPagar() }}</span></p>
                                         <p>Método de pago: <span>{{ datos.pago }}</span></p>
                                     </v-col>
                                 </v-row>
                             </v-row>
                             <v-row no-gutters>
-                                <v-table id="tabla" class="w-100" fixed-header height="auto" border="1" border-collapse="collapse" cellspacing="0">
+                                <v-table id="tabla" class="w-100" fixed-header height="auto" border="1"
+                                    border-collapse="collapse" cellspacing="0">
                                     <thead class="bg-table-header fw-bold">
                                         <tr>
                                             <th class="text-left">
@@ -92,13 +94,16 @@
                             <v-row no-gutters id="parte3" style="font-size: 1.5rem; font-family: 'Roboto', sans-serif;">
                                 <v-col cols="8">
                                     <h4 class="fw-600" style="font-weight: bold;">Empleado</h4>
-                                    <p class="text-dark">{{ datos.ubicacion == 'Domicilio' ? datos.domiciliario : datos.mesero }}</p>
+                                    <p class="text-dark">{{ datos.ubicacion == 'Domicilio' ? datos.domiciliario :
+                                        datos.mesero }}</p>
                                     <p class="text-dark">Lugar: <span>{{ datos.ubicacion }}</span></p>
                                 </v-col>
                                 <v-col cols="4">
                                     <v-row justify="space-between" no-gutters>
                                         <v-col cols="7" class="px-0 pb-0">
-                                            <p class="fw-600 bc-gray" style="color: rgba(var(--v-theme-on-surface), var(--v-medium-emphasis-opacity));">SUBTOTAL</p>
+                                            <p class="fw-600 bc-gray"
+                                                style="color: rgba(var(--v-theme-on-surface), var(--v-medium-emphasis-opacity));">
+                                                SUBTOTAL</p>
                                         </v-col>
                                         <v-col cols="5" class="pb-0">
                                             <p class="fw-600">$ 10.000</p>
@@ -106,7 +111,9 @@
                                     </v-row>
                                     <v-row justify="space-between" no-gutters>
                                         <v-col cols="7" class="px-0 py-0">
-                                            <p class="fw-600 bc-gray" style="color: rgba(var(--v-theme-on-surface), var(--v-medium-emphasis-opacity));">IVA</p>
+                                            <p class="fw-600 bc-gray"
+                                                style="color: rgba(var(--v-theme-on-surface), var(--v-medium-emphasis-opacity));">
+                                                IVA</p>
                                         </v-col>
                                         <v-col cols="5" class="pb-0 py-0">
                                             <p class="fw-600">$ 0</p>
@@ -114,7 +121,9 @@
                                     </v-row>
                                     <v-row justify="space-between" no-gutters>
                                         <v-col cols="7" class="px-0 pt-0">
-                                            <p class="fw-600 bc-gray" style="color: rgba(var(--v-theme-on-surface), var(--v-medium-emphasis-opacity));">INC</p>
+                                            <p class="fw-600 bc-gray"
+                                                style="color: rgba(var(--v-theme-on-surface), var(--v-medium-emphasis-opacity));">
+                                                INC</p>
                                         </v-col>
                                         <v-col cols="5" class="pt-0">
                                             <p class="fw-600">$ 0</p>
@@ -137,7 +146,8 @@
                                 <v-row>
                                     <v-col cols="12">
                                         <p style="font-size: 1.4rem;">
-                                            <strong class="fw-600" style="font-weight: bold; font-size: 1.5rem;">Nota: </strong> Comida muy buena.
+                                            <strong class="fw-600" style="font-weight: bold; font-size: 1.5rem;">Nota:
+                                            </strong> Comida muy buena.
                                         </p>
                                     </v-col>
                                 </v-row>
@@ -392,7 +402,6 @@ export default {
     },
     watch: {
         dialog() {
-            console.log('Cambio');
             this.verDialog = this.$props.dialog;
         }
     }

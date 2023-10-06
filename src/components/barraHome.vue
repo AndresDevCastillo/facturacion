@@ -9,9 +9,7 @@
             <v-spacer></v-spacer>
             <v-btn icon @click="cerrarSesion">
                 <v-icon>mdi mdi-exit-to-app</v-icon>
-                <v-tooltip
-                    activator="parent"
-                    location="bottom">Cerrar sesión</v-tooltip>
+                <v-tooltip activator="parent" location="bottom">Cerrar sesión</v-tooltip>
             </v-btn>
             <!-- <v-btn variant="text" icon="mdi-magnify"></v-btn>
 
@@ -30,7 +28,8 @@
 
             <v-list density="comfortable" nav>
                 <div v-for="(item, index) in this.menu" :key="index">
-                    <v-list-item :prepend-icon="item.icon" :title="item.title" class="items-bar" :to="item.href"></v-list-item>
+                    <v-list-item :prepend-icon="item.icon" :title="item.title" class="items-bar"
+                        :to="item.href"></v-list-item>
                 </div>
                 <!-- <v-list-item prepend-icon="mdi-star" title="Starred" class="items-bar"></v-list-item> -->
             </v-list>
@@ -79,20 +78,15 @@ export default {
         }
     },
     created() {
-        if (this.$store.getters.usuario) {
+        if (this.$store.getters.usuario)
             this.title = this.$store.getters.usuario.empleado.nombre;
-            this.subtitle = this.$store.getters.usuario.empleado.tipoCargo.cargo;
-            const cargo = this.$store.getters.usuario.empleado.tipoCargo.cargo;
-            console.log(cargo);
-            menuJSON.default.filter(menu => {
-                console.log(menu);
-                if (menu.cargo == cargo) {
-                    console.log('entro: ', menu);
-                    this.menu = menu.menu;
-                }
-            })
-            console.log(this.menu);
-        }
+        this.subtitle = this.$store.getters.usuario.empleado.tipoCargo.cargo;
+        const cargo = this.$store.getters.usuario.empleado.tipoCargo.cargo;
+        menuJSON.default.filter(menu => {
+            if (menu.cargo == cargo) {
+                this.menu = menu.menu;
+            }
+        })
     },
 }
 </script>

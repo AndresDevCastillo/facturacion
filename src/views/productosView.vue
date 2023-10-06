@@ -263,9 +263,6 @@ export default {
                 return Swal.fire({ icon: 'error', title: 'No se pudo eliminar el producto', timer: 1000 });
             });
         },
-        editarProducto(producto) {
-            console.log(producto);
-        },
         cerrarEditarProducto() {
             this.dialogEditar = false;
         },
