@@ -32,7 +32,7 @@
                                 <v-row justify="space-between" no-gutters>
                                     <v-col cols="6" style="font-size: 1.5rem; font-family: 'Roboto', sans-serif;">
                                         <p class=" text-dark">Calle 3 #30-46 Barrio el mora, Montería, Córdoba, Colombia</p>
-                                        <p class="text-dark">Nombre empresa</p>
+                                        <p class="text-dark">Nombre Empresa</p>
                                         <p class="text-dark">3101004354 - empresa@gmail.com</p>
                                     </v-col>
                                     <v-col cols="6" class="text-right"
@@ -405,7 +405,6 @@ export default {
             this.verDialog = this.$props.dialog;
         }
     }
-
 }
 </script>
 <style>
