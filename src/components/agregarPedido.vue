@@ -13,13 +13,15 @@
             <v-card-text>
                 <v-container>
                     <v-row justify="start">
-                        <p class="fw-bold text-dark w-100 text-center" v-if="ubicaciones.length == 0">No hay mesas, por favor regístrelas</p>
+                        <p class="fw-bold text-dark w-100 text-center" v-if="ubicaciones.length == 0">No hay mesas, por
+                            favor regístrelas</p>
                         <v-col v-for="(ubicacion, index) in ubicaciones" :key="index" sm="4" md="3" xl="3" xxl="4">
-                            <v-tooltip
-                                activator="parent"
-                                location="top" contained eager max-width="300">{{ this.mesaOcupada(ubicacion.id) ? 'No puedes escoger esta mesa, tiene un pedido en curso' : 'Agregar pedido a esta mesa' }}
+                            <v-tooltip activator="parent" location="top" contained eager max-width="300">{{
+                                this.mesaOcupada(ubicacion.id) ? 'No puedes escoger esta mesa, tiene un pedido en curso' :
+                                'Agregar pedido a esta mesa' }}
                             </v-tooltip>
-                            <v-card elevation="10" :color="obtenerColor(ubicacion.id)" :class="[obtenerClases(ubicacion.id)]" @click="agregarPedidoMesa(ubicacion.id)">
+                            <v-card elevation="10" :color="obtenerColor(ubicacion.id)"
+                                :class="[obtenerClases(ubicacion.id)]" @click="agregarPedidoMesa(ubicacion.id)">
                                 <v-card-text class="fw-bold-important text-center">
                                     {{ ubicacion.nombre }}
                                 </v-card-text>
@@ -32,10 +34,7 @@
 
         <!-- Dialog agregar productos -->
         <v-row justify="center">
-            <v-dialog
-                v-model="dialog"
-                persistent
-                width="800">
+            <v-dialog v-model="dialog" persistent width="800">
                 <v-card>
                     <v-card-title class="text-h5">
                         Agregar productos
@@ -44,17 +43,20 @@
                         <v-form ref="form">
                             <v-row>
                                 <v-col :cols="cols[0]">
-                                    <v-autocomplete v-model="add" :items="productos" label="Productos" no-data-text="Sin productos" item-title="nombre" return-object
+                                    <v-autocomplete v-model="add" :items="productos" label="Productos"
+                                        no-data-text="Sin productos" item-title="nombre" return-object
                                         placeholder="Escoja producto" required variant="outlined">
                                     </v-autocomplete>
                                 </v-col>
                                 <v-col :cols="cols[1]">
                                     <v-text-field v-model="cantidad" label="Cantidad" type="number" min="1"
-                                        placeholder="Ingrese cantidad del producto" required variant="outlined"></v-text-field>
+                                        placeholder="Ingrese cantidad del producto" required
+                                        variant="outlined"></v-text-field>
 
                                 </v-col>
                                 <v-col :cols="cols[2]">
-                                    <v-btn elevation="4" size="x-large" @click="agregarProducto" color="primary">Añadir</v-btn>
+                                    <v-btn elevation="4" size="x-large" @click="agregarProducto"
+                                        color="primary">Añadir</v-btn>
                                 </v-col>
                             </v-row>
                         </v-form>
@@ -82,7 +84,8 @@
                                     <td class="text-left">{{ item.cantidad }}</td>
                                     <td class="text-left">{{ item.precioU }}</td>
                                     <td class="text-left">{{ item.cantidad * item.precioU }}</td>
-                                    <td><v-btn elevation="4" @click="eliminarCompra(index)" color="red">eliminar</v-btn> </td>
+                                    <td><v-btn elevation="4" @click="eliminarCompra(index)" color="red">eliminar</v-btn>
+                                    </td>
                                 </tr>
                             </tbody>
                             <tfoot style="z-index: 999999;">
@@ -94,16 +97,15 @@
                             </tfoot>
                         </v-table>
                         <v-row no-gutters justify="space-evenly" class="mb-4" v-if="compras.length != 0">
-                            <v-btn elevation="4" @click="cancelarPedido" color="blue" size="x-large" class="mb-3">Cancelar</v-btn>
-                            <v-btn elevation="4" @click="guardarPedido" color="green" size="x-large" class="mr-2 mb-2">Guardar</v-btn>
+                            <v-btn elevation="4" @click="cancelarPedido" color="blue" size="x-large"
+                                class="mb-3">Cancelar</v-btn>
+                            <v-btn elevation="4" @click="guardarPedido" color="green" size="x-large"
+                                class="mr-2 mb-2">Guardar</v-btn>
                         </v-row>
                     </v-card-text>
                     <v-card-actions>
                         <v-spacer></v-spacer>
-                        <v-btn
-                            color="error"
-                            variant="text"
-                            @click="cancelarPedido">
+                        <v-btn color="error" variant="text" @click="cancelarPedido">
                             Cancelar
                         </v-btn>
                     </v-card-actions>
@@ -188,7 +190,8 @@ export default {
                 case 201:
                     this.form = {
                         detallePedido: [],
-                        mesa: null
+                        mesa: null,
+                        empleado: 1
                     };
                     this.compras = [];
                     this.cantidad = null;

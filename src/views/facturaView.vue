@@ -62,7 +62,7 @@
 
 
             <v-col cols="12" md="2">
-              <v-btn elevation="4" size="x-large" @click="generarFactura()" color="red">Comprar</v-btn>
+              <v-btn elevation="4" size="x-large" @click="limpiarForm()" color="red">Limpiar</v-btn>
             </v-col>
             <v-col cols="12" md="2">
               <v-btn elevation="4" size="x-large" @click="vender()" color="red">Vender</v-btn>
@@ -175,6 +175,7 @@ export default {
       descuento: null,
       total: null,
       propina: 0,
+      neto: 0,
       lugar: null,
       detalleFactura: [],
     },
@@ -227,6 +228,7 @@ export default {
         netoTemp += item.producto.precio;
         totalTemp += item.cantidad * item.producto.precio;
       }
+      this.formFactura.neto = totalTemp;
       if (descuentoTemp == 0) {
         this.total.total = totalTemp + parseInt(this.formFactura.propina);
       } else {
@@ -311,6 +313,27 @@ export default {
           Swal.fire({ icon: "error", title: "Oops...", titleText: error });
         });
     },
+    limpiarForm() {
+      this.formFactura =
+      {
+        cliente: null,
+        empleado: null,
+        mesa: null,
+        medio_pago: null,
+        descuento: null,
+        total: null,
+        propina: null,
+        neto: 0,
+        lugar: null,
+        detalleFactura: [],
+      };
+      this.form.cliente = null;
+      this.form.nombre = null;
+      this.form.cedula = null;
+      this.form.telefono = null;
+      this.form.correo = null;
+      this.form.compras.splice(0, 1);
+    }
   },
   watch: {
     "form.cliente": {
@@ -351,13 +374,13 @@ export default {
       },
     },
     "form.descuento": {
-      handler(newDescuento, oldDescuento) {
+      handler() {
         console.log(newDescuento, oldDescuento);
         this.calcularMonto();
       },
     },
     "formFactura.propina": {
-      handler(newDescuento, oldDescuento) {
+      handler() {
         console.log(newDescuento, oldDescuento);
         this.calcularMonto();
       },

@@ -128,7 +128,7 @@
                               font-weight: bold;
                               text-align: right;
                             ">
-                                                        VALOR VENTA: $<span>preo</span>
+                                                        VALOR VENTA: $<span>{{ datos.neto }}</span>
                                                     </p>
 
                                                     <p style="

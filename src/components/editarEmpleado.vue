@@ -22,9 +22,9 @@
                                     variant="outlined" v-model="paquete.direccion"
                                     :rules="[v => !!v || 'La descripción es requerida']"></v-text-field>
                             </v-col>
-                            <v-col cols="12" sm="6" v-if="tipo_cargo.length > 0">
-                                <v-select :items="tipo_cargo" item-title="cargo" item-value="id" variant="outlined"
-                                    label="Cargo" required v-model="paquete.tipo_cargo"
+                            <v-col cols="12" sm="6" v-if="tipoCargo.length > 0">
+                                <v-select :items="tipoCargo" item-title="cargo" item-value="id" variant="outlined"
+                                    label="Cargo" required v-model="paquete.tipoCargo"
                                     :rules="[v => !!v || 'Seleccione una Cargo']"></v-select>
                             </v-col>
                             <v-col cols="12" sm="6">
@@ -65,8 +65,8 @@ export default {
     cedulaRules: [v => !!v || 'El cedula es requerido', v => (v && /^[0-9]+$/.test(v)) || 'El numero no debe contener caracteres'],
     data: () => ({
         paquete:
-            { cedula: null, nombre: null, direccion: null, tipo_cargo: null, telefono: null },
-        tipo_cargo: []
+            { id: null, cedula: null, nombre: null, direccion: null, tipoCargo: null, telefono: null },
+        tipoCargo: []
     }),
     methods: {
         async listarCargos() {
@@ -74,7 +74,7 @@ export default {
                 if (resp.data.length > 0) {
                     resp.data.sort((a, b) => a.cargo.localeCompare(b.cargo));
                 }
-                this.tipo_cargo = resp.data;
+                this.tipoCargo = resp.data;
 
             })
         },
@@ -94,7 +94,8 @@ export default {
         editarEmpleado() {
             this.listarCargos();
             this.paquete = this.$props.editarEmpleado;
-            this.paquete.tipo_cargo = this.$props.editarEmpleado.tipo_cargo.id;
+            console.log(this.paquete)
+            this.paquete.tipoCargo = this.$props.editarEmpleado.tipoCargo.id;
         }
     }
 

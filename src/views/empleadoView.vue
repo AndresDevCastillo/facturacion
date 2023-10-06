@@ -288,6 +288,7 @@ export default {
             }
         },
         editarEmpleado(empleado) {
+            console.log(empleado);
             this.paqueteEditar = empleado;
             this.ShowEditarEmpleado = true;
         },

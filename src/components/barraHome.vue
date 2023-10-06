@@ -98,9 +98,9 @@ export default {
 </script>
 
 <style >
-.v-main {
+/* .v-main {
     min-height: 700px !important;
-}
+} */
 
 
 
