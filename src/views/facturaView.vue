@@ -337,11 +337,8 @@ export default {
   },
   watch: {
     "form.cliente": {
-      handler(newNombre, oldNombre) {
+      handler() {
         // Esta función se ejecutará cuando 'form.nombre' cambie
-        console.log(
-          `El valor de 'nombre' cambió de "${oldNombre}" a "${newNombre}"`
-        );
         this.clientes.map((cliente) => {
           if (this.form.cliente == cliente.id) {
             this.form.cedula = cliente.cedula;
@@ -352,9 +349,7 @@ export default {
       },
     },
     pedidoTablero: {
-      handler(newPedido, oldPedido) {
-        console.log(oldPedido);
-        console.log(newPedido);
+      handler(newPedido) {
         this.form.compras.splice(0, 1);
         this.form.compras.push(newPedido);
         this.idEliminarPedidos = newPedido.ticket;
@@ -375,13 +370,11 @@ export default {
     },
     "form.descuento": {
       handler() {
-        console.log(newDescuento, oldDescuento);
         this.calcularMonto();
       },
     },
     "formFactura.propina": {
       handler() {
-        console.log(newDescuento, oldDescuento);
         this.calcularMonto();
       },
     },
