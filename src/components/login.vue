@@ -47,7 +47,7 @@ export default {
                             break;
                         case 200:
                             this.$store.commit('setusuario', response.data);
-                            switch (response.data.empleado.tipoCargo.cargo) {
+                            switch (response.data.empleado.tipoCargo) {
                                 case 'Engineersoft':
                                     this.$router.push('/inicio/empleados');
                                     break;
