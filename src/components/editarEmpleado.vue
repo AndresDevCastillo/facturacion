@@ -23,9 +23,8 @@
                                     :rules="[v => !!v || 'La descripción es requerida']"></v-text-field>
                             </v-col>
                             <v-col cols="12" sm="6" v-if="tipoCargo.length > 0">
-                                <v-select :items="tipoCargo" item-title="cargo" item-value="id" variant="outlined"
-                                    label="Cargo" required v-model="paquete.tipoCargo"
-                                    :rules="[v => !!v || 'Seleccione una Cargo']"></v-select>
+                                <v-select :items="tipoCargo" variant="outlined" label="Cargo" required
+                                    v-model="paquete.tipoCargo" :rules="[v => !!v || 'Seleccione una Cargo']"></v-select>
                             </v-col>
                             <v-col cols="12" sm="6">
                                 <v-text-field class="inline-form-input-name" label="Teléfono" type="text" required
@@ -70,12 +69,8 @@ export default {
     }),
     methods: {
         async listarCargos() {
-            await axios.get(`${process.env.VUE_APP_API_URL}/tipo-cargo`).then((resp) => {
-                if (resp.data.length > 0) {
-                    resp.data.sort((a, b) => a.cargo.localeCompare(b.cargo));
-                }
+            await axios.get(`${process.env.VUE_APP_API_URL}/empleado/cargos`).then((resp) => {
                 this.tipoCargo = resp.data;
-
             })
         },
         cerrarComponente() {
@@ -94,7 +89,6 @@ export default {
         editarEmpleado() {
             this.listarCargos();
             this.paquete = this.$props.editarEmpleado;
-            this.paquete.tipoCargo = this.$props.editarEmpleado.tipoCargo.id;
         }
     }
 

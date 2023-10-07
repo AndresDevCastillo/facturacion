@@ -13,9 +13,6 @@
                 <v-col cols="2" md="2">
                     <v-btn prepend-icon="mdi-plus" color="green" @click="dialogE = true;">Empleado</v-btn>
                 </v-col>
-                <v-col cols="2" md="2">
-                    <v-btn prepend-icon="mdi-plus" color="yellow" @click="dialogC = true;">Cargo</v-btn>
-                </v-col>
 
             </v-row>
             <v-row class="flex-column">
@@ -48,7 +45,7 @@
                                 <td class="text-left">{{ persona.nombre }}</td>
                                 <td class="text-left">{{ persona.telefono }}</td>
                                 <td class="text-left">{{ persona.direccion }}</td>
-                                <td class="text-left">{{ persona.tipoCargo.cargo }}</td>
+                                <td class="text-left">{{ persona.tipoCargo }}</td>
                                 <td><v-btn color="blue" density="comfortable"
                                         @click="editarEmpleado(Object.assign({}, persona))">Editar</v-btn></td>
                                 <td><v-btn color="red" density="comfortable"
@@ -58,53 +55,6 @@
                     </v-table>
                 </v-card>
             </v-row>
-            <v-dialog v-model="dialogC" width="700">
-                <v-card>
-                    <v-card-title>
-                    </v-card-title>
-                    <v-card-text>
-                        <v-container>
-                            <v-form ref="formCargo">
-                                <v-row>
-                                    <v-col cols="12" sm="12" md="12">
-                                        <v-text-field class="inline-form-input-name" label="Cargo" type="text" required
-                                            variant="outlined" v-model="formCargo.cargo" :counter="40"></v-text-field>
-                                    </v-col>
-                                </v-row>
-                            </v-form>
-                        </v-container>
-                    </v-card-text>
-                    <v-card-actions>
-                        <v-spacer></v-spacer>
-                        <v-btn color="red-darken-1" variant="tonal" @click="dialogC = false">
-                            Cerrar
-                        </v-btn>
-                        <v-btn color="green-darken-1" variant="tonal" @click="crearCargo()">
-                            Crear
-                        </v-btn>
-                    </v-card-actions>
-                    <v-table fixed-header fixed-footer height="400" class="w-100" v-if="tipoCargo.length > 0">
-                        <thead style="z-index: 999999;" class="bg-table-header">
-                            <tr>
-                                <th class="text-left">
-                                    Cargo
-                                </th>
-                                <th colspan="2" class="text-center">Acción</th>
-
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="(item) in tipoCargo" :key="item.id">
-                                <td class="text-left">{{ item.cargo }}</td>
-                                <td class="text-right"><v-btn density="comfortable" @click="eliminarCargo(item.id)"
-                                        color="red">eliminar</v-btn>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </v-table>
-                </v-card>
-
-            </v-dialog>
             <v-dialog v-model="dialogE" persistent width="700">
                 <v-card>
                     <v-card-title>
@@ -129,8 +79,8 @@
                                             :rules="[v => !!v || 'La descripción es requerida']"></v-text-field>
                                     </v-col>
                                     <v-col cols="12" sm="6" v-if="tipoCargo.length > 0">
-                                        <v-select :items="tipoCargo" item-title="cargo" item-value="id" variant="outlined"
-                                            label="Cargo" required v-model="formEmpleado.tipoCargo"
+                                        <v-select :items="tipoCargo" variant="outlined" label="Cargo" required
+                                            v-model="formEmpleado.tipoCargo"
                                             :rules="[v => !!v || 'Seleccione una Cargo']"></v-select>
                                     </v-col>
                                     <v-col cols="12" sm="6">
@@ -227,7 +177,7 @@ export default {
 
         },
         async listarCargos() {
-            await axios.get(`${process.env.VUE_APP_API_URL}/tipo-cargo`).then((resp) => {
+            await axios.get(`${process.env.VUE_APP_API_URL}/empleado/cargos`).then((resp) => {
                 this.tipoCargo = resp.data;
 
             })
