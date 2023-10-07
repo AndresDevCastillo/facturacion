@@ -80,8 +80,8 @@ export default {
     created() {
         if (this.$store.getters.usuario)
             this.title = this.$store.getters.usuario.empleado.nombre;
-        this.subtitle = this.$store.getters.usuario.empleado.tipoCargo.cargo;
-        const cargo = this.$store.getters.usuario.empleado.tipoCargo.cargo;
+        this.subtitle = this.$store.getters.usuario.empleado.tipoCargo;
+        const cargo = this.$store.getters.usuario.empleado.tipoCargo;
         menuJSON.default.filter(menu => {
             if (menu.cargo == cargo) {
                 this.menu = menu.menu;
