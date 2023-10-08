@@ -18,7 +18,7 @@
             <v-btn variant="text" icon="mdi mdi-help"></v-btn> -->
 
         </v-app-bar>
-        <v-navigation-drawer app theme="dark" :rail=ocultar>
+        <v-navigation-drawer app theme="dark" :rail=ocultar permanent>
             <v-list>
                 <v-list-item prepend-avatar="https://randomuser.me/api/portraits/women/85.jpg" :title="title"
                     :subtitle="subtitle"></v-list-item>
@@ -59,7 +59,7 @@ export default {
         title: null,
         subtitle: null,
         menu: [],
-        ocultar: false,
+        ocultar: true,
         link: { icon: null, title: null, href: null },
         icons: [
             'mdi-facebook',
