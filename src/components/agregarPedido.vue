@@ -15,7 +15,7 @@
                     <v-row justify="start">
                         <p class="fw-bold text-dark w-100 text-center" v-if="ubicaciones.length == 0">No hay mesas, por
                             favor regístrelas</p>
-                        <v-col v-for="(ubicacion, index) in ubicaciones" :key="index" sm="4" md="3" xl="3" xxl="4">
+                        <v-col v-for="(ubicacion, index) in ubicaciones" :key="index" sm="5" md="4" xl="4" xxl="4">
                             <v-tooltip activator="parent" location="top" contained eager max-width="300">{{
                                 this.mesaOcupada(ubicacion.id) ? 'No puedes escoger esta mesa, tiene un pedido en curso' :
                                 'Agregar pedido a esta mesa' }}
@@ -43,7 +43,7 @@
                         <v-form ref="form">
                             <v-row>
                                 <v-col :cols="cols[0]">
-                                    <v-autocomplete v-model="add" :items="productos" label="Productos"
+                                    <v-autocomplete v-model="add" id="selectProducto" ref="selectProducto" :items="productos" label="Productos"
                                         no-data-text="Sin productos" item-title="nombre" return-object
                                         placeholder="Escoja producto" required variant="outlined">
                                     </v-autocomplete>
@@ -129,7 +129,7 @@ export default {
         cantidad: null,
         form: {
             mesa: null,
-            empleado: 1,
+            empleado: 1,//Se asigna al crear el componente
             detallePedido: [],
         },
         compras: [],
@@ -188,11 +188,7 @@ export default {
             });
             switch (resp.status) {
                 case 201:
-                    this.form = {
-                        detallePedido: [],
-                        mesa: null,
-                        empleado: 1
-                    };
+                    this.reiniciarForm();
                     this.compras = [];
                     this.cantidad = null;
                     this.add = null;
@@ -214,16 +210,16 @@ export default {
             }
         },
         cancelarPedido() {
-            Swal.fire({ title: 'Cancelar pedido', text: '¿Seguro de qué quiere cancelar el pedido?', icon: 'warning', showCancelButton: true, cancelButtonText: 'No, cerrar', confirmButtonText: 'Sí, cancelar' }).then(resp => {
+            this.$refs.selectProducto.isFocused = false;
+            this.$refs.selectProducto.blur();
+            Swal.fire({ title: 'Cancelar pedido', text: '¿Seguro de qué quiere cancelar el pedido?', icon: 'warning', showCancelButton: true, cancelButtonText: 'No, cerrar', confirmButtonText: 'Sí, cancelar', allowOutsideClick: false, stopKeydownPropagation: false }).then(resp => {
                 if (resp.value) {
                     this.compras = [];
-                    this.form = {
-                        detallePedido: [],
-                        mesa: null
-                    };
+                    this.reiniciarForm();
                     this.dialog = false;
                 }
             });
+            this.$refs.selectProducto.blur();
         },
         obtenerClases(id) {
             return this.ubicacionesOcupadas.includes(id) ? 'cursor-not-allowed no-pointer-events' : 'cursor-pointer';
@@ -248,6 +244,13 @@ export default {
             await axios.get(`${process.env.VUE_APP_API_URL}/producto`).then((resp) => {
                 this.productos = Array.isArray(resp.data) ? resp.data : [];
             });
+        },
+        reiniciarForm() {
+            this.form = {
+                mesa: null,
+                empleado: this.$store.getters.usuario.empleado.id,
+                detallePedido: [],
+            };
         }
     },
     watch: {
@@ -262,7 +265,7 @@ export default {
         this.getMesasOcupadas();
         this.getMesas();
         this.getProductos();
-        this.form.empleado = this.$store.getters.usuario.empleado.id;
+        this.reiniciarForm();
     },
     computed: {
         pagarNeto() {

@@ -64,7 +64,7 @@ export default {
                             break;
                     }
                 }).catch(error => {
-                    Swal.fire({ icon: 'error', text: error.response.data.message, showConfirmButton: false, timer: 1600 });
+                    Swal.fire({ icon: 'error', text: error, showConfirmButton: false, timer: 1600 });
                 });
             } else {
                 Swal.fire({ icon: 'error', text: 'Debes ingresar usuario y contraseña', showConfirmButton: false, timer: 1600 });
@@ -80,7 +80,7 @@ export default {
 <style>
 body,
 html {
-    overflow: hidden;
+    overflow: auto;
 }
 
 .login {
