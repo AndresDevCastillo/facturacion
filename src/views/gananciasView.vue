@@ -1,13 +1,12 @@
 <template>
     <div class="ganancias">
-        <v-row class="ma-6">
-            <v-col md="12" sm="12">
-                <v-card>
-                    <canvas id="myChart"></canvas>
-                </v-card>
+        <v-row class="ma-6 mb-6">
+            <v-col lg="12" md="12" sm="12">
+
+                <canvas class="mb-6" id="graficaYear"></canvas>
+
             </v-col>
         </v-row>
-
     </div>
 </template>
 
@@ -17,8 +16,9 @@ import Axios from 'axios';
 export default {
     name: 'gananciasVista',
     data: () => ({
-        semana: null,
-        nombre: null,
+        year: null,
+        dataYearName: null,
+        dataYearCantidad: null,
         chart: null,
         datosCharts: null,
         referenciaChart: null,
@@ -27,22 +27,23 @@ export default {
 
     }),
     methods: {
-        async listarGrafica() {
-            this.nombre = [];
-            await Axios.get(`${process.env.VUE_APP_API_URL}/producto`).then(data => {
-                data.data.map(producto => {
-                    this.nombre.push(producto.nombre);
-                });
-            })
-
-            let ctx = document.getElementById('myChart');
-            this.semana = {
-                type: 'bar',
+        async listarGraficaYear(añoActual) {
+            this.dataYearName = [];
+            this.dataYearCantidad = [];
+            await Axios.get(`${process.env.VUE_APP_API_URL}/factura/estadisticas/year/${añoActual}`).then(resp => {
+                resp.data.map(producto => {
+                    this.dataYearName.push(producto.nombre);
+                    this.dataYearCantidad.push(producto.cantidad);
+                })
+            });
+            let ctx = document.getElementById('graficaYear');
+            this.year = {
+                type: 'pie',
                 data: {
-                    labels: this.nombre,
+                    labels: this.dataYearName,
                     datasets: [{
-                        label: 'Productos mas Vendidos Semanales',
-                        data: this.datosCharts,
+                        label: 'Productos mas Vendidos del Año',
+                        data: this.dataYearCantidad,
                         borderWidth: 1
                     }]
                 },
@@ -57,14 +58,16 @@ export default {
 
             }
 
-            this.chart = new Chart(ctx, this.semana);
+            this.chart = new Chart(ctx, this.year);
         }
     },
 
     async mounted() {
-        this.datosCharts = Array(52).fill().map(() => Math.floor(Math.random() * 100) + 1);
-        this.referenciaChart = document.getElementById('myChart');
-        await this.listarGrafica();
+        const fechaActual = new Date();
+        const añoActual = fechaActual.getFullYear();
+        // const mesActual = fechaActual.getMonth() + 1;
+        this.referenciaChart = document.getElementById('graficaYear');
+        await this.listarGraficaYear(añoActual);
 
     }
 
