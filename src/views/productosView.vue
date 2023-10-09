@@ -1,24 +1,23 @@
 <template>
     <v-card class="ma-3">
-        <v-row class="d-flex align-center px-6 my-4">
-            <v-col cols="4" md="4">
+        <v-row class="d-flex  px-6 my-4">
+            <v-col lg="8" md="8" sm="6" style="min-width: 200px;">
                 <div class="d-flex align-center "><v-icon size="x-large" icon="mdi-food"></v-icon>
                     <h1 class="px-3">Productos</h1>
                 </div>
             </v-col>
-            <v-col cols="4" md="4">
-
+            <v-col lg="2" md="2" sm="3">
+                <v-btn prepend-icon="mdi-plus" color="green" @click="dialogP = true"
+                    style="min-width: 170px;">Producto</v-btn>
             </v-col>
-            <v-col cols="2" md="2">
-                <v-btn prepend-icon="mdi-plus" color="green" @click="dialogP = true">Producto</v-btn>
-            </v-col>
-            <v-col cols="2" md="2">
-                <v-btn prepend-icon="mdi-plus" color="yellow" @click="dialogC = true">Categoria</v-btn>
+            <v-col lg="2" md="2" sm="3">
+                <v-btn prepend-icon="mdi-plus" style="min-width: 170px;" color="yellow"
+                    @click="dialogC = true">Categoria</v-btn>
             </v-col>
 
         </v-row>
-        <v-row class="flex-column h-70">
-            <v-card class="ma-3">
+        <v-row>
+            <v-card class="ma-3 w-100">
                 <v-table fixed-header fixed-footer class="w-100" v-if="productos.length > 0">
                     <thead style="z-index: 999999;" class="bg-table-header">
                         <tr>
@@ -43,7 +42,8 @@
                             <td class="text-left">{{ item.categoria.nombre }}</td>
                             <td class="text-left">{{ item.descripcion }}</td>
                             <td class="text-left">{{ item.precio }}</td>
-                            <td><v-btn density="comfortable" @click="eliminarProducto(item.id)" color="red">eliminar</v-btn>
+                            <td style="text-align: center;"><v-btn density="comfortable" @click="eliminarProducto(item.id)"
+                                    color="red">eliminar</v-btn>
                             </td>
                         </tr>
                     </tbody>

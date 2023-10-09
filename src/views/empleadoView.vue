@@ -2,21 +2,19 @@
     <div class="empleados">
         <v-card class="ma-3">
             <v-row class="d-flex align-center px-6 my-4">
-                <v-col cols="4" md="4">
+                <v-col lg="10" md="10" sm="10" style="min-width: 200px;">
                     <div class="d-flex align-center "><v-icon size="x-large" icon="mdi-account"></v-icon>
                         <h1 class="px-3">Empleados</h1>
                     </div>
                 </v-col>
-                <v-col cols="4" md="4">
 
-                </v-col>
-                <v-col cols="2" md="2">
+                <v-col lg="2" md="2" sm="2">
                     <v-btn prepend-icon="mdi-plus" color="green" @click="dialogE = true;">Empleado</v-btn>
                 </v-col>
 
             </v-row>
-            <v-row class="flex-column">
-                <v-card class="ma-3">
+            <v-row>
+                <v-card class="ma-3 w-100">
                     <v-table fixed-header fixed-footer class="w-100" v-if="empleados.length > 0">
                         <thead style="z-index: 999999;" class="bg-table-header">
                             <tr>
