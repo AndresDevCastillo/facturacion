@@ -171,12 +171,12 @@ export default {
       cliente: null,
       empleado: null,
       mesa: null,
-      medio_pago: null,
+      medio_pago: 'Efectivo',
       descuento: null,
       total: null,
       propina: 0,
       neto: 0,
-      lugar: null,
+      lugar: 'Restaurante',
       detalleFactura: [],
     },
     trabajadores: [],
@@ -308,6 +308,7 @@ export default {
           }).finally(async () => {
             this.dialogTicket = true;
             await this.cargarPedidos();
+            this.limpiarForm();
           });
         })
         .catch((error) => {
@@ -354,7 +355,6 @@ export default {
     },
     pedidoTablero: {
       handler(newPedido) {
-        console.log(newPedido);
         this.form.compras.splice(0, 1);
         this.form.compras.push(newPedido);
         this.idEliminarPedidos = newPedido.ticket;
