@@ -1,6 +1,87 @@
 <template>
-    <div class="ganancias">
+    <div class="ganancias gananciasF">
         <v-row class="ma-6 mb-6">
+            <v-col cols="12"><v-card class="w-100 d-flex gananciasF">
+                    <v-container>
+                        <v-row dense>
+                            <v-col cols="4">
+                                <div class="col-xxl-4 col-md-6">
+                                    <div class="card info-card revenue-card">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Hoy <span>| Martes</span></h5>
+
+                                            <div class="d-flex align-items-center">
+                                                <div
+                                                    class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                                    <i class="bi bi-currency-dollar"></i>
+                                                </div>
+                                                <div class="ps-3">
+                                                    <h6>$3,264</h6>
+                                                    <span class="text-success small pt-1 fw-bold">$2000</span>
+                                                    <span> - </span>
+                                                    <span class="text-error small pt-2">$1200</span>
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </v-col>
+
+                            <v-col cols="4">
+                                <div class="col-xxl-4 col-md-6">
+                                    <div class="card info-card revenue-card">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Mensual <span>| Octubre</span></h5>
+
+                                            <div class="d-flex align-items-center">
+                                                <div
+                                                    class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                                    <i class="bi bi-currency-dollar"></i>
+                                                </div>
+                                                <div class="ps-3">
+                                                    <h6>$3,264</h6>
+                                                    <span class="text-success small pt-1 fw-bold">$2000</span>
+                                                    <span> - </span>
+                                                    <span class="text-error small pt-2">$1200</span>
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </v-col>
+
+                            <v-col cols="4">
+                                <div class="col-xxl-4 col-md-6">
+                                    <div class="card info-card revenue-card">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Anual <span>| 2023</span></h5>
+
+                                            <div class="d-flex align-items-center">
+                                                <div
+                                                    class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                                    <i class="bi bi-currency-dollar"></i>
+                                                </div>
+                                                <div class="ps-3">
+                                                    <h6>$3,264</h6>
+                                                    <span class="text-success small pt-1 fw-bold">$2000</span>
+                                                    <span> - </span>
+                                                    <span class="text-error small pt-2">$1200</span>
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </v-col>
+                        </v-row>
+                    </v-container>
+                </v-card>
+            </v-col>
             <v-col lg="6" md="6" sm="12">
                 <canvas class="mb-6" id="graficaDia"></canvas>
             </v-col>
@@ -20,6 +101,7 @@ import Axios from "axios";
 export default {
     name: "gananciasVista",
     data: () => ({
+        miImagen: null,
         year: null,
         dataYearName: null,
         dataYearCantidad: null,
@@ -157,6 +239,7 @@ export default {
     },
 
     async mounted() {
+        this.miImagen = require('../assets/icons/shop-solid.svg');
         const fechaActual = new Date();
         const year = fechaActual.getFullYear();
         const mes = fechaActual.getMonth() + 1;
@@ -169,4 +252,72 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.gananciasF {
+    background-color: #EBEBEB;
+}
+
+.card {
+    margin-bottom: 30px;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0px 0 30px rgba(147, 187, 255, 0.1);
+}
+
+.card-header,
+.card-footer {
+    border-color: #ebeef4;
+    background-color: #fff;
+    color: #798eb3;
+    padding: 15px;
+}
+
+.card-title {
+    padding: 20px 0 15px 0;
+    font-size: 18px;
+    font-weight: 500;
+    color: #012970;
+    font-family: "Poppins", sans-serif;
+}
+
+.card-title span {
+    color: #899bbd;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.card-body {
+    padding: 0 20px 20px 20px;
+}
+
+.info-card {
+    padding-bottom: 10px;
+}
+
+.info-card h6 {
+    font-size: 28px;
+    color: #012970;
+    font-weight: 700;
+    margin: 0;
+    padding: 0;
+}
+
+.filter {
+    position: absolute;
+    right: 0px;
+    top: 15px;
+}
+
+.filter .icon {
+    color: #aab7cf;
+    padding-right: 20px;
+    padding-bottom: 5px;
+    transition: 0.3s;
+    font-size: 16px;
+}
+
+.filter .icon:hover,
+.filter .icon:focus {
+    color: #4154f1;
+}
+</style>
