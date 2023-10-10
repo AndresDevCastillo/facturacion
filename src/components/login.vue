@@ -55,7 +55,7 @@ export default {
                                     this.$router.push('/inicio/agregarPedido');
                                     break;
                                 case 'Admin':
-                                    this.$router.push('/inicio/empleados');
+                                    this.$router.push('/inicio/empleado');
                                     break;
                                 case 'Cajero':
                                     this.$router.push('/inicio/factura');
@@ -64,7 +64,7 @@ export default {
                             break;
                     }
                 }).catch(error => {
-                    Swal.fire({ icon: 'error', text: error, showConfirmButton: false, timer: 1600 });
+                    Swal.fire({ icon: 'error', text: error.response.data.message, showConfirmButton: false, timer: 1600 });
                 });
             } else {
                 Swal.fire({ icon: 'error', text: 'Debes ingresar usuario y contraseña', showConfirmButton: false, timer: 1600 });

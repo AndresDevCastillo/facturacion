@@ -42,12 +42,12 @@ const routes = [{
             },
             {
                 //Para Engineersoft
-                path: '/inicio/empleado',
+                path: '/inicio/empleados',
                 name: 'empleadosEngineersoft',
                 component: empleadosVista
             },
             {
-                path: '/inicio/empleados',
+                path: '/inicio/empleado',
                 name: 'empleados',
                 component: empleadoVista
             },

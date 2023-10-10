@@ -181,7 +181,7 @@ export default {
             v => !!v || 'El nombre es requerido',
             v => (v && v.length <= 65) || 'EL nombre no puede superar los 65 caracteres',
         ],
-         usuarioRules: [
+        usuarioRules: [
             v => !!v || 'El usuario es requerido',
             v => (v && v.length > 3) || 'EL nombre debe tener mínimo 4 caracteres',
         ],
@@ -190,7 +190,7 @@ export default {
     }),
     methods: {
         async listarEmpleados() {
-            await axios.get(`${process.env.VUE_APP_API_URL}/empleado`).then(resp => {
+            await axios.get(`${process.env.VUE_APP_API_URL}/empleado/empresa`).then(resp => {
                 if (resp.data.length > 0) {
                     resp.data.sort((a, b) => a.nombre.localeCompare(b.nombre));
                 }
@@ -219,7 +219,7 @@ export default {
 
         },
         async listarCargos() {
-            await axios.get(`${process.env.VUE_APP_API_URL}/empleado/cargos`).then((resp) => {
+            await axios.get(`${process.env.VUE_APP_API_URL}/empleado/cargos/empresa`).then((resp) => {
                 this.tipoCargo = resp.data;
             })
         },
@@ -279,19 +279,31 @@ export default {
             }
         },
         async crearUsuario() {
-            if (this.$refs.formUsuario.validate()) {
-                await axios.post(`${this.api}/usuario/crear`,this.formUsuario).then(response => {
+            const { valid } = await this.$refs.formUsuario.validate();
+            if (valid) {
+                await axios.post(`${this.api}/usuario/crear`, this.formUsuario).then(response => {
                     switch (response.status) {
                         case 201:
                             Swal.fire({ icon: 'success', text: 'Usuario creado', showConfirmButton: false, timer: 1500 });
                             this.dialogU = false;
                             this.$refs.formUsuario.reset();
                             break;
+                        case 409:
+                            Swal.fire({ icon: 'warning', text: response.data.message, showConfirmButton: false, timer: 1500 });
+                            this.$refs.formUsuario.reset();
+                            break;
                     }
-                    console.log(response);
                 }).catch(error => {
-                    console.log(error);
-                    Swal.fire({ icon: 'error', text: 'No se pudo crear el usuario', showConfirmButton: false, timer: 1600 });
+                    switch (error.response.status) {
+                        case 409:
+                            Swal.fire({ icon: 'warning', text: error.response.data.message, showConfirmButton: false, timer: 1500 });
+                            this.$refs.formUsuario.reset();
+                            break;
+
+                        default:
+                            Swal.fire({ icon: 'error', text: 'No se pudo crear el usuario', showConfirmButton: false, timer: 1600 });
+                            break;
+                    }
                 });
             }
         },
