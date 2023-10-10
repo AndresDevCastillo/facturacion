@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-card class="ma-3">
-      <v-form v-model="valid">
+      <v-form v-model="valid" ref="fac">
         <v-container>
           <v-row>
             <v-col cols="12" md="3">
@@ -171,12 +171,12 @@ export default {
       cliente: null,
       empleado: null,
       mesa: null,
-      medio_pago: null,
+      medio_pago: 'Efectivo',
       descuento: null,
       total: null,
       propina: 0,
       neto: 0,
-      lugar: null,
+      lugar: 'Restaurante',
       detalleFactura: [],
     },
     trabajadores: [],
@@ -218,28 +218,30 @@ export default {
       this.calcularMonto();
     },
     calcularMonto() {
-      let descuentoTemp = this.form.descuento;
-      let cantidadTemp = 0;
-      let netoTemp = 0;
-      let totalTemp = 0;
-      for (let item of this.form.compras[0].detalleTicket) {
-        cantidadTemp += item.cantidad;
-        netoTemp += item.producto.precio;
-        totalTemp += item.cantidad * item.producto.precio;
+      if (this.form.compras.length != 0) {
+        let descuentoTemp = this.form.descuento;
+        let cantidadTemp = 0;
+        let netoTemp = 0;
+        let totalTemp = 0;
+        for (let item of this.form.compras[0].detalleTicket) {
+          cantidadTemp += item.cantidad;
+          netoTemp += item.producto.precio;
+          totalTemp += item.cantidad * item.producto.precio;
+        }
+        this.formFactura.neto = totalTemp;
+        if (descuentoTemp == 0) {
+          this.total.total = totalTemp + parseInt(this.formFactura.propina);
+        } else {
+          this.total.total =
+            totalTemp -
+            (descuentoTemp / 100) * totalTemp +
+            parseInt(this.formFactura.propina);
+        }
+        this.total.descuento = descuentoTemp;
+        this.total.neto = netoTemp;
+        this.total.cantidad = cantidadTemp;
+        this.formFactura.total = this.total.total;
       }
-      this.formFactura.neto = totalTemp;
-      if (descuentoTemp == 0) {
-        this.total.total = totalTemp + parseInt(this.formFactura.propina);
-      } else {
-        this.total.total =
-          totalTemp -
-          (descuentoTemp / 100) * totalTemp +
-          parseInt(this.formFactura.propina);
-      }
-      this.total.descuento = descuentoTemp;
-      this.total.neto = netoTemp;
-      this.total.cantidad = cantidadTemp;
-      this.formFactura.total = this.total.total;
     },
     generarFactura() {
       this.dialog = true;
@@ -306,13 +308,14 @@ export default {
           }).finally(async () => {
             this.dialogTicket = true;
             await this.cargarPedidos();
+            this.limpiarForm();
           });
         })
         .catch((error) => {
           Swal.fire({ icon: "error", title: "Oops...", titleText: error });
         });
     },
-    limpiarForm() {
+    async limpiarForm() {
       this.formFactura =
       {
         cliente: null,
@@ -321,7 +324,7 @@ export default {
         medio_pago: null,
         descuento: null,
         total: null,
-        propina: null,
+        propina: 0,
         neto: 0,
         lugar: null,
         detalleFactura: [],
@@ -332,6 +335,9 @@ export default {
       this.form.telefono = null;
       this.form.correo = null;
       this.form.compras.splice(0, 1);
+      this.pedidos = [];
+      await this.cargarPedidos();
+
     }
   },
   watch: {
@@ -357,6 +363,7 @@ export default {
         this.formFactura.descuento = parseInt(this.form.descuento);
         this.calcularMonto();
         this.formFactura.total = this.total.total;
+        console.log(this.total.total)
         this.formFactura.detalleFactura = newPedido.detalleTicket.map(
           (producto) => {
             return {

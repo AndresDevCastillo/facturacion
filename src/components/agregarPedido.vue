@@ -43,9 +43,10 @@
                         <v-form ref="form">
                             <v-row>
                                 <v-col :cols="cols[0]">
-                                    <v-autocomplete v-model="add" id="selectProducto" ref="selectProducto" :items="productos" label="Productos"
-                                        no-data-text="Sin productos" item-title="nombre" return-object
-                                        placeholder="Escoja producto" required variant="outlined">
+                                    <v-autocomplete v-model="add" id="selectProducto" ref="selectProducto"
+                                        :items="productos" label="Productos" no-data-text="Sin productos"
+                                        item-title="nombre" return-object placeholder="Escoja producto" required
+                                        variant="outlined">
                                     </v-autocomplete>
                                 </v-col>
                                 <v-col :cols="cols[1]">
@@ -105,7 +106,7 @@
                     </v-card-text>
                     <v-card-actions>
                         <v-spacer></v-spacer>
-                        <v-btn color="error" variant="text" @click="cancelarPedido">
+                        <v-btn v-if="compras.length == 0" color="error" variant="text" @click="cancelarPedido">
                             Cancelar
                         </v-btn>
                     </v-card-actions>

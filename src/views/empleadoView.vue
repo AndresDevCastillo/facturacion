@@ -13,8 +13,8 @@
                     <v-btn prepend-icon="mdi-plus" color="yellow" @click="dialogU = true;">Usuario</v-btn>
                 </v-col>
             </v-row>
-            <v-row class="flex-column">
-                <v-card class="ma-3">
+            <v-row>
+                <v-card class="ma-3 w-100">
                     <v-table fixed-header fixed-footer class="w-100" v-if="empleados.length > 0">
                         <thead style="z-index: 999999;" class="bg-table-header">
                             <tr>
