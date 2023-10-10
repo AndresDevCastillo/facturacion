@@ -10,7 +10,10 @@ import agregarPedidoVista from '../views/agregarPedidoView.vue';
 import gananciasVista from '../views/gananciasView.vue';
 import loginVista from '../views/loginView.vue';
 import inicioVista from '../views/inicio.vue';
+import empleadosVista from '../views/empleadosView.vue';
 //Creación de rutas a los archivos
+//Store para validar tipoCargo
+import store from '../store';
 const routes = [{
         path: '/',
         name: 'login',
@@ -24,11 +27,24 @@ const routes = [{
                 path: '/inicio/factura',
                 name: 'factura',
                 component: facturaVista,
+                beforeEnter: (to, from, next) => {
+                    const cargo = store.getters.usuario.empleado.tipoCargo.toLowerCase();
+                    if (cargo == "mesero" || cargo == undefined) {
+                        return next(from);
+                    }
+                    next();
+                }
             },
             {
                 path: '/inicio/productos',
                 name: 'productos',
                 component: productosVista
+            },
+            {
+                //Para Engineersoft
+                path: '/inicio/empleado',
+                name: 'empleadosEngineersoft',
+                component: empleadosVista
             },
             {
                 path: '/inicio/empleados',

@@ -2,14 +2,13 @@
     <div class="empleados">
         <v-card class="ma-3">
             <v-row class="d-flex px-6 my-4" justify="space-evenly">
-                <v-col cols="5">
+                <v-col cols="7" md="7">
                     <div class="d-flex align-center "><v-icon size="x-large" icon="mdi-account"></v-icon>
                         <h1 class="px-3">Empleados</h1>
                     </div>
                 </v-col>
-
-                <v-col cols="7" class="text-end">
-                    <v-btn prepend-icon="mdi-plus" class="mx-4" color="green" @click="dialogE = true;">Empleado</v-btn>
+                <v-col cols="5" md="5" class="text-end">
+                    <v-btn prepend-icon="mdi-plus" class="mx-2" color="green" @click="dialogE = true;">Empleado</v-btn>
                     <v-btn prepend-icon="mdi-plus" color="yellow" @click="dialogU = true;">Usuario</v-btn>
                 </v-col>
             </v-row>
@@ -150,7 +149,7 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 import editarEmpleadoComponent from '../components/editarEmpleado.vue';
 export default {
-    name: "empleadoVista",
+    name: "empleadosVista",
     components: {
         editarEmpleadoComponent
     },
@@ -171,7 +170,8 @@ export default {
             nombre: null,
             telefono: null,
             direccion: null,
-        }, formUsuario: {
+        },
+        formUsuario: {
             empleado: null,
             usuario: null,
             contrasena: null
@@ -180,10 +180,6 @@ export default {
         nombreRules: [
             v => !!v || 'El nombre es requerido',
             v => (v && v.length <= 65) || 'EL nombre no puede superar los 65 caracteres',
-        ],
-         usuarioRules: [
-            v => !!v || 'El usuario es requerido',
-            v => (v && v.length > 3) || 'EL nombre debe tener mínimo 4 caracteres',
         ],
         cedulaRules: [v => !!v || 'El cedula es requerido', v => (v && /^[0-9]+$/.test(v)) || 'El numero no debe contener caracteres'],
         api: process.env.VUE_APP_API_URL,
@@ -221,6 +217,7 @@ export default {
         async listarCargos() {
             await axios.get(`${process.env.VUE_APP_API_URL}/empleado/cargos`).then((resp) => {
                 this.tipoCargo = resp.data;
+
             })
         },
         async crearCargo() {
@@ -280,7 +277,7 @@ export default {
         },
         async crearUsuario() {
             if (this.$refs.formUsuario.validate()) {
-                await axios.post(`${this.api}/usuario/crear`,this.formUsuario).then(response => {
+                await this.axios.post(`${this.api}/usuario/crear`).then(response => {
                     switch (response.status) {
                         case 201:
                             Swal.fire({ icon: 'success', text: 'Usuario creado', showConfirmButton: false, timer: 1500 });
@@ -291,7 +288,7 @@ export default {
                     console.log(response);
                 }).catch(error => {
                     console.log(error);
-                    Swal.fire({ icon: 'error', text: 'No se pudo crear el usuario', showConfirmButton: false, timer: 1600 });
+                    Swal.fire({ icon: 'error', text: 'No se pudo crear el usuario', showConfirmButton: false, timer: 1500 });
                 });
             }
         },

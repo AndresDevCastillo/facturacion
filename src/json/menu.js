@@ -12,7 +12,7 @@ let menu = [{
             }, {
                 icon: 'mdi-account-tie',
                 title: 'Empleados',
-                href: '/inicio/empleados'
+                href: '/inicio/empleado'
             }, {
                 icon: 'mdi mdi-chart-bar',
                 title: 'Ganacias',
