@@ -4,11 +4,11 @@
             <v-col cols="12"><v-card class="w-100 d-flex gananciasF">
                     <v-container>
                         <v-row dense>
-                            <v-col cols="4">
+                            <v-col md="4">
                                 <div class="col-xxl-4 col-md-6">
                                     <div class="card info-card revenue-card">
                                         <div class="card-body">
-                                            <h5 class="card-title">Hoy <span>| Martes</span></h5>
+                                            <h5 class="card-title">Hoy <span>| {{ hoy.fecha }}</span></h5>
 
                                             <div class="d-flex align-items-center">
                                                 <div
@@ -16,10 +16,10 @@
                                                     <i class="bi bi-currency-dollar"></i>
                                                 </div>
                                                 <div class="ps-3">
-                                                    <h6>$3,264</h6>
-                                                    <span class="text-success small pt-1 fw-bold">$2000</span>
+                                                    <h6>${{ hoy.total }}</h6>
+                                                    <span class="text-success small pt-1 fw-bold">${{ hoy.ganancia }}</span>
                                                     <span> - </span>
-                                                    <span class="text-error small pt-2">$1200</span>
+                                                    <span class="text-error small pt-2">${{ hoy.gasto }}</span>
 
                                                 </div>
                                             </div>
@@ -29,11 +29,11 @@
                                 </div>
                             </v-col>
 
-                            <v-col cols="4">
+                            <v-col md="4">
                                 <div class="col-xxl-4 col-md-6">
                                     <div class="card info-card revenue-card">
                                         <div class="card-body">
-                                            <h5 class="card-title">Mensual <span>| Octubre</span></h5>
+                                            <h5 class="card-title">Mensual <span>| {{ mes.fecha }}</span></h5>
 
                                             <div class="d-flex align-items-center">
                                                 <div
@@ -41,10 +41,10 @@
                                                     <i class="bi bi-currency-dollar"></i>
                                                 </div>
                                                 <div class="ps-3">
-                                                    <h6>$3,264</h6>
-                                                    <span class="text-success small pt-1 fw-bold">$2000</span>
+                                                    <h6>${{ mes.total }}</h6>
+                                                    <span class="text-success small pt-1 fw-bold">${{ mes.ganancia }}</span>
                                                     <span> - </span>
-                                                    <span class="text-error small pt-2">$1200</span>
+                                                    <span class="text-error small pt-2">${{ mes.gasto }}</span>
 
                                                 </div>
                                             </div>
@@ -54,11 +54,11 @@
                                 </div>
                             </v-col>
 
-                            <v-col cols="4">
+                            <v-col md="4">
                                 <div class="col-xxl-4 col-md-6">
                                     <div class="card info-card revenue-card">
                                         <div class="card-body">
-                                            <h5 class="card-title">Anual <span>| 2023</span></h5>
+                                            <h5 class="card-title">Anual <span>| {{ yearC.fecha }}</span></h5>
 
                                             <div class="d-flex align-items-center">
                                                 <div
@@ -66,10 +66,11 @@
                                                     <i class="bi bi-currency-dollar"></i>
                                                 </div>
                                                 <div class="ps-3">
-                                                    <h6>$3,264</h6>
-                                                    <span class="text-success small pt-1 fw-bold">$2000</span>
+                                                    <h6>${{ yearC.total }}</h6>
+                                                    <span class="text-success small pt-1 fw-bold">${{ yearC.ganancia
+                                                    }}</span>
                                                     <span> - </span>
-                                                    <span class="text-error small pt-2">$1200</span>
+                                                    <span class="text-error small pt-2">${{ yearC.gasto }}</span>
 
                                                 </div>
                                             </div>
@@ -101,6 +102,24 @@ import Axios from "axios";
 export default {
     name: "gananciasVista",
     data: () => ({
+        hoy: {
+            fecha: 'Lunes',
+            total: 0,
+            ganancia: 0,
+            gasto: 0,
+        },
+        mes: {
+            fecha: 'Enero',
+            total: 0,
+            ganancia: 0,
+            gasto: 0,
+        },
+        yearC: {
+            fecha: 2023,
+            total: 0,
+            ganancia: 0,
+            gasto: 0,
+        },
         miImagen: null,
         year: null,
         dataYearName: null,
@@ -236,6 +255,21 @@ export default {
 
             this.chart = new Chart(ctx, this.dia);
         },
+        async gananciaYear(year) {
+            await Axios.get(`${process.env.VUE_APP_API_URL}/factura/ganancias/year/${year}`).then(resp => {
+                this.yearC = resp.data;
+            });
+        },
+        async gananciaMes(year, mes) {
+            await Axios.get(`${process.env.VUE_APP_API_URL}/factura/ganancias/mes/${year}/${mes}`).then(resp => {
+                this.mes = resp.data;
+            });
+        },
+        async gananciaDia(year, mes, dia) {
+            await Axios.get(`${process.env.VUE_APP_API_URL}/factura/ganancias/dia/${year}/${mes}/${dia}`).then(resp => {
+                this.hoy = resp.data;
+            });
+        }
     },
 
     async mounted() {
@@ -248,6 +282,9 @@ export default {
         await this.listarGraficaYear(year);
         await this.listarGraficaMes(year, mes);
         await this.listarGraficaDia(year, mes, dia);
+        await this.gananciaYear(year);
+        await this.gananciaMes(year, mes);
+        await this.gananciaDia(year, mes, dia);
     },
 };
 </script>
