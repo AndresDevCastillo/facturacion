@@ -21,6 +21,10 @@ let menu = [{
                 icon: 'mdi mdi-cash-plus',
                 title: 'Facturación',
                 href: '/inicio/factura'
+            }, {
+                icon: 'mdi mdi-account-tie',
+                title: 'Clientes',
+                href: '/inicio/clientes'
             }
         ]
     },
@@ -38,13 +42,17 @@ let menu = [{
             title: 'Productos',
             href: '/inicio/productos'
         }, {
-            icon: 'mdi-account-tie',
+            icon: 'mdi mdi-account-tie',
             title: 'Empleados',
             href: '/inicio/empleados'
         }, {
             icon: 'mdi mdi-chart-bar',
             title: 'Ganacias',
             href: '/inicio/ganancias'
+        }, {
+            icon: 'mdi mdi-account-tie',
+            title: 'Clientes',
+            href: '/inicio/clientes'
         }]
     }, {
         cargo: 'Cajero',

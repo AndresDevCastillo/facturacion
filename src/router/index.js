@@ -11,6 +11,7 @@ import gananciasVista from '../views/gananciasView.vue';
 import loginVista from '../views/loginView.vue';
 import inicioVista from '../views/inicio.vue';
 import empleadosVista from '../views/empleadosView.vue';
+import clientesVista from '../views/clienteView.vue';
 //Creación de rutas a los archivos
 //Store para validar tipoCargo
 import store from '../store';
@@ -60,6 +61,11 @@ const routes = [{
                 path: '/inicio/ganancias',
                 name: 'gananciasVista',
                 component: gananciasVista,
+            },
+            {
+                path: '/inicio/clientes',
+                name: 'clientesVista',
+                component: clientesVista
             }
         ]
     },

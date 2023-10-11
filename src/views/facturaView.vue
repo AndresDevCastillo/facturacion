@@ -1,6 +1,9 @@
 <template>
   <div>
     <v-card class="ma-3">
+      <v-row justify="end" no-gutters>
+        <v-btn prepend-icon="mdi-plus" color="blue" @click="dialogCliente = true;">Agregar cliente</v-btn>
+      </v-row>
       <v-form v-model="valid" ref="fac">
         <v-container>
           <v-row>
@@ -110,6 +113,9 @@
     </ticketComponent>
     <ticketCocineroComponent :dialog2="dialogTicketCocinero" @cerrarDialogoTicketCocinero="dialogTicketCocinero = false">
     </ticketCocineroComponent>
+    <v-dialog v-model="dialogCliente" persistent width="700">
+      <clienteComponent @cerrarDialog="dialogCliente = false;" @cerrarYLlenar="llenarCliente" />
+    </v-dialog>
   </div>
 </template>
 
@@ -118,6 +124,7 @@ import Swal from "sweetalert2";
 import facturaComponent from "../components/factura.vue";
 import ticketComponent from "../components/ticket.vue";
 import ticketCocineroComponent from "../components/ticketCocinero.vue";
+import clienteComponent from '../components/cliente.vue';
 import axios from "axios";
 export default {
   name: "facturaVista",
@@ -125,8 +132,10 @@ export default {
     facturaComponent,
     ticketComponent,
     ticketCocineroComponent,
+    clienteComponent
   },
   data: () => ({
+    dialogCliente: false,
     clientes: [],
     pedidos: [],
     bCliente: null,
@@ -281,6 +290,13 @@ export default {
       } catch (error) {
         console.log(error);
       }
+    },
+    llenarCliente(cliente) {
+      if (typeof cliente === 'object') {
+        this.clientes.push(cliente);
+        this.form.cliente = cliente.id;
+      }
+      this.dialogCliente = false;
     },
     async cargarPedidos() {
       try {

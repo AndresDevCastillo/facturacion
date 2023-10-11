@@ -185,7 +185,7 @@ export default {
             v => !!v || 'El usuario es requerido',
             v => (v && v.length > 3) || 'EL nombre debe tener mínimo 4 caracteres',
         ],
-        cedulaRules: [v => !!v || 'El cedula es requerido', v => (v && /^[0-9]+$/.test(v)) || 'El numero no debe contener caracteres'],
+        cedulaRules: [v => !!v || 'La cédula es requerida', v => (v && /^[0-9]+$/.test(v)) || 'El número no debe contener caracteres'],
         api: process.env.VUE_APP_API_URL,
     }),
     methods: {
