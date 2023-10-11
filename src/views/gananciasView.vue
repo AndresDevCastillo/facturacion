@@ -4,7 +4,7 @@
             <v-col cols="12"><v-card class="w-100 d-flex gananciasF">
                     <v-container>
                         <v-row dense>
-                            <v-col cols="4">
+                            <v-col md="4">
                                 <div class="col-xxl-4 col-md-6">
                                     <div class="card info-card revenue-card">
                                         <div class="card-body">
@@ -29,7 +29,7 @@
                                 </div>
                             </v-col>
 
-                            <v-col cols="4">
+                            <v-col md="4">
                                 <div class="col-xxl-4 col-md-6">
                                     <div class="card info-card revenue-card">
                                         <div class="card-body">
@@ -54,7 +54,7 @@
                                 </div>
                             </v-col>
 
-                            <v-col cols="4">
+                            <v-col md="4">
                                 <div class="col-xxl-4 col-md-6">
                                     <div class="card info-card revenue-card">
                                         <div class="card-body">
