@@ -2,7 +2,7 @@
     <div>
 
         <v-app-bar theme="dark" prominent app>
-            <v-app-bar-nav-icon variant="text" @click.stop="ocultar = !ocultar"></v-app-bar-nav-icon>
+            <v-app-bar-nav-icon variant="text" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
 
             <v-toolbar-title><router-link to="/" class="Titulo-Home">Empresa X</router-link></v-toolbar-title>
 
@@ -18,7 +18,7 @@
             <v-btn variant="text" icon="mdi mdi-help"></v-btn> -->
 
         </v-app-bar>
-        <v-navigation-drawer app theme="dark" v-model="ocultar" temporary>
+        <v-navigation-drawer app theme="dark" v-model="drawer" temporary>
             <v-list>
                 <v-list-item prepend-avatar="https://randomuser.me/api/portraits/women/85.jpg" :title="title"
                     :subtitle="subtitle"></v-list-item>
@@ -59,7 +59,7 @@ export default {
         title: null,
         subtitle: null,
         menu: [],
-        ocultar: true,
+        drawer: false,
         link: { icon: null, title: null, href: null },
         icons: [
             'mdi-facebook',

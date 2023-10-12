@@ -47,9 +47,11 @@ export default {
     }),
     methods: {
         async obtenerClientes() {
+            this.$emit('loadingSweet');
             await axios.get(`${this.api}/cliente`).then(response => {
                 this.clientes = response.data;
             });
+            this.$emit('closeSweet');
         },
         nuevoCliente(cliente) {
             if (typeof cliente === 'object') {
