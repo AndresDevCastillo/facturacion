@@ -40,7 +40,9 @@ export default {
     methods: {
         async ingresar() {
             if (this.paquete.usuario != null && this.paquete.usuario.trim().length > 0) {
+                this.loadingSweet();
                 await axios.post(`${process.env.VUE_APP_API_URL}/auth/login`, this.paquete).then(response => {
+                    this.closeSweet();
                     switch (response.status) {
                         case 401:
                             Swal.fire({ icon: 'warning', text: 'Algo paso, intenta otra vez o contacta con soporte', showConfirmButton: false, timer: 1740 });
@@ -64,13 +66,31 @@ export default {
                             break;
                     }
                 }).catch(error => {
+                    this.closeSweet();
                     Swal.fire({ icon: 'error', text: error.response.data.message, showConfirmButton: false, timer: 1600 });
                 });
             } else {
                 Swal.fire({ icon: 'error', text: 'Debes ingresar usuario y contraseña', showConfirmButton: false, timer: 1600 });
             }
+        },
+        loadingSweet() {
+            Swal.fire({
+                text: 'Cargando, por favor, espere...',
+                timerProgressBar: true,
+                showConfirmButton: false,
+                allowEscapeKey: false,
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                },
+                customClass: {
+                    popup: 'loader'
+                }
+            });
+        },
+        closeSweet() {
+            Swal.close();
         }
-
     },
     created() {
     }

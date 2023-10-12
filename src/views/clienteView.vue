@@ -29,7 +29,7 @@
             </v-table>
         </v-card-text>
         <v-dialog v-model="dialogCliente" persistent width="700">
-            <clienteComponent @cerrarDialog="dialogCliente = false;" @cerrarYLlenar="nuevoCliente" />
+            <clienteComponent @save="$emit('loadingSweet')" @endSave="$emit('closeSweet')" @cerrarDialog="dialogCliente = false;" @cerrarYLlenar="nuevoCliente" />
         </v-dialog>
     </v-card>
 </template>
