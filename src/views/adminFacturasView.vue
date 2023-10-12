@@ -43,15 +43,17 @@
                             <td colspan="7" class="text-center">Sin facturas</td>
                         </tr>
                         <tr v-for="(factura, index) in facturas" :key="index">
-                            <td class="text-left">{{ factura.codigo.toString().length == 1 ? '000' : factura.codigo.toString().length == 2 ? '00' : factura.codigo.toString().length == 3 ? '0' : null }}{{ factura.codigo }}</td>
+                            <td class="text-left">{{ factura.codigo.toString().length == 1 ? '000' :
+                                factura.codigo.toString().length == 2 ? '00' : factura.codigo.toString().length == 3 ? '0' :
+                                    null }}{{ factura.codigo }}</td>
                             <td class="text-left">{{ factura.fecha }} {{ factura.hora }}</td>
                             <td class="text-left">{{ factura.descuento }}</td>
                             <td class="text-left">{{ factura.propina }}</td>
-                            <td class="text-left">{{ factura.total }}</td>
+                            <td class="text-left">{{ factura.total.toLocaleString() }}</td>
                             <td class="text-left">{{ factura.cliente.nombre }}</td>
                             <td>
-                                <v-btn color="red" density="comfortable"
-                                    @click="eliminarFactura(factura.codigo)">Eliminar factura</v-btn>
+                                <v-btn color="red" density="comfortable" @click="eliminarFactura(factura.codigo)">Eliminar
+                                    factura</v-btn>
                             </td>
                         </tr>
                     </tbody>

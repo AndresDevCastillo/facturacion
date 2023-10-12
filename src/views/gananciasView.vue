@@ -297,12 +297,13 @@ export default {
         const mes = fechaActual.getMonth() + 1;
         const hoy = fechaActual.getDate();
         const dia = hoy.toString().padStart(2, '0');
-        await this.listarGraficaYear(year);
-        await this.listarGraficaMes(year, mes);
-        await this.listarGraficaDia(year, mes, dia);
-        await this.gananciaYear(year);
-        await this.gananciaMes(year, mes);
         await this.gananciaDia(year, mes, dia);
+        await this.gananciaMes(year, mes);
+        await this.gananciaYear(year);
+        await this.listarGraficaDia(year, mes, dia);
+        await this.listarGraficaMes(year, mes);
+        await this.listarGraficaYear(year);
+
     },
 };
 </script>

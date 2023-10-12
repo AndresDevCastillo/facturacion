@@ -35,7 +35,7 @@
                             <td class="text-left">{{ item.nombre }}</td>
                             <td class="text-left">{{ item.descripcion }}</td>
                             <td class="text-left">{{ item.categoria }}</td>
-                            <td class="text-left">{{ item.monto }}</td>
+                            <td class="text-left">{{ item.monto.toLocaleString() }}</td>
                             <td style="text-align: center;"><v-btn density="comfortable" @click="eliminarGasto(item.id)"
                                     color="red">eliminar</v-btn>
                             </td>

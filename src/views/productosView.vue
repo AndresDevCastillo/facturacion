@@ -41,7 +41,7 @@
                             <td class="text-left">{{ item.nombre }}</td>
                             <td class="text-left">{{ item.categoria.nombre }}</td>
                             <td class="text-left">{{ item.descripcion }}</td>
-                            <td class="text-left">{{ item.precio }}</td>
+                            <td class="text-left">{{ item.precio.toLocaleString() }}</td>
                             <td style="text-align: center;"><v-btn density="comfortable" @click="eliminarProducto(item.id)"
                                     color="red">eliminar</v-btn>
                             </td>
