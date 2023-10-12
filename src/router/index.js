@@ -6,6 +6,7 @@ import facturaVista from '../views/facturaView.vue';
 import productosVista from '../views/productosView';
 import empleadoVista from '../views/empleadoView';
 import agregarPedidoVista from '../views/agregarPedidoView.vue';
+import gastosVista from '../views/gastosView.vue';
 /* import crearPedidoVista from '../views/crearPedidoView.vue' */
 import gananciasVista from '../views/gananciasView.vue';
 import loginVista from '../views/loginView.vue';
@@ -78,6 +79,10 @@ const routes = [{
                 path: '/inicio/pedidos',
                 name: 'pedidosView',
                 component: adminPedidosVista
+            }, {
+                path: '/inicio/gastos',
+                name: 'gastosView',
+                component: gastosVista
             }
         ]
     },

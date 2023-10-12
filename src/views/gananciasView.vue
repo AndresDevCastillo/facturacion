@@ -6,7 +6,8 @@
                         <v-row dense>
                             <v-col md="4">
                                 <div class="col-xxl-4 col-md-6">
-                                    <div class="card info-card revenue-card">
+                                    <div class="card revenue-card"
+                                        :class="{ 'info-card-gana': hoy.total >= 0, 'info-card-pierde': hoy.total < 0 }">
                                         <div class="card-body">
                                             <h5 class="card-title">Hoy <span>| {{ hoy.fecha }}</span></h5>
 
@@ -17,9 +18,11 @@
                                                 </div>
                                                 <div class="ps-3">
                                                     <h6>${{ hoy.total.toLocaleString() }}</h6>
-                                                    <span class="text-success small pt-1 fw-bold">${{ hoy.ganancia }}</span>
+                                                    <span class="text-success small pt-1 fw-bold">${{
+                                                        hoy.ganancia.toLocaleString() }}</span>
                                                     <span> - </span>
-                                                    <span class="text-error small pt-2">${{ hoy.gasto }}</span>
+                                                    <span class="text-error small pt-2">${{ hoy.gasto.toLocaleString()
+                                                    }}</span>
 
                                                 </div>
 
@@ -33,7 +36,8 @@
 
                             <v-col md="4">
                                 <div class="col-xxl-4 col-md-6">
-                                    <div class="card info-card revenue-card">
+                                    <div class="card info-card revenue-card"
+                                        :class="{ 'info-card-gana': mes.total >= 0, 'info-card-pierde': mes.total < 0 }">
                                         <div class="card-body">
                                             <h5 class="card-title">Mensual <span>| {{ mes.fecha }}</span></h5>
 
@@ -44,9 +48,11 @@
                                                 </div>
                                                 <div class="ps-3">
                                                     <h6>${{ mes.total.toLocaleString() }}</h6>
-                                                    <span class="text-success small pt-1 fw-bold">${{ mes.ganancia }}</span>
+                                                    <span class="text-success small pt-1 fw-bold">${{
+                                                        mes.ganancia.toLocaleString() }}</span>
                                                     <span> - </span>
-                                                    <span class="text-error small pt-2">${{ mes.gasto }}</span>
+                                                    <span class="text-error small pt-2">${{ mes.gasto.toLocaleString()
+                                                    }}</span>
 
                                                 </div>
                                             </div>
@@ -60,7 +66,8 @@
 
                             <v-col md="4">
                                 <div class="col-xxl-4 col-md-6">
-                                    <div class="card info-card revenue-card">
+                                    <div class="card info-card revenue-card"
+                                        :class="{ 'info-card-gana': yearC.total >= 0, 'info-card-pierde': yearC.total < 0 }">
                                         <div class="card-body">
                                             <h5 class="card-title">Anual <span>| {{ yearC.fecha }}</span></h5>
 
@@ -71,10 +78,12 @@
                                                 </div>
                                                 <div class="ps-3">
                                                     <h6>${{ yearC.total.toLocaleString() }}</h6>
-                                                    <span class="text-success small pt-1 fw-bold">${{ yearC.ganancia
+                                                    <span class="text-success small pt-1 fw-bold">${{
+                                                        yearC.ganancia.toLocaleString()
                                                     }}</span>
                                                     <span> - </span>
-                                                    <span class="text-error small pt-2">${{ yearC.gasto }}</span>
+                                                    <span class="text-error small pt-2">${{ yearC.gasto.toLocaleString()
+                                                    }}</span>
 
                                                 </div>
                                             </div>
@@ -336,9 +345,17 @@ export default {
     padding-bottom: 10px;
 }
 
-.info-card h6 {
+.info-card-gana h6 {
     font-size: 28px;
     color: #012970;
+    font-weight: 700;
+    margin: 0;
+    padding: 0;
+}
+
+.info-card-pierde h6 {
+    font-size: 28px;
+    color: #ce0202;
     font-weight: 700;
     margin: 0;
     padding: 0;

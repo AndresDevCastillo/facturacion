@@ -1,4 +1,5 @@
 let menu = [{
+<<<<<<< HEAD
         cargo: 'Engineersoft',
         menu: [{
                 icon: 'mdi mdi-chef-hat',
@@ -35,15 +36,20 @@ let menu = [{
                 href: '/inicio/clientes'
             }
         ]
+=======
+    cargo: 'Engineersoft',
+    menu: [{
+        icon: 'mdi mdi-chef-hat',
+        title: 'Pedido',
+        href: '/inicio/agregarPedido'
+>>>>>>> 1200b6380ca69b0a307509452485b2111ac8d338
     },
     {
-        cargo: 'Mesero',
-        menu: [{
-            icon: 'mdi mdi-chef-hat',
-            title: 'Pedido',
-            href: '/inicio/agregarPedido'
-        }]
+        icon: 'mdi mdi-food',
+        title: 'Productos',
+        href: '/inicio/productos'
     }, {
+<<<<<<< HEAD
         cargo: 'Admin',
         menu: [{
             icon: 'mdi mdi-food',
@@ -70,14 +76,73 @@ let menu = [{
             title: 'Clientes',
             href: '/inicio/clientes'
         }]
+=======
+        icon: 'mdi-account-tie',
+        title: 'Empleados',
+        href: '/inicio/empleados'
+>>>>>>> 1200b6380ca69b0a307509452485b2111ac8d338
     }, {
-        cargo: 'Cajero',
-        menu: [{
-            icon: 'mdi mdi-cash-plus',
-            title: 'Facturación',
-            href: '/inicio/factura'
-        }]
+        icon: 'mdi mdi-chart-bar',
+        title: 'Ganacias',
+        href: '/inicio/ganancias'
+    }, {
+        icon: 'mdi mdi-cash-plus',
+        title: 'Facturación',
+        href: '/inicio/factura'
+    }, {
+        icon: 'mdi mdi-file-settings',
+        title: 'Facturas',
+        href: '/inicio/facturas'
+    }, {
+        icon: 'mdi mdi-account-tie',
+        title: 'Clientes',
+        href: '/inicio/clientes'
+    },
+    {
+        icon: 'mdi mdi-cash',
+        title: 'Gastos',
+        href: '/inicio/gastos'
     }
+    ]
+},
+{
+    cargo: 'Mesero',
+    menu: [{
+        icon: 'mdi mdi-chef-hat',
+        title: 'Pedido',
+        href: '/inicio/agregarPedido'
+    }]
+}, {
+    cargo: 'Admin',
+    menu: [{
+        icon: 'mdi mdi-food',
+        title: 'Productos',
+        href: '/inicio/productos'
+    }, {
+        icon: 'mdi mdi-file-settings',
+        title: 'Facturas',
+        href: '/inicio/facturas'
+    }, {
+        icon: 'mdi mdi-account-tie',
+        title: 'Empleados',
+        href: '/inicio/empleados'
+    }, {
+        icon: 'mdi mdi-chart-bar',
+        title: 'Ganacias',
+        href: '/inicio/ganancias'
+    }, {
+        icon: 'mdi mdi-account-tie',
+        title: 'Clientes',
+        href: '/inicio/clientes'
+    }]
+}, {
+    cargo: 'Cajero',
+    menu: [{
+        icon: 'mdi mdi-cash-plus',
+        title: 'Facturación',
+        href: '/inicio/factura'
+    }]
+}
 ]
 
 export default menu;
