@@ -22,6 +22,10 @@ let menu = [{
                 title: 'Facturación',
                 href: '/inicio/factura'
             }, {
+                icon: 'mdi mdi-order-bool-descending-variant',
+                title: 'Pedidos',
+                href: '/inicio/pedidos'
+            }, {
                 icon: 'mdi mdi-file-settings',
                 title: 'Facturas',
                 href: '/inicio/facturas'
@@ -45,6 +49,10 @@ let menu = [{
             icon: 'mdi mdi-food',
             title: 'Productos',
             href: '/inicio/productos'
+        }, {
+            icon: 'mdi mdi-order-bool-descending-variant',
+            title: 'Pedidos',
+            href: '/inicio/pedidos'
         }, {
             icon: 'mdi mdi-file-settings',
             title: 'Facturas',

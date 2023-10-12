@@ -59,7 +59,7 @@ export default {
         title: null,
         subtitle: null,
         menu: [],
-        ocultar: false,
+        ocultar: true,
         link: { icon: null, title: null, href: null },
         icons: [
             'mdi-facebook',
