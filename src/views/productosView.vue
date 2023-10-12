@@ -194,9 +194,9 @@ export default {
 
     }),
     idActualizarP: null,
-    created() {
-        this.listarProductos();
-        this.listarCategorias();
+    async created() {
+        await this.listarProductos();
+        await this.listarCategorias();
     },
     methods: {
         async listarProductos() {
