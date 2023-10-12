@@ -16,13 +16,15 @@
                                                     <i class="bi bi-currency-dollar"></i>
                                                 </div>
                                                 <div class="ps-3">
-                                                    <h6>${{ hoy.total }}</h6>
+                                                    <h6>${{ hoy.total.toLocaleString() }}</h6>
                                                     <span class="text-success small pt-1 fw-bold">${{ hoy.ganancia }}</span>
                                                     <span> - </span>
                                                     <span class="text-error small pt-2">${{ hoy.gasto }}</span>
 
                                                 </div>
+
                                             </div>
+                                            <h4 class="card-title">Ventas: <span> {{ hoy.factura }}</span></h4>
                                         </div>
 
                                     </div>
@@ -41,13 +43,15 @@
                                                     <i class="bi bi-currency-dollar"></i>
                                                 </div>
                                                 <div class="ps-3">
-                                                    <h6>${{ mes.total }}</h6>
+                                                    <h6>${{ mes.total.toLocaleString() }}</h6>
                                                     <span class="text-success small pt-1 fw-bold">${{ mes.ganancia }}</span>
                                                     <span> - </span>
                                                     <span class="text-error small pt-2">${{ mes.gasto }}</span>
 
                                                 </div>
                                             </div>
+                                            <h4 class="card-title">Ventas: <span> {{ mes.factura }}</span></h4>
+
                                         </div>
 
                                     </div>
@@ -66,7 +70,7 @@
                                                     <i class="bi bi-currency-dollar"></i>
                                                 </div>
                                                 <div class="ps-3">
-                                                    <h6>${{ yearC.total }}</h6>
+                                                    <h6>${{ yearC.total.toLocaleString() }}</h6>
                                                     <span class="text-success small pt-1 fw-bold">${{ yearC.ganancia
                                                     }}</span>
                                                     <span> - </span>
@@ -74,6 +78,8 @@
 
                                                 </div>
                                             </div>
+                                            <h4 class="card-title">Ventas: <span> {{ yearC.factura }}</span></h4>
+
                                         </div>
 
                                     </div>
@@ -107,18 +113,21 @@ export default {
             total: 0,
             ganancia: 0,
             gasto: 0,
+            factura: 0
         },
         mes: {
             fecha: 'Enero',
             total: 0,
             ganancia: 0,
             gasto: 0,
+            factura: 0
         },
         yearC: {
             fecha: 2023,
             total: 0,
             ganancia: 0,
             gasto: 0,
+            factura: 0
         },
         miImagen: null,
         year: null,
@@ -290,10 +299,6 @@ export default {
 </script>
 
 <style>
-.gananciasF {
-    background-color: #EBEBEB;
-}
-
 .card {
     margin-bottom: 30px;
     border: none;
