@@ -7,7 +7,7 @@
         </v-card-title>
         <v-card-text>
             <v-table fixed-header style="margin-bottom: 100px;">
-                <thead style="z-index: 999999">
+                <thead style="z-index: 999999" class="bg-table-header">
                     <tr>
                         <th class="text-left">Cédula</th>
                         <th class="text-left">Nombres</th>
@@ -29,7 +29,8 @@
             </v-table>
         </v-card-text>
         <v-dialog v-model="dialogCliente" persistent width="700">
-            <clienteComponent @save="$emit('loadingSweet')" @endSave="$emit('closeSweet')" @cerrarDialog="dialogCliente = false;" @cerrarYLlenar="nuevoCliente" />
+            <clienteComponent @save="$emit('loadingSweet')" @endSave="$emit('closeSweet')"
+                @cerrarDialog="dialogCliente = false;" @cerrarYLlenar="nuevoCliente" />
         </v-dialog>
     </v-card>
 </template>

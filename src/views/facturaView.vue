@@ -28,8 +28,8 @@
             </v-col>
 
             <v-col cols="12" md="3">
-              <v-select label="Pedidos" v-model="pedidoTablero" required variant="outlined" :items="pedidos"
-                item-title="mesa.nombre" return-object>
+              <v-select label="Pedidos" v-model="pedidoTablero" required variant="outlined" no-data-text="No hay pedidos"
+                :items="pedidos" item-title="mesa.nombre" return-object>
               </v-select>
             </v-col>
 
@@ -402,10 +402,13 @@ export default {
     },
   },
   async mounted() {
+    this.$emit('loadingSweet');
     await this.buscarEmpleados();
     await this.buscarProductos();
     await this.buscarClientes();
     await this.cargarPedidos();
+    this.$emit('closeSweet');
+
 
   },
 };

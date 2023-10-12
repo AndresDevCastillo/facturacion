@@ -111,8 +111,8 @@
                                 <v-row>
                                     <v-col cols="12">
                                         <v-autocomplete v-model="formUsuario.empleado" :items="empleados" label="Empleado"
-                                            no-data-text="Sin empleados" item-title="nombre" item-value="id" item-text="nombre"
-                                            placeholder="Escoja empleado" required variant="outlined">
+                                            no-data-text="Sin empleados" item-title="nombre" item-value="id"
+                                            item-text="nombre" placeholder="Escoja empleado" required variant="outlined">
                                         </v-autocomplete>
                                     </v-col>
                                     <v-col cols="12" sm="6" md="6">
@@ -120,7 +120,11 @@
                                             v-model="formUsuario.usuario" :rules="usuarioRules"></v-text-field>
                                     </v-col>
                                     <v-col sm="6" md="6">
-                                        <v-text-field v-model="formUsuario.contrasena" :type="visibleContra ? 'text' : 'password'" variant="outlined" label="Contraseña" placeholder="Ingrese su contraseña" :append-inner-icon="visibleContra ? 'mdi-eye-off' : 'mdi-eye'" @click:append-inner="visibleContra = !visibleContra"></v-text-field>
+                                        <v-text-field v-model="formUsuario.contrasena"
+                                            :type="visibleContra ? 'text' : 'password'" variant="outlined"
+                                            label="Contraseña" placeholder="Ingrese su contraseña"
+                                            :append-inner-icon="visibleContra ? 'mdi-eye-off' : 'mdi-eye'"
+                                            @click:append-inner="visibleContra = !visibleContra"></v-text-field>
                                     </v-col>
                                 </v-row>
                             </v-form>
@@ -320,9 +324,11 @@ export default {
             Swal.fire({ icon: 'error', text: 'No se edito el empleado', showConfirmButton: false, timer: 1500 });
         }
     },
-    created() {
-        this.listarEmpleados();
-        this.listarCargos();
+    async created() {
+        this.$emit('loadingSweet');
+        await this.listarEmpleados();
+        this.$emit('closeSweet');
+        await this.listarCargos();
     }
 }
 </script>

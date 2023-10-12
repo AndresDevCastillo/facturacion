@@ -83,8 +83,10 @@ export default {
             });
         }
     },
-    created() {
-        this.obtenerFacturas();
+    async created() {
+        this.$emit('loadingSweet');
+        await this.obtenerFacturas();
+        this.$emit('closeSweet');
     }
 }
 </script>

@@ -195,7 +195,9 @@ export default {
     }),
     idActualizarP: null,
     async created() {
+        this.$emit('loadingSweet');
         await this.listarProductos();
+        this.$emit('closeSweet');
         await this.listarCategorias();
     },
     methods: {

@@ -162,7 +162,9 @@ export default {
         }
     },
     async created() {
+        this.$emit('loadingSweet');
         await this.listarGastos();
+        this.$emit('closeSweet');
     },
 
 
