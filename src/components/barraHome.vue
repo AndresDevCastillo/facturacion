@@ -18,7 +18,7 @@
             <v-btn variant="text" icon="mdi mdi-help"></v-btn> -->
 
         </v-app-bar>
-        <v-navigation-drawer app theme="dark" :rail=ocultar permanent>
+        <v-navigation-drawer app theme="dark" v-model="ocultar" temporary>
             <v-list>
                 <v-list-item prepend-avatar="https://randomuser.me/api/portraits/women/85.jpg" :title="title"
                     :subtitle="subtitle"></v-list-item>
@@ -33,17 +33,17 @@
                 </div>
                 <!-- <v-list-item prepend-icon="mdi-star" title="Starred" class="items-bar"></v-list-item> -->
             </v-list>
-            <v-footer class="d-flex flex-column" v-if=!ocultar style="position: absolute;
-        bottom: 0; width: 100%;">
-                <div class="d-flex w-100 align-center px-2">
+            <template v-slot:append>
+                <v-footer class="d-flex flex-column" style="bottom: 0; width: 100%;">
+                    <div class="d-flex w-100 align-center px-2">
+                        <v-btn v-for="icon in icons" :key="icon" class="mx-2" :icon="icon" variant="plain" size="small"></v-btn>
+                    </div>
+                    <div class=" py-2  text-center w-100">
+                        {{ new Date().getFullYear() }} — Engineersoft
+                    </div>
+                </v-footer>
+            </template>
 
-                    <v-btn v-for="icon in icons" :key="icon" class="mx-2" :icon="icon" variant="plain" size="small"></v-btn>
-                </div>
-
-                <div class=" py-2  text-center w-100">
-                    {{ new Date().getFullYear() }} — Engineersoft
-                </div>
-            </v-footer>
         </v-navigation-drawer>
     </div>
 </template>

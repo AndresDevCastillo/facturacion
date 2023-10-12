@@ -6,7 +6,7 @@
             </v-row>
         </v-card-title>
         <v-card-text>
-            <v-table fixed-header style="margin-bottom: 100px;" height="420">
+            <v-table fixed-header style="margin-bottom: 100px;">
                 <thead style="z-index: 999999">
                     <tr>
                         <th class="text-left">Cédula</th>
