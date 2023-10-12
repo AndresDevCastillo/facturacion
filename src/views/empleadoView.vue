@@ -1,15 +1,14 @@
 <template>
     <div class="empleados">
         <v-card class="ma-3">
-            <v-row class="d-flex px-6 my-4" justify="space-evenly">
-                <v-col cols="5">
-                    <div class="d-flex align-center "><v-icon size="x-large" icon="mdi-account"></v-icon>
+            <v-row class="px-6 my-4">
+                <v-col cols="5" md="5" sm="12">
+                    <div class="d-flex align-center"><v-icon size="x-large" icon="mdi-account"></v-icon>
                         <h1 class="px-3">Empleados</h1>
                     </div>
                 </v-col>
-
-                <v-col cols="7" class="text-end">
-                    <v-btn prepend-icon="mdi-plus" class="mx-4" color="green" @click="dialogE = true;">Empleado</v-btn>
+                <v-col cols="7" md="7" sm="7" class="text-sm-start text-md-end">
+                    <v-btn prepend-icon="mdi-plus" class="me-2 my-2" color="green" @click="dialogE = true;">Empleado</v-btn>
                     <v-btn prepend-icon="mdi-plus" color="yellow" @click="dialogU = true;">Usuario</v-btn>
                 </v-col>
             </v-row>

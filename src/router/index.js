@@ -12,6 +12,7 @@ import loginVista from '../views/loginView.vue';
 import inicioVista from '../views/inicio.vue';
 import empleadosVista from '../views/empleadosView.vue';
 import clientesVista from '../views/clienteView.vue';
+import adminFacturasVista from '../views/adminFacturasView.vue';
 //Creación de rutas a los archivos
 //Store para validar tipoCargo
 import store from '../store';
@@ -66,6 +67,11 @@ const routes = [{
                 path: '/inicio/clientes',
                 name: 'clientesVista',
                 component: clientesVista
+            },
+            {
+                path: '/inicio/facturas',
+                name: 'facturasView',
+                component: adminFacturasVista
             }
         ]
     },

@@ -22,6 +22,10 @@ let menu = [{
                 title: 'Facturación',
                 href: '/inicio/factura'
             }, {
+                icon: 'mdi mdi-file-settings',
+                title: 'Facturas',
+                href: '/inicio/facturas'
+            }, {
                 icon: 'mdi mdi-account-tie',
                 title: 'Clientes',
                 href: '/inicio/clientes'
@@ -41,6 +45,10 @@ let menu = [{
             icon: 'mdi mdi-food',
             title: 'Productos',
             href: '/inicio/productos'
+        }, {
+            icon: 'mdi mdi-file-settings',
+            title: 'Facturas',
+            href: '/inicio/facturas'
         }, {
             icon: 'mdi mdi-account-tie',
             title: 'Empleados',
