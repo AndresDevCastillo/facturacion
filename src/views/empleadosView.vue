@@ -97,7 +97,7 @@
                         <v-btn color="red-darken-1" variant="tonal" @click="dialogE = false">
                             Cerrar
                         </v-btn>
-                        <v-btn color="green-darken-1" variant="tonal" @click="crearEmpleado()">
+                        <v-btn color="green-darken-1" variant="tonal" :disabled="disableBtn" @click="crearEmpleado()">
                             Crear
                         </v-btn>
                     </v-card-actions>
@@ -135,7 +135,7 @@
                         <v-btn color="red-darken-1" variant="tonal" @click="dialogU = false">
                             Cerrar
                         </v-btn>
-                        <v-btn color="green-darken-1" variant="tonal" @click="crearUsuario">
+                        <v-btn color="green-darken-1" variant="tonal" :disabled="disableBtn" @click="crearUsuario">
                             Crear
                         </v-btn>
                     </v-card-actions>
@@ -158,6 +158,7 @@ export default {
         editarEmpleadoComponent
     },
     data: () => ({
+        disableBtn: false,
         visibleContra: true,
         empleados: [],
         tipoCargo: [],
@@ -262,6 +263,7 @@ export default {
         async crearEmpleado() {
             const { valid } = await this.$refs.formEmpleado.validate();
             if (valid) {
+                this.disableBtn = true;
                 this.formEmpleado.cedula = parseInt(this.formEmpleado.cedula);
                 try {
                     await axios.post(`${process.env.VUE_APP_API_URL}/empleado/crear`, this.formEmpleado).then(() => {
@@ -277,15 +279,18 @@ export default {
                         this.listarEmpleados();
                     });
                 }
-                catch {
+                catch (error) {
+                    console.log(error);
                     this.dialogE = false;
                     Swal.fire({ icon: 'error', text: 'No se pudo crear el empleado', showConfirmButton: false, timer: 1500 });
                 }
+                this.disableBtn = false;
             }
         },
         async crearUsuario() {
             const { valid } = await this.$refs.formUsuario.validate();
             if (valid) {
+                this.disableBtn = true;
                 await axios.post(`${this.api}/usuario/crear`, this.formUsuario).then(response => {
                     switch (response.status) {
                         case 201:
@@ -310,6 +315,7 @@ export default {
                             break;
                     }
                 });
+                this.disableBtn = false;
             }
         },
         editarEmpleado(empleado) {

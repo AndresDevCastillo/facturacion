@@ -54,8 +54,6 @@
     </v-card>
     <v-dialog v-model="dialogP" persistent width="700">
         <v-card>
-            <v-card-title>
-            </v-card-title>
             <v-card-text>
                 <v-container>
                     <v-form ref="formProducto">
@@ -89,7 +87,7 @@
                 <v-btn color="red-darken-1" variant="tonal" @click="dialogP = false">
                     Cerrar
                 </v-btn>
-                <v-btn color="green-darken-1" variant="tonal" @click="crearProducto()">
+                <v-btn color="green-darken-1" variant="tonal" :disabled="disableBtn" @click="crearProducto()">
                     Crear
                 </v-btn>
             </v-card-actions>
@@ -97,9 +95,6 @@
     </v-dialog>
     <v-dialog v-model="dialogC" width="700">
         <v-card>
-            <v-card-title>
-
-            </v-card-title>
             <v-card-text>
                 <v-container>
                     <v-form ref="formCategoria">
@@ -124,7 +119,7 @@
                 <v-btn color="red-darken-1" variant="tonal" @click="dialogC = false">
                     Cerrar
                 </v-btn>
-                <v-btn color="green-darken-1" variant="tonal" @click="crearCategoria()">
+                <v-btn color="green-darken-1" variant="tonal" :disabled="disableBtn" @click="crearCategoria()">
                     Crear
                 </v-btn>
             </v-card-actions>
@@ -151,9 +146,7 @@
                 </tbody>
             </v-table>
         </v-card>
-
     </v-dialog>
-
     <editarProductoComponent v-model="dialogEditar" @noactualizo="noactualizoProducto" @actualizo="actualizoProducto"
         @cerrar="cerrarEditarProducto" :editarProducto="actualizarProducto">
     </editarProductoComponent>
@@ -170,6 +163,7 @@ export default {
         editarProductoComponent,
     },
     data: () => ({
+        disableBtn: false,
         productos: [],
         categorias: [], dialogP: false,
         dialogC: false,
@@ -193,7 +187,6 @@ export default {
         precioRules: [v => !!v || 'El precio es requerido', v => (v && /^[0-9]+$/.test(v)) || 'El numero no debe contener caracteres'],
 
     }),
-    idActualizarP: null,
     async created() {
         this.$emit('loadingSweet');
         await this.listarProductos();
@@ -220,6 +213,7 @@ export default {
         async crearProducto() {
             const { valid } = await this.$refs.formProducto.validate();
             if (valid) {
+                this.disableBtn = true;
                 this.dialogP = false;
                 this.formProducto.precio = parseInt(this.formProducto.precio)
                 await axios.post(`${process.env.VUE_APP_API_URL}/producto/crear`, this.formProducto).then((resp) => {
@@ -232,8 +226,9 @@ export default {
                     }
                 }).catch(() => {
                     return Swal.fire({ icon: 'error', title: 'No se pudo crear el producto', timer: 1000 });
-                })
-                this.listarProductos();
+                });
+                this.disableBtn = false;
+                await this.listarProductos();
                 this.formProducto = {
                     nombre: null,
                     precio: null,
@@ -283,6 +278,7 @@ export default {
         async crearCategoria() {
             const { valid } = await this.$refs.formCategoria.validate();
             if (valid) {
+                this.disableBtn = true;
                 this.dialogC = false;
                 await axios.post(`${process.env.VUE_APP_API_URL}/categoria/crear`, this.formCategoria).then((resp) => {
                     if (resp.status == 201) {
@@ -295,8 +291,9 @@ export default {
 
                 }).catch(() => {
                     return Swal.fire({ icon: 'error', title: 'No se pudo crear el producto', timer: 1000 });
-                })
-                this.listarCategorias();
+                });
+                this.disableBtn = false;
+                await this.listarCategorias();
                 this.formCategoria = {
                     nombre: null,
                     estado: null,

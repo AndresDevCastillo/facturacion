@@ -42,7 +42,7 @@
                 <v-btn color="red-darken-1" variant="tonal" @click="cerrarComponente()">
                     Cerrar
                 </v-btn>
-                <v-btn color="blue-darken-1" variant="tonal" @click="editarUnEmpleado()">
+                <v-btn color="blue-darken-1" variant="tonal" :disabled="disableBtn" @click="editarUnEmpleado()">
                     Editar
                 </v-btn>
             </v-card-actions>
@@ -57,15 +57,17 @@ export default {
     props: {
         editarEmpleado: { default: null }
     },
-    nombreRules: [
-        v => !!v || 'El nombre es requerido',
-        v => (v && v.length <= 65) || 'EL nombre no puede superar los 65 caracteres',
-    ],
-    cedulaRules: [v => !!v || 'El cedula es requerido', v => (v && /^[0-9]+$/.test(v)) || 'El numero no debe contener caracteres'],
     data: () => ({
+        disableBtn: false,
         paquete:
             { id: null, cedula: null, nombre: null, direccion: null, tipoCargo: null, telefono: null },
-        tipoCargo: []
+        tipoCargo: [],
+        nombreRules: [
+            v => !!v || 'El nombre es requerido',
+            v => (v && v.length <= 65) || 'EL nombre no puede superar los 65 caracteres',
+        ],
+        cedulaRules: [v => !!v || 'El cedula es requerido', v => (v && /^[0-9]+$/.test(v)) || 'El numero no debe contener caracteres'],
+
     }),
     methods: {
         async listarCargos() {
@@ -77,12 +79,14 @@ export default {
             this.$emit('cerrar');
         },
         async editarUnEmpleado() {
+            this.disableBtn = true;
             this.paquete.cedula = parseInt(this.paquete.cedula);
             await axios.put(`${process.env.VUE_APP_API_URL}/empleado/actualizar`, this.paquete).then(() => {
                 this.$emit('actualizo');
             }).catch(() => {
                 this.$emit('noactualizo');
             });
+            this.disableBtn = false;
         }
     },
     watch: {

@@ -101,7 +101,7 @@
                         <v-row no-gutters justify="space-evenly" class="mb-4" v-if="compras.length != 0">
                             <v-btn elevation="4" @click="cancelarPedido" color="blue" size="x-large"
                                 class="mb-3">Cancelar</v-btn>
-                            <v-btn elevation="4" @click="guardarPedido" color="green" size="x-large"
+                            <v-btn elevation="4" @click="guardarPedido" :disabled="disableBtn" color="green" size="x-large"
                                 class="mr-2 mb-2">Guardar</v-btn>
                         </v-row>
                     </v-card-text>
@@ -127,6 +127,7 @@ export default {
     data: () => ({
         dialog: false,
         valid: null,
+        disableBtn: false,
         add: null,
         cantidad: null,
         form: {
@@ -185,6 +186,7 @@ export default {
                     showConfirmButton: false,
                 });
             }
+            this.disableBtn = true;
             const resp = await axios.post(`${process.env.VUE_APP_API_URL}/pedido/crear`, this.form).then(resp => {
                 return resp;
             });
@@ -210,6 +212,7 @@ export default {
                 default:
                     break;
             }
+            this.disableBtn = false;
         },
         cancelarPedido() {
             this.$refs.selectProducto.isFocused = false;
