@@ -15,7 +15,8 @@
                     <v-row justify="start">
                         <p class="fw-bold text-dark w-100 text-center" v-if="ubicaciones.length == 0">No hay mesas, por
                             favor regístrelas</p>
-                        <v-col v-for="(ubicacion, index) in ubicaciones" :key="index" sm="5" md="4" xl="4" xxl="4">
+                        <div v-for="(ubicacion, index) in ubicaciones" :key="index"
+                            class="v-col-sm-6 v-col-md-4 v-col-xl-4 v-col-xxl-4">
                             <v-tooltip activator="parent" location="top" contained eager max-width="300">{{
                                 this.mesaOcupada(ubicacion.id) ? 'No puedes escoger esta mesa, tiene un pedido en curso' :
                                 'Agregar pedido a esta mesa' }}
@@ -26,7 +27,7 @@
                                     {{ ubicacion.nombre }}
                                 </v-card-text>
                             </v-card>
-                        </v-col>
+                        </div>
                     </v-row>
                 </v-container>
             </v-card-text>

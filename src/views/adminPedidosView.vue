@@ -22,7 +22,7 @@
                                 Fecha
                             </th>
                             <th class="text-left">
-                                # productos
+                                N. productos
                             </th>
                             <th class="text-left">
                                 Mesa
@@ -41,7 +41,7 @@
                         </tr>
                         <tr v-for="(pedido, index) in pedidos" :key="index">
                             <td class="text-left">{{ pedido.ticket }}</td>
-                            <td class="text-left">{{ pedido.fechaP }} - {{ pedido.hora }}</td>
+                            <td class="text-left">{{ pedido.fecha }} - {{ pedido.hora }}</td>
                             <td class="text-left">{{ pedido.detalleTicket.length }}</td>
                             <td class="text-left">{{ pedido.mesa.nombre }}</td>
                             <td class="text-left">{{ pedido.empleado.nombre }}</td>
@@ -49,6 +49,7 @@
                                 <v-btn color="red" density="comfortable" @click="eliminarPedido(pedido.ticket)">Eliminar
                                     pedido</v-btn>
                             </td>
+
                         </tr>
                     </tbody>
                 </v-table>
@@ -67,22 +68,16 @@ export default {
     methods: {
         async obtenerPedidos() {
             await axios.get(`${this.api}/pedido`).then(response => {
-                response.data.map(pedido => {
-                    const fechaCompleta = pedido.fecha;
-                    const [fechaP, horaE] = fechaCompleta.split('T');
-                    const [hora] = horaE.split('.', 1);
-                    this.pedidos.push({
-                        ...pedido,
-                        fechaP,
-                        hora
-                    })
-                });
+                this.pedidos = response.data;
 
             });
         },
         async eliminarPedido(ticket) {
-            await axios.delete(`${this.api}/pedido/${ticket}`).then(() => {
-                this.obtenerPedidos();
+            await axios.delete(`${this.api}/pedido/${ticket}`).then(async () => {
+                this.$emit('loadingSweet');
+                await this.obtenerPedidos();
+                this.$emit('closeSweet');
+
             });
         }
     },

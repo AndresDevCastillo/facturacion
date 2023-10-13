@@ -41,7 +41,11 @@
                     font-weight: 500 !important;
                   ">
                                     <p style="font-size: 1.2rem">
-                                        TICKET: <span>{{ datos.codigo }}</span>
+                                        TICKET: <span>{{ datos.codigo.toString().length == 1 ? '000' :
+                                            datos.codigo.toString().length == 2 ? '00' : datos.codigo.toString().length == 3
+                                                ?
+                                                '0' :
+                                                null }}{{ datos.codigo }}</span>
                                     </p>
                                     <p style="font-size: 1.2rem">
                                         FECHA: <span>{{ datos.fecha }}</span>
@@ -174,7 +178,6 @@
                         </v-card>
                     </v-col>
                 </v-card-text>
-                {{ datos }}
             </v-card>
         </v-dialog>
     </v-row>
