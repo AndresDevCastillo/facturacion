@@ -1,8 +1,16 @@
 <template>
-    <v-card>
+    <v-card class="ma-3">
         <v-card-title>
-            <v-row justify="end" no-gutters>
-                <v-btn prepend-icon="mdi-plus" color="blue" @click="dialogCliente = true;">Agregar cliente</v-btn>
+            <v-row class="px-6 my-4">
+                <v-col md="8" sm="8">
+                    <v-row class="align-center" no-gutters>
+                        <v-icon size="x-large" icon="mdi mdi-account-tie"></v-icon>
+                        <h1 class="px-3">Cliente</h1>
+                    </v-row>
+                </v-col>
+                <v-col md="4" sm="4">
+                    <v-btn prepend-icon="mdi-plus" color="blue" @click="dialogCliente = true;">Agregar cliente</v-btn>
+                </v-col>
             </v-row>
         </v-card-title>
         <v-card-text>
@@ -13,6 +21,7 @@
                         <th class="text-left">Nombres</th>
                         <th class="text-left">Correo</th>
                         <th class="text-left">Teléfono</th>
+                        <th class="text-center"> Acción</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -24,6 +33,9 @@
                         <td class="text-left">{{ cliente.nombre }}</td>
                         <td class="text-left">{{ cliente.correo }}</td>
                         <td class="text-left">{{ cliente.telefono }}</td>
+                        <td style="text-align: center;"><v-btn density="comfortable"
+                                @click="eliminarCliente(cliente.cedula)" color="red">eliminar</v-btn>
+                        </td>
                     </tr>
                 </tbody>
             </v-table>
@@ -36,6 +48,7 @@
 </template>
 <script>
 import axios from 'axios';
+import Swal from 'sweetalert2';
 import clienteComponent from '../components/cliente.vue';
 export default {
     components: {
@@ -54,10 +67,35 @@ export default {
             });
             this.$emit('closeSweet');
         },
-        nuevoCliente(cliente) {
-            if (typeof cliente === 'object') {
-                this.clientes.push(cliente);
-            }
+        async eliminarCliente(cedula) {
+            Swal.fire({
+                icon: "info",
+                title: "Seguro quiere eliminar el la factura?",
+                showDenyButton: true,
+                denyButtonText: "No",
+                confirmButtonText: "Eliminar",
+            })
+                .then(async (result) => {
+                    /* Read more about isConfirmed, isDenied below */
+                    if (result.isConfirmed) {
+                        await axios.delete(`${this.api}/cliente/${cedula}`).then(async () => {
+                            Swal.fire({
+                                icon: "success",
+                                title: "Se elimino correctamente",
+                                timer: 1000,
+                                showConfirmButton: false,
+                            });
+                            await this.obtenerClientes();
+                        });
+                    }
+                })
+                .catch(() => {
+                    return Swal.fire({
+                        icon: "error",
+                        title: "No se pudo eliminar la factura",
+                        timer: 1000,
+                    });
+                });
         }
     },
     created() {

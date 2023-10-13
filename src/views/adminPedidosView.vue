@@ -59,6 +59,7 @@
 </template>
 <script>
 import axios from 'axios'
+import Swal from 'sweetalert2';
 export default {
     name: 'adminPedidosVista',
     data: () => ({
@@ -73,12 +74,35 @@ export default {
             });
         },
         async eliminarPedido(ticket) {
-            await axios.delete(`${this.api}/pedido/${ticket}`).then(async () => {
-                this.$emit('loadingSweet');
-                await this.obtenerPedidos();
-                this.$emit('closeSweet');
+            Swal.fire({
+                icon: "info",
+                title: "Seguro quiere eliminar el pedido?",
+                showDenyButton: true,
+                denyButtonText: "No",
+                confirmButtonText: "Eliminar",
+            })
+                .then(async (result) => {
+                    /* Read more about isConfirmed, isDenied below */
+                    if (result.isConfirmed) {
+                        await axios.delete(`${this.api}/pedido/${ticket}`).then(async () => {
+                            Swal.fire({
+                                icon: "success",
+                                title: "Se elimino correctamente",
+                                timer: 1000,
+                                showConfirmButton: false,
+                            });
+                            await this.obtenerPedidos();
+                        });
+                    }
+                })
+                .catch(() => {
+                    return Swal.fire({
+                        icon: "error",
+                        title: "No se pudo eliminar el gasto",
+                        timer: 1000,
+                    });
+                });
 
-            });
         }
     },
     async created() {

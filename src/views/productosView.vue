@@ -218,7 +218,6 @@ export default {
             });
         },
         async crearProducto() {
-
             const { valid } = await this.$refs.formProducto.validate();
             if (valid) {
                 this.dialogP = false;
@@ -231,7 +230,6 @@ export default {
                             text: 'Producto creado correctamente!'
                         })
                     }
-
                 }).catch(() => {
                     return Swal.fire({ icon: 'error', title: 'No se pudo crear el producto', timer: 1000 });
                 })
@@ -244,7 +242,6 @@ export default {
                     descripcion: null
                 }
             }
-
         },
         async eliminarProducto(id) {
             Swal.fire({

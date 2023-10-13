@@ -21,7 +21,7 @@
                             @click="verFacturaGeneral()">Ver</v-btn>
                     </v-col>
                     <v-col lg="3" md="3" sm="3" v-if="facturaId">
-                        <v-btn prepend-icon="mdi-plus" color="red">Eliminar</v-btn>
+                        <v-btn prepend-icon="mdi-plus" @click="eliminarFactura(facturaId)" color="red">Eliminar</v-btn>
                     </v-col>
                 </v-row>
             </v-card-title>
@@ -88,6 +88,7 @@
 </template>
 <script>
 import axios from 'axios'
+import Swal from 'sweetalert2';
 import ticketComponent from "../components/ticket.vue";
 
 
@@ -111,10 +112,36 @@ export default {
             });
         },
         async eliminarFactura(codigo) {
-            await axios.delete(`${this.api}/factura/${codigo}`).then(response => {
-                console.log(response.data);
-                this.obtenerFacturas();
-            });
+            Swal.fire({
+                icon: "info",
+                title: "Seguro quiere eliminar el la factura?",
+                showDenyButton: true,
+                denyButtonText: "No",
+                confirmButtonText: "Eliminar",
+            })
+                .then(async (result) => {
+                    /* Read more about isConfirmed, isDenied below */
+                    if (result.isConfirmed) {
+                        await axios.delete(`${this.api}/factura/${codigo}`).then(async () => {
+                            Swal.fire({
+                                icon: "success",
+                                title: "Se elimino correctamente",
+                                timer: 1000,
+                                showConfirmButton: false,
+                            });
+                            this.facturaId = null;
+                            await this.obtenerFacturas();
+                        });
+                    }
+                })
+                .catch(() => {
+                    return Swal.fire({
+                        icon: "error",
+                        title: "No se pudo eliminar la factura",
+                        timer: 1000,
+                    });
+                });
+
         },
         verFactura(factura) {
             this.facturaImpresa = factura;
