@@ -88,4 +88,19 @@ html {
 
 body.swal2-shown.swal2-height-auto {
     height: 100vh !important;
-}</style>
+}
+div:where(.swal2-container).swal2-backdrop-show,
+div:where(.swal2-container).swal2-noanimation {
+    background: rgba(0, 0, 0, .6) !important;
+}
+
+.loader {
+    background: transparent !important;
+    color: #FFF !important;
+}
+
+div:where(.swal2-container) div:where(.swal2-loader) {
+    border-top-color: #FFF !important;
+    border-bottom-color: #000 !important;
+}
+</style>

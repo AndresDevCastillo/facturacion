@@ -198,7 +198,6 @@ export default {
                     resp.data.sort((a, b) => a.nombre.localeCompare(b.nombre));
                 }
                 this.empleados = resp.data;
-
             });
         },
         async eliminarEmpleado(cedula) {
@@ -333,7 +332,7 @@ export default {
     async created() {
         this.$emit('loadingSweet');
         await this.listarEmpleados();
-       // this.$emit('closeSweet');
+        this.$emit('closeSweet');
         this.listarCargos();
     }
 }

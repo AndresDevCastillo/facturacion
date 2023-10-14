@@ -50,18 +50,5 @@ export default {
 }
 </script>
 <style>
-div:where(.swal2-container).swal2-backdrop-show,
-div:where(.swal2-container).swal2-noanimation {
-    background: rgba(0, 0, 0, .6) !important;
-}
 
-.loader {
-    background: transparent;
-    color: #FFF;
-}
-
-div:where(.swal2-container) div:where(.swal2-loader) {
-    border-top-color: #FFF;
-    border-bottom-color: #000;
-}
 </style>
