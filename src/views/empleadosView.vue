@@ -333,7 +333,7 @@ export default {
     async created() {
         this.$emit('loadingSweet');
         await this.listarEmpleados();
-        this.$emit('closeSweet');
+       // this.$emit('closeSweet');
         this.listarCargos();
     }
 }
