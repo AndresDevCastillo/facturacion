@@ -13,7 +13,7 @@
                 </v-col>
             </v-row>
             <v-row class="flex-column">
-                <v-card class="ma-3">
+                <v-card class="ma-3 w-100">
                     <v-table fixed-header fixed-footer class="w-100" v-if="empleados.length > 0">
                         <thead style="z-index: 1000;" class="bg-table-header">
                             <tr>
