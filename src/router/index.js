@@ -21,7 +21,31 @@ import store from '../store';
 const routes = [{
         path: '/',
         name: 'login',
-        component: loginVista
+        component: loginVista,
+        beforeEnter: (to, from, next) => {
+            const data = store.getters.usuario;
+            let ruta;
+            if (data) {
+                if (to.fullPath == "/") {
+                    switch (data.empleado.tipoCargo) {
+                        case 'Engineersoft':
+                            ruta = '/inicio/empleados';
+                            break;
+                        case 'Mesero':
+                            ruta = '/inicio/agregarPedido';
+                            break;
+                        case 'Admin':
+                            ruta = '/inicio/empleado';
+                            break;
+                        case 'Cajero':
+                            ruta = '/inicio/factura';
+                            break;
+                    }
+                }
+                return next(ruta);
+            }
+            next();
+        }
     },
     {
         path: '/inicio',

@@ -9,13 +9,13 @@
           <v-row>
             <v-col cols="12" md="3">
               <v-autocomplete label="Nombre del cliente" item-value="id" :items="clientes" item-title="nombre"
-                variant="outlined" v-model="form.cliente" @keyup="buscarCliente()"></v-autocomplete>
+                variant="outlined" v-model="form.cliente" :rules="campoRules"></v-autocomplete>
               <!-- <v-text-field v-model="form.nombre" label="Nombre del cliente" placeholder="Pepito pérez" required
                                 variant="outlined"></v-text-field> -->
             </v-col>
             <v-col cols="12" md="3">
               <v-text-field class="inline-form-input-name" v-model="form.cedula" label="Cédula" type="number"
-                placeholder="1062123536" required variant="outlined"></v-text-field>
+                placeholder="1062123536" required variant="outlined" :rules="campoRules"></v-text-field>
             </v-col>
             <v-col cols="12" md="3">
               <v-text-field v-model="form.telefono" label="Teléfono" placeholder="3104205923" required
@@ -23,25 +23,25 @@
             </v-col>
 
             <v-col cols="12" md="3">
-              <v-text-field v-model="form.correo" label="Correo Electrónico" placeholder="pepito@gmail.com" required
+              <v-text-field v-model="form.correo" ref="correo" label="Correo Electrónico" placeholder="pepito@gmail.com" required
                 variant="outlined"></v-text-field>
             </v-col>
 
             <v-col cols="12" md="3">
               <v-select label="Pedidos" v-model="pedidoTablero" required variant="outlined" no-data-text="No hay pedidos"
-                :items="pedidos" item-title="mesa.nombre" return-object>
+                :items="pedidos" item-title="mesa.nombre" return-object :rules="campoRules">
               </v-select>
             </v-col>
 
             <v-col cols="12" md="3">
               <v-select v-model="formFactura.medio_pago" :items="pagos" label="Medio de pago"
-                placeholder="Escoja medio de pago" required variant="outlined">
+                placeholder="Escoja medio de pago" required variant="outlined" :rules="campoRules">
               </v-select>
             </v-col>
 
             <v-col cols="12" md="3">
               <v-select v-model="formFactura.lugar" :items="ubicaciones" label="Lugar"
-                placeholder="Escoja lugar de atención" required variant="outlined">
+                placeholder="Escoja lugar de atención" required variant="outlined" :rules="campoRules">
               </v-select>
             </v-col>
             <v-col cols="12" md="3">
@@ -54,21 +54,19 @@
             </v-col>
             <v-col cols="12" md="3" v-if="form.ubicacion === 'Domicilio'">
               <v-select v-model="form.domiciliario" :items="domiciliarios" label="Domiciliario"
-                placeholder="Escoja domicialiario" required variant="outlined">
+                placeholder="Escoja domicialiario" :rules="campoRules" required variant="outlined">
               </v-select>
             </v-col>
             <v-col cols="12" md="3" v-if="form.ubicacion === 'Domicilio'">
               <v-text-field v-model="form.direccion" label="Dirección domicilio"
-                placeholder="Ingrese dirección del domicilio" required variant="outlined">
+                placeholder="Ingrese dirección del domicilio" required variant="outlined" :rules="campoRules">
               </v-text-field>
             </v-col>
-
-
             <v-col cols="12" md="2">
               <v-btn elevation="4" size="x-large" @click="limpiarForm()" color="red">Limpiar</v-btn>
             </v-col>
             <v-col cols="12" md="2">
-              <v-btn elevation="4" size="x-large" @click="vender()" color="red">Vender</v-btn>
+              <v-btn elevation="4" size="x-large" @click="vender()" :disabled="disableBtn" color="red">Vender</v-btn>
             </v-col>
           </v-row>
         </v-container>
@@ -135,6 +133,7 @@ export default {
     clienteComponent
   },
   data: () => ({
+    disableBtn: false,
     dialogCliente: false,
     clientes: [],
     pedidos: [],
@@ -161,6 +160,9 @@ export default {
       (v) =>
         (v && parseInt(v) > -1 && parseInt(v) < 101) ||
         "El numero debe ser un porcentaje",
+    ],
+    campoRules: [
+      v => !!v || 'Campo requerido',
     ],
     pagos: ["Efectivo", "Tarjeta Credito", "Tarjeta Debito", "Transferencia"],
     form: {
@@ -308,28 +310,44 @@ export default {
       }
     },
     async vender() {
-      this.formFactura.cliente = this.form.cliente;
-      this.formFactura.descuento = parseInt(this.form.descuento);
-      this.formFactura.propina = parseInt(this.formFactura.propina);
-      await axios
-        .post(`${process.env.VUE_APP_API_URL}/factura/crear/${this.idEliminarPedidos}`, this.formFactura)
-        .then((data) => {
-          this.facturaImpresa = data.data;
-          Swal.fire({
-            icon: "success",
-            title: "Se genero la factura",
+      if (this.form.correo) {
+        if (!/^\w+([.-_+]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/.test(this.form.correo)) {
+          this.$refs.correo.focus();
+          return Swal.fire({
+            icon: 'warning',
+            text: 'Ingrese un correo válido',
+            timer: 1300,
             showConfirmButton: false,
-            showCancelButton: false,
-            timer: 2000,
-          }).finally(async () => {
-            this.dialogTicket = true;
-            await this.cargarPedidos();
-            this.limpiarForm();
           });
-        })
-        .catch((error) => {
-          Swal.fire({ icon: "error", title: "Oops...", titleText: error });
-        });
+        }
+      }
+      const { valid } = await this.$refs.fac.validate();
+      if (valid) {
+        this.disableBtn = true;
+        this.formFactura.cliente = this.form.cliente;
+        this.formFactura.descuento = parseInt(this.form.descuento);
+        this.formFactura.propina = parseInt(this.formFactura.propina);
+        await axios
+          .post(`${process.env.VUE_APP_API_URL}/factura/crear/${this.idEliminarPedidos}`, this.formFactura)
+          .then((data) => {
+            this.facturaImpresa = data.data;
+            Swal.fire({
+              icon: "success",
+              title: "Se genero la factura",
+              showConfirmButton: false,
+              showCancelButton: false,
+              timer: 2000,
+            }).finally(async () => {
+              this.dialogTicket = true;
+              await this.cargarPedidos();
+              this.limpiarForm();
+            });
+          })
+          .catch((error) => {
+            Swal.fire({ icon: "error", title: "Oops...", titleText: error });
+          });
+        this.disableBtn = false;
+      }
     },
     async limpiarForm() {
       this.formFactura =

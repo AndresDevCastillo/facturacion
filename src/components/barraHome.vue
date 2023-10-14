@@ -4,7 +4,7 @@
         <v-app-bar theme="dark" prominent app>
             <v-app-bar-nav-icon variant="text" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
 
-            <v-toolbar-title><router-link to="/" class="Titulo-Home">Empresa X</router-link></v-toolbar-title>
+            <v-toolbar-title>Software de facturación</v-toolbar-title>
 
             <v-spacer></v-spacer>
             <v-btn icon @click="cerrarSesion">
@@ -20,7 +20,7 @@
         </v-app-bar>
         <v-navigation-drawer app theme="dark" v-model="drawer" temporary>
             <v-list>
-                <v-list-item prepend-avatar="https://randomuser.me/api/portraits/women/85.jpg" :title="title"
+                <v-list-item prepend-icon="mdi mdi-home-account" :title="title"
                     :subtitle="subtitle"></v-list-item>
             </v-list>
 

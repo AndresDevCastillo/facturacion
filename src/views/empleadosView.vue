@@ -1,13 +1,13 @@
 <template>
     <div class="empleados">
         <v-card class="ma-3">
-            <v-row class="px-6 my-4">
-                <v-col cols="7" md="5" sm="12">
-                    <div class="d-flex align-center "><v-icon size="x-large" icon="mdi-account"></v-icon>
-                        <h1 class="px-3">Empleados</h1>
+            <v-row class="px-6 my-4" justify="space-between">
+                <v-col cols="auto" class="pb-0">
+                    <div class="d-flex align-center"><v-icon size="x-large" icon="mdi mdi-account-cog"></v-icon>
+                        <h1 class="px-3">Administración de empleados</h1>
                     </div>
                 </v-col>
-                <v-col cols="5" md="7" sm="7" class="text-sm-start text-md-end">
+                <v-col cols="auto">
                     <v-btn prepend-icon="mdi-plus" class="me-2 my-2" color="green" @click="dialogE = true;">Empleado</v-btn>
                     <v-btn prepend-icon="mdi-plus" color="yellow" @click="dialogU = true;">Usuario</v-btn>
                 </v-col>
@@ -54,8 +54,6 @@
             </v-row>
             <v-dialog v-model="dialogE" persistent width="700">
                 <v-card>
-                    <v-card-title>
-                    </v-card-title>
                     <v-card-text>
                         <v-container>
                             <v-form ref="formEmpleado">

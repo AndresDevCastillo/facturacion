@@ -32,7 +32,7 @@
             <v-btn color="red-darken-1" variant="tonal" @click="cerrarDialogCliente">
                 Cerrar
             </v-btn>
-            <v-btn color="green-darken-1" ref="btnCrear" :disabled="ds" variant="tonal" @click="crearCliente">
+            <v-btn color="green-darken-1" ref="btnCrear" :disabled="disableBtn" variant="tonal" @click="crearCliente">
                 Crear
             </v-btn>
         </v-card-actions>
@@ -44,7 +44,7 @@ import Swal from 'sweetalert2';
 export default {
     name: 'clienteComponent',
     data: () => ({
-        ds: false,
+        disableBtn: false,
         nombreRules: [
             v => !!v || 'El nombre es requerido',
             v => (v && v.length <= 65) || 'EL nombre no puede superar los 65 caracteres',
@@ -66,7 +66,7 @@ export default {
         async crearCliente() {
             const { valid } = await this.$refs.formCliente.validate();
             if (valid) {
-                this.ds = true;
+                this.disableBtn = true;
                 this.formCliente.cedula = parseInt(this.formCliente.cedula);
                 await axios.post(`${this.api}/cliente/crear`, this.formCliente).then(response => {
                     switch (response.status) {
@@ -90,7 +90,7 @@ export default {
                             break;
                     }
                 });
-                this.ds = false;
+                this.disableBtn = false;
             }
         },
         cerrarDialogCliente() {

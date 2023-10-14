@@ -28,6 +28,11 @@ html {
 
 }
 
+.v-main {
+    height: 100vh !important;
+    overflow: auto;
+}
+
 .bg-table-header>tr>th {
     background-color: var(--bg-table-header) !important;
     font-weight: bold !important;
@@ -80,7 +85,7 @@ html {
 .swal2-container.swal2-backdrop-show {
     z-index: 99999 !important;
 }
-body.swal2-shown.swal2-height-auto{
+
+body.swal2-shown.swal2-height-auto {
     height: 100vh !important;
-}
-</style>
+}</style>

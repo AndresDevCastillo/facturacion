@@ -1,14 +1,14 @@
 <template>
     <v-card class="ma-3">
         <v-card-title>
-            <v-row class="px-6 my-4">
-                <v-col md="8" sm="8">
+            <v-row class="my-4" justify="space-between">
+                <v-col cols="auto">
                     <v-row class="align-center" no-gutters>
-                        <v-icon size="x-large" icon="mdi mdi-account-tie"></v-icon>
-                        <h1 class="px-3">Cliente</h1>
+                        <v-icon size="x-large" icon="mdi mdi-account-group-outline"></v-icon>
+                        <h1 class="px-3">Clientes</h1>
                     </v-row>
                 </v-col>
-                <v-col md="4" sm="4">
+                <v-col cols="auto">
                     <v-btn prepend-icon="mdi-plus" color="blue" @click="dialogCliente = true;">Agregar cliente</v-btn>
                 </v-col>
             </v-row>
