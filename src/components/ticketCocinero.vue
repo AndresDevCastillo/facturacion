@@ -20,16 +20,24 @@
                                 style="font-family: 'Roboto', sans-serif; color: #000 !important; margin-top:5px;">
                                 <p
                                     style="font-size: 2rem;  text-align: center !important; font-weight: bold !important; text-transform: uppercase !important;">
-                                    DULCERÍA CAT</p>
+                                    Empresa X</p>
                                 <p style="text-align: center !important; font-size: 1.1rem;">El Sena</p>
                                 <p style="text-align: center !important; font-size: 1.1rem;">Montería, Córdoba, Colombia</p>
                             </v-row>
                             <v-row class="w-100 flex-column" no-gutters id="datosGenerales">
                                 <v-row class="w-100 flex-column" no-gutters
                                     style="font-family: 'Roboto', sans-serif; color: #000 !important; font-weight: 500 !important;">
-                                    <p style=" font-size: 1.2rem;">TICKET: <span>#1</span></p>
-                                    <p style=" font-size: 1.2rem;">FECHA: <span>14-08-2023</span></p>
-                                    <p style=" font-size: 1.2rem;">CLIENTE: <span>Ronaldo Genes</span></p>
+                                    <p style=" font-size: 1.2rem;">TICKET: <span>#{{ ticket.ticket.toString().length == 1 ?
+                                        '000' :
+                                        ticket.ticket.toString().length == 2 ? '00' : ticket.ticket.toString().length ==
+                                            3 ?
+                                            '0' :
+                                            null }}{{ ticket.ticket }}</span></p>
+                                    <p style=" font-size: 1.2rem;">FECHA: <span>{{ ticket.fecha }}</span></p>
+                                    <p style=" font-size: 1.2rem;">FECHA: <span>{{ ticket.hora }}</span></p>
+                                    <p style=" font-size: 1.2rem;">MESA: <span>{{ ticket.mesa.nombre }}</span></p>
+                                    <p style=" font-size: 1.2rem;">EMPLEADO: <span>{{ ticket.empleado.nombre }}</span></p>
+
                                 </v-row>
                                 <v-divider class="divider-dotted"
                                     style="border-style: dotted !important; color: #000; opacity: 1;"></v-divider>
@@ -49,13 +57,13 @@
                                             </tr>
                                         </thead>
                                         <tbody id="productosTicketCocinero">
-                                            <tr v-for="(item, index) in compras" :key="index">
+                                            <tr v-for="(item, index) in ticket.detalleTicket" :key="index">
                                                 <td class="text-left"
                                                     style="font-size: 1.30rem; border-style: none !important;">{{
                                                         item.cantidad }}</td>
                                                 <td class="text-left"
                                                     style="font-size: 1.30rem; border-style: none !important;">
-                                                    {{ item.descripcion }}
+                                                    {{ item.producto.nombre }}
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -74,7 +82,7 @@
                                     <p
                                         style="font-size:1.27rem; text-transform: uppercase; margin-top: 6px; font-family: 'Helvetica', Arial, sans-serif;">
                                         <strong>NOTA: </strong>
-                                        Por favor pagar lo mas pronto posible
+                                        {{ ticket.descripcion }}
                                     </p>
                                 </v-row>
                             </v-row>
@@ -92,7 +100,23 @@ import {
 import "jspdf-autotable";
 export default {
     name: 'ticketCocineroComponent',
-    props: { dialog2: { type: Boolean, default: false, required: true } },
+    props: {
+        dialog2: { type: Boolean, default: false, required: true },
+        ticket: {
+            type: Object,
+            default: () => {
+                return {
+                    ticket: null,
+                    fecha: null,
+                    hora: null,
+                    detalleTicket: [],
+                    empleado: {},
+                    mesa: {},
+                };
+            },
+            required: true,
+        },
+    },
     data: () => ({
         verDialogTicketCocinero: false,
         compras: [
@@ -317,8 +341,8 @@ export default {
         },
     },
     watch: {
-        dialog() {
-            this.verDialogTicketCocinero = this.$props.dialog;
+        dialog2() {
+            this.verDialogTicketCocinero = this.$props.dialog2;
         }
     },
 

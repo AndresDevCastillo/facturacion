@@ -213,22 +213,6 @@ export default {
 
     data: () => ({
         verDialogTicket: false,
-        propina: 20000,
-        iva: 10000,
-        compras: [
-            {
-                cantidad: 2,
-                descripcion: "Tocinetas",
-                precioU: 1000,
-                pagar: 0, //cantidad*precioU
-            },
-            {
-                cantidad: 1,
-                descripcion: "Dorito de Queso",
-                precioU: 2000,
-                pagar: 0,
-            },
-        ],
     }),
     methods: {
         cerrarDialogo() {

@@ -11,9 +11,11 @@
                     </v-col>
                     <v-col cols="12">
                         <v-row>
-                            <v-col cols="5"><v-autocomplete style="min-width: 300px;" label="Buscar factura"
-                                    item-value="codigo" :items="facturas" item-title="codigo" variant="outlined"
-                                    v-model="facturaId"></v-autocomplete></v-col>
+                            <v-col cols="5">
+                                <v-text-field v-model="facturaId" label="Factura" type="number"
+                                    placeholder="Ingrese el numero de la factura" required
+                                    variant="outlined"></v-text-field>
+                            </v-col>
                         </v-row>
                     </v-col>
                     <v-col lg="3" md="3" sm="4" v-if="facturaId">
@@ -147,15 +149,24 @@ export default {
             this.facturaImpresa = factura;
             this.dialogTicket = true;
         },
-        verFacturaGeneral() {
-            this.facturas.map(factura => {
-                if (factura.codigo == this.facturaId) {
-                    this.facturaImpresa = factura;
+        async verFacturaGeneral() {
+            this.$emit('loadingSweet');
+            await axios.get(`${process.env.VUE_APP_API_URL}/factura/${this.facturaId}`).then(resp => {
+                if (resp.data.response) {
+                    return Swal.fire({
+                        icon: "error",
+                        title: "No se pudo encontrar la factura",
+                        timer: 1000,
+                    });
+                }
+                else {
+                    this.$emit('closeSweet');
+                    this.verFactura(resp.data);
                 }
             });
-            this.dialogTicket = true;
-
+            this.$emit('closeSweet');
         }
+
     },
     async created() {
         this.$emit('loadingSweet');

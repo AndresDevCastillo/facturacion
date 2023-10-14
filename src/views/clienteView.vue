@@ -70,7 +70,7 @@ export default {
         async eliminarCliente(cedula) {
             Swal.fire({
                 icon: "info",
-                title: "Seguro quiere eliminar el la factura?",
+                title: "Seguro quiere eliminar el cliente?",
                 showDenyButton: true,
                 denyButtonText: "No",
                 confirmButtonText: "Eliminar",
@@ -92,7 +92,7 @@ export default {
                 .catch(() => {
                     return Swal.fire({
                         icon: "error",
-                        title: "No se pudo eliminar la factura",
+                        title: "No se pudo eliminar al cliente",
                         timer: 1000,
                     });
                 });

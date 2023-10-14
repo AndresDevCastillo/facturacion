@@ -98,6 +98,10 @@
                                 </tr>
                             </tfoot>
                         </v-table>
+                        <v-col :cols="12">
+                            <v-text-field v-model="form.descripcion" label="Comentario" type="text"
+                                placeholder="Ingrese el comentario" required variant="outlined"></v-text-field>
+                        </v-col>
                         <v-row no-gutters justify="space-evenly" class="mb-4" v-if="compras.length != 0">
                             <v-btn elevation="4" @click="cancelarPedido" color="blue" size="x-large"
                                 class="mb-3">Cancelar</v-btn>
@@ -133,6 +137,7 @@ export default {
         form: {
             mesa: null,
             empleado: 1,//Se asigna al crear el componente
+            descripcion: null,
             detallePedido: [],
         },
         compras: [],
@@ -189,29 +194,40 @@ export default {
             this.disableBtn = true;
             const resp = await axios.post(`${process.env.VUE_APP_API_URL}/pedido/crear`, this.form).then(resp => {
                 return resp;
+            }).catch(() => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: 'Pedido no registrado',
+                    timer: 1780,
+                    showConfirmButton: false,
+                });
             });
-            switch (resp.status) {
-                case 201:
-                    this.reiniciarForm();
-                    this.compras = [];
-                    this.cantidad = null;
-                    this.add = null;
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Creado',
-                        text: 'Pedido creado correctamente',
-                        timer: 1780,
-                        showConfirmButton: false,
-                    });
-                    this.dialog = false;
-                    this.getMesasOcupadas();
-                    this.getMesas();
-                    this.getProductos();
-                    break;
+            if (resp) {
+                switch (resp.status) {
+                    case 201:
+                        this.reiniciarForm();
+                        this.compras = [];
+                        this.cantidad = null;
+                        this.add = null;
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Creado',
+                            text: 'Pedido creado correctamente',
+                            timer: 1780,
+                            showConfirmButton: false,
+                        });
+                        this.dialog = false;
+                        this.getMesasOcupadas();
+                        this.getMesas();
+                        this.getProductos();
+                        break;
 
-                default:
-                    break;
+                    default:
+                        break;
+                }
             }
+
             this.disableBtn = false;
         },
         cancelarPedido() {
