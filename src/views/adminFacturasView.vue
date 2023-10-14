@@ -37,16 +37,16 @@
                                     Fecha
                                 </th>
                                 <th class="text-left">
-                                    Descuento
-                                </th>
-                                <th class="text-left">
-                                    Propina
+                                    Cliente
                                 </th>
                                 <th class="text-left">
                                     Total
                                 </th>
                                 <th class="text-left">
-                                    Cliente
+                                    Descuento
+                                </th>
+                                <th class="text-left">
+                                    Propina
                                 </th>
                                 <th colspan="2" class="text-center">
                                     Acción
@@ -63,10 +63,10 @@
                                         '0' :
                                         null }}{{ factura.codigo }}</td>
                                 <td class="text-left">{{ factura.fecha }} {{ factura.hora }}</td>
-                                <td class="text-left">{{ factura.descuento }}</td>
-                                <td class="text-left">{{ factura.propina }}</td>
-                                <td class="text-left">{{ factura.total.toLocaleString() }}</td>
                                 <td class="text-left">{{ factura.cliente.nombre }}</td>
+                                <td class="text-left">{{ factura.total.toLocaleString() }}</td>
+                                <td class="text-left">{{ factura.descuento }}%</td>
+                                <td class="text-left">{{ factura.propina }}</td>
                                 <td>
                                     <v-btn color="red" density="comfortable"
                                         @click="eliminarFactura(factura.codigo)">Eliminar
