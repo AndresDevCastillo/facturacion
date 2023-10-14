@@ -14,7 +14,7 @@
             <v-card-text>
                 <div class="table-responsive">
                     <v-table fixed-header fixed-footer class="w-100">
-                        <thead style="z-index: 999999;" class="bg-table-header">
+                        <thead style="z-index: 1000;" class="bg-table-header">
                             <tr>
                                 <th class="text-left">
                                     # pedido

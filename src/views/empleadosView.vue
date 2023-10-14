@@ -15,7 +15,7 @@
             <v-row class="flex-column">
                 <v-card class="ma-3">
                     <v-table fixed-header fixed-footer class="w-100" v-if="empleados.length > 0">
-                        <thead style="z-index: 999999;" class="bg-table-header">
+                        <thead style="z-index: 1000;" class="bg-table-header">
                             <tr>
                                 <th class="text-left">
                                     Cedula

@@ -19,7 +19,7 @@
         <v-row>
             <v-card class="ma-3 w-100">
                 <v-table fixed-header fixed-footer class="w-100" v-if="productos.length > 0">
-                    <thead style="z-index: 999999;" class="bg-table-header">
+                    <thead style="z-index: 1000;" class="bg-table-header">
                         <tr>
                             <th class="text-left">
                                 Nombre
@@ -124,7 +124,7 @@
                 </v-btn>
             </v-card-actions>
             <v-table fixed-header fixed-footer height="400" class="w-100" v-if="categorias.length > 0">
-                <thead style="z-index: 999999;" class="bg-table-header">
+                <thead style="z-index: 1000;" class="bg-table-header">
                     <tr>
                         <th class="text-left">
                             Nombre
@@ -221,11 +221,13 @@ export default {
                         return Swal.fire({
                             icon: 'success',
                             title: 'Exitoso',
-                            text: 'Producto creado correctamente!'
+                            text: 'Producto creado correctamente!',
+                            showConfirmButton: false,
+                            timer: 1500
                         })
                     }
                 }).catch(() => {
-                    return Swal.fire({ icon: 'error', title: 'No se pudo crear el producto', timer: 1000 });
+                    return Swal.fire({ icon: 'error', title: 'No se pudo crear el producto', showConfirmButton: false, timer: 1500 });
                 });
                 this.disableBtn = false;
                 await this.listarProductos();
@@ -250,11 +252,11 @@ export default {
                 if (result.isConfirmed) {
                     await axios.delete(`${process.env.VUE_APP_API_URL}/producto/${id}`).then(() => {
                         this.listarProductos();
-                        Swal.fire({ icon: 'success', title: 'Se elimino correctamente', timer: 1000, showConfirmButton: false });
+                        Swal.fire({ icon: 'success', title: 'Se elimino correctamente', timer: 1500, showConfirmButton: false });
                     })
                 }
             }).catch(() => {
-                return Swal.fire({ icon: 'error', title: 'No se pudo eliminar el producto', timer: 1000 });
+                return Swal.fire({ icon: 'error', title: 'No se pudo eliminar el producto', showConfirmButton: false, timer: 1500 });
             });
         },
         cerrarEditarProducto() {
@@ -267,12 +269,12 @@ export default {
         },
         actualizoProducto() {
             this.dialogEditar = false;
-            Swal.fire({ icon: 'success', title: 'Se edito correctamente', timer: 1000, showConfirmButton: false });
+            Swal.fire({ icon: 'success', title: 'Se edito correctamente', timer: 1500, showConfirmButton: false });
             this.listarProductos();
         },
         noactualizoProducto() {
             this.dialogEditar = false;
-            Swal.fire({ icon: 'error', title: 'No se edito correctamente', timer: 1000, showConfirmButton: false });
+            Swal.fire({ icon: 'error', title: 'No se edito correctamente', timer: 1500, showConfirmButton: false });
             this.listarProductos();
         },
         async crearCategoria() {
@@ -285,12 +287,14 @@ export default {
                         return Swal.fire({
                             icon: 'success',
                             title: 'Exitoso',
-                            text: 'Categoria creado correctamente!'
+                            text: 'Categoría creada correctamente!',
+                            showConfirmButton: false,
+                            timer: 1500
                         })
                     }
 
                 }).catch(() => {
-                    return Swal.fire({ icon: 'error', title: 'No se pudo crear el producto', timer: 1000 });
+                    return Swal.fire({ icon: 'error', title: 'No se pudo crear la categoría', showConfirmButton: false, timer: 1500 });
                 });
                 this.disableBtn = false;
                 await this.listarCategorias();

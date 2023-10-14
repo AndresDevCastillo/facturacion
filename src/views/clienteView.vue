@@ -15,7 +15,7 @@
         </v-card-title>
         <v-card-text>
             <v-table fixed-header style="margin-bottom: 100px;">
-                <thead style="z-index: 999999" class="bg-table-header">
+                <thead style="z-index: 1000" class="bg-table-header">
                     <tr>
                         <th class="text-left">Cédula</th>
                         <th class="text-left">Nombres</th>

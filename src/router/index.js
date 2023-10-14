@@ -56,59 +56,162 @@ const routes = [{
                 name: 'factura',
                 component: facturaVista,
                 beforeEnter: (to, from, next) => {
-                    const cargo = store.getters.usuario.empleado.tipoCargo.toLowerCase();
-                    if (cargo == "mesero" || cargo == undefined) {
-                        return next(from);
+                    const data = store.getters.usuario;
+                    if (data) {
+                        const cargo = store.getters.usuario.empleado.tipoCargo.toLowerCase();
+                        if (cargo == "mesero" || cargo == "cajero" || cargo == undefined) {
+                            return next(from);
+                        }
+                        next();
                     }
-                    next();
+                    next('/');
                 }
             },
             {
                 path: '/inicio/productos',
                 name: 'productos',
-                component: productosVista
+                component: productosVista,
+                beforeEnter: (to, from, next) => {
+                    const data = store.getters.usuario;
+                    if (data) {
+                        const cargo = store.getters.usuario.empleado.tipoCargo.toLowerCase();
+                        if (cargo == "mesero" || cargo == undefined) {
+                            return next(from);
+                        }
+                        return next();
+                    }
+                    next('/');
+                }
             },
             {
                 //Para Engineersoft
                 path: '/inicio/empleados',
                 name: 'empleadosEngineersoft',
-                component: empleadosVista
+                component: empleadosVista,
+                beforeEnter: (to, from, next) => {
+                    const data = store.getters.usuario;
+                    if (data) {
+                        const cargo = store.getters.usuario.empleado.tipoCargo.toLowerCase();
+                        if (cargo == "mesero" || cargo == "admin" || cargo == "cajero" || cargo == undefined) {
+                            return next(from);
+                        }
+                        return next();
+                    }
+                    next('/');
+                }
             },
             {
                 path: '/inicio/empleado',
                 name: 'empleados',
-                component: empleadoVista
+                component: empleadoVista,
+                beforeEnter: (to, from, next) => {
+                    const data = store.getters.usuario;
+                    if (data) {
+                        const cargo = store.getters.usuario.empleado.tipoCargo.toLowerCase();
+                        if (cargo == "mesero" || cargo == "cajero" || cargo == undefined) {
+                            return next(from);
+                        }
+                        return next();
+                    }
+                    next('/');
+                }
             },
             {
                 path: '/inicio/agregarPedido',
                 name: 'agregarPedido',
                 component: agregarPedidoVista,
+                beforeEnter: (to, from, next) => {
+                    const data = store.getters.usuario;
+                    if (data) {
+                        const cargo = store.getters.usuario.empleado.tipoCargo.toLowerCase();
+                        if (cargo == "admin" || cargo == "cajero" || cargo == undefined) {
+                            return next(from);
+                        }
+                        return next();
+                    }
+                    next('/');
+                }
             },
             {
                 path: '/inicio/ganancias',
                 name: 'gananciasVista',
                 component: gananciasVista,
+                beforeEnter: (to, from, next) => {
+                    const data = store.getters.usuario;
+                    if (data) {
+                        const cargo = store.getters.usuario.empleado.tipoCargo.toLowerCase();
+                        if (cargo == "mesero" || cargo == "cajero" || cargo == undefined) {
+                            return next(from);
+                        }
+                        return next();
+                    }
+                    next('/');
+                }
             },
             {
                 path: '/inicio/clientes',
                 name: 'clientesVista',
-                component: clientesVista
+                component: clientesVista,
+                beforeEnter: (to, from, next) => {
+                    const data = store.getters.usuario;
+                    if (data) {
+                        const cargo = store.getters.usuario.empleado.tipoCargo.toLowerCase();
+                        if (cargo == "mesero" || cargo == "cajero" || cargo == undefined) {
+                            return next(from);
+                        }
+                        return next();
+                    }
+                    next('/');
+                }
             },
             {
                 path: '/inicio/facturas',
                 name: 'facturasView',
-                component: adminFacturasVista
+                component: adminFacturasVista,
+                beforeEnter: (to, from, next) => {
+                    const data = store.getters.usuario;
+                    if (data) {
+                        const cargo = store.getters.usuario.empleado.tipoCargo.toLowerCase();
+                        if (cargo == "mesero" || cargo == "cajero" || cargo == undefined) {
+                            return next(from);
+                        }
+                        return next();
+                    }
+                    next('/');
+                }
             },
             {
                 path: '/inicio/pedidos',
                 name: 'pedidosView',
-                component: adminPedidosVista
+                component: adminPedidosVista,
+                beforeEnter: (to, from, next) => {
+                    const data = store.getters.usuario;
+                    if (data) {
+                        const cargo = store.getters.usuario.empleado.tipoCargo.toLowerCase();
+                        if (cargo == "mesero" || cargo == "cajero" || cargo == undefined) {
+                            return next(from);
+                        }
+                        return next();
+                    }
+                    next('/');
+                }
             }, {
                 path: '/inicio/gastos',
                 name: 'gastosView',
-                component: gastosVista
+                component: gastosVista,
+                beforeEnter: (to, from, next) => {
+                    const data = store.getters.usuario;
+                    if (data) {
+                        const cargo = store.getters.usuario.empleado.tipoCargo.toLowerCase();
+                        if (cargo == "mesero" || cargo == "cajero" || cargo == undefined) {
+                            return next(from);
+                        }
+                        return next();
+                    }
+                    next('/');
+                }
             }
-        ]
+        ],
     },
 
 ];

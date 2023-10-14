@@ -17,12 +17,17 @@ export default {
         barraHome
     },
     data: () => ({
-        alerta: null
+        alerta: null,
     }),
     methods: {
-        loadingSweet() {
+        /**
+         * 
+         * @param {string} textDefault Si quiere cambiar el mensaje de la alerta de bloqueo, envie el mensaje cuando emita a loadingSweet
+         * @default string Cargando, por favor, espere...]
+         */
+        loadingSweet(textDefault = 'Cargando, por favor, espere...') {
             this.alerta = Swal.fire({
-                text: 'Cargando, por favor, espere...',
+                text: textDefault,
                 timerProgressBar: true,
                 showConfirmButton: false,
                 allowEscapeKey: false,
@@ -38,6 +43,9 @@ export default {
         closeSweet() {
             Swal.close();
         }
+    },
+    created() {
+        console.log('creado');
     }
 }
 </script>

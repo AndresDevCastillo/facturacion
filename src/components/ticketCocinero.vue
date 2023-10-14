@@ -1,6 +1,6 @@
 <template>
     <v-row justify="center">
-        <v-dialog v-model="verDialogTicketCocinero" fullscreen :scrim="false" transition="dialog-bottom-transition">
+        <v-dialog v-model="verDialogTicketCocinero" persistent fullscreen  :scrim="false" transition="dialog-bottom-transition">
             <v-card>
                 <v-toolbar dark theme="dark" class="noImprimir">
                     <v-btn icon dark @click="cerrarDialogo()">
@@ -34,7 +34,7 @@
                                             '0' :
                                             null }}{{ ticket.ticket }}</span></p>
                                     <p style=" font-size: 1.2rem;">FECHA: <span>{{ ticket.fecha }}</span></p>
-                                    <p style=" font-size: 1.2rem;">FECHA: <span>{{ ticket.hora }}</span></p>
+                                    <p style=" font-size: 1.2rem;">HORA: <span>{{ ticket.hora }}</span></p>
                                     <p style=" font-size: 1.2rem;">MESA: <span>{{ ticket.mesa.nombre }}</span></p>
                                     <p style=" font-size: 1.2rem;">EMPLEADO: <span>{{ ticket.empleado.nombre }}</span></p>
 

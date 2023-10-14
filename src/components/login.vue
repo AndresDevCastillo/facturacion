@@ -75,7 +75,7 @@ export default {
         },
         loadingSweet() {
             Swal.fire({
-                text: 'Cargando, por favor, espere...',
+                text: 'Autenticando, por favor, espere...',
                 timerProgressBar: true,
                 showConfirmButton: false,
                 allowEscapeKey: false,

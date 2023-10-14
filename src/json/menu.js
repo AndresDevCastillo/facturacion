@@ -94,7 +94,11 @@ let menu = [{
             icon: 'mdi mdi-cash-plus',
             title: 'Facturación',
             href: '/inicio/factura'
-        }]
+        }, {
+            icon: 'mdi mdi-food',
+            title: 'Productos',
+            href: '/inicio/productos'
+        }, ]
     }
 ]
 

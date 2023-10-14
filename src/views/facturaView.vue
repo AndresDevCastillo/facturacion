@@ -23,7 +23,7 @@
             </v-col>
 
             <v-col cols="12" md="3">
-              <v-text-field v-model="form.correo" ref="correo" label="Correo Electrónico" placeholder="pepito@gmail.com" required
+              <v-text-field v-model="form.correo" :rules="emailRules" label="Correo Electrónico" placeholder="pepito@gmail.com" required
                 variant="outlined"></v-text-field>
             </v-col>
 
@@ -45,11 +45,11 @@
               </v-select>
             </v-col>
             <v-col cols="12" md="3">
-              <v-text-field label="Descuento" placeholder="0-100" variant="outlined" v-model="form.descuento"
+              <v-text-field label="Descuento" placeholder="0-100" type="number" variant="outlined" v-model="form.descuento"
                 v-if="form.compras.length != 0" :rules="porcentajeRule"></v-text-field>
             </v-col>
             <v-col cols="12" md="3">
-              <v-text-field label="Propina" placeholder="0" variant="outlined" v-model="formFactura.propina"
+              <v-text-field label="Propina" placeholder="0" variant="outlined" type="number" v-model="formFactura.propina"
                 v-if="form.compras.length != 0" :rules="propinaRule"></v-text-field>
             </v-col>
             <v-col cols="12" md="3" v-if="form.ubicacion === 'Domicilio'">
@@ -73,7 +73,7 @@
       </v-form>
     </v-card>
     <v-table fixed-header style="margin-bottom: 100px;" v-if="form.compras.length != 0">
-      <thead style="z-index: 999999">
+      <thead style="z-index: 1000;" class="bg-table-header">
         <tr>
           <th class="text-left" colspan="2">Nombres</th>
           <th class="text-left">Cantidad</th>
@@ -147,6 +147,15 @@ export default {
     drawer2: true,
     group: null,
     pedidoTablero: null,
+    emailRules: [
+      v => {
+        if (v && v.length > 0) {
+          return /^\w+([.-_+]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/.test(v) || "Ingrese un correo válido";
+        }
+        return true;
+      }
+    ]
+    ,
     propinaRule: [
       (v) => !!v || "La propina es requerida en 0 almenos",
       (v) =>
@@ -310,17 +319,6 @@ export default {
       }
     },
     async vender() {
-      if (this.form.correo) {
-        if (!/^\w+([.-_+]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/.test(this.form.correo)) {
-          this.$refs.correo.focus();
-          return Swal.fire({
-            icon: 'warning',
-            text: 'Ingrese un correo válido',
-            timer: 1300,
-            showConfirmButton: false,
-          });
-        }
-      }
       const { valid } = await this.$refs.fac.validate();
       if (valid) {
         this.disableBtn = true;

@@ -63,7 +63,7 @@
                             </v-row>
                         </v-form>
                         <v-table class="pb-5" fixed-header fixed-footer v-if="compras.length != 0">
-                            <thead style="z-index: 999999;">
+                            <thead style="z-index: 1000;" class="bg-table-header">
                                 <tr>
                                     <th class="text-left">
                                         Producto
@@ -90,7 +90,7 @@
                                     </td>
                                 </tr>
                             </tbody>
-                            <tfoot style="z-index: 999999;">
+                            <tfoot style="z-index: 1000;">
                                 <tr>
                                     <td class="text-left footer-table" colspan="4">
                                         <strong> Pagar : {{ pagarNeto }}</strong>
@@ -99,8 +99,15 @@
                             </tfoot>
                         </v-table>
                         <v-col :cols="12">
-                            <v-text-field v-model="form.descripcion" label="Comentario" type="text"
-                                placeholder="Ingrese el comentario" required variant="outlined"></v-text-field>
+                            <v-textarea
+                                v-model="form.descripcion"
+                                label="Comentario"
+                                placeholder="Ingrese comentario para el pedido"
+                                auto-grow
+                                variant="outlined"
+                                rows="4"
+                                row-height="10"
+                                shaped></v-textarea>
                         </v-col>
                         <v-row no-gutters justify="space-evenly" class="mb-4" v-if="compras.length != 0">
                             <v-btn elevation="4" @click="cancelarPedido" color="blue" size="x-large"
@@ -137,7 +144,7 @@ export default {
         form: {
             mesa: null,
             empleado: 1,//Se asigna al crear el componente
-            descripcion: null,
+            descripcion: '',
             detallePedido: [],
         },
         compras: [],
@@ -272,6 +279,7 @@ export default {
                 mesa: null,
                 empleado: this.$store.getters.usuario.empleado.id,
                 detallePedido: [],
+                descripcion: ''
             };
         }
     },
