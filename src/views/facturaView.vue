@@ -23,8 +23,8 @@
             </v-col>
 
             <v-col cols="12" md="3">
-              <v-text-field v-model="form.correo" :rules="emailRules" label="Correo Electrónico" placeholder="pepito@gmail.com" required
-                variant="outlined"></v-text-field>
+              <v-text-field v-model="form.correo" :rules="emailRules" label="Correo Electrónico"
+                placeholder="pepito@gmail.com" required variant="outlined"></v-text-field>
             </v-col>
 
             <v-col cols="12" md="3">
@@ -45,8 +45,8 @@
               </v-select>
             </v-col>
             <v-col cols="12" md="3">
-              <v-text-field label="Descuento" placeholder="0-100" type="number" variant="outlined" v-model="form.descuento"
-                v-if="form.compras.length != 0" :rules="porcentajeRule"></v-text-field>
+              <v-text-field label="Descuento" placeholder="0-100" type="number" variant="outlined"
+                v-model="form.descuento" v-if="form.compras.length != 0" :rules="porcentajeRule"></v-text-field>
             </v-col>
             <v-col cols="12" md="3">
               <v-text-field label="Propina" placeholder="0" variant="outlined" type="number" v-model="formFactura.propina"
@@ -157,17 +157,17 @@ export default {
     ]
     ,
     propinaRule: [
-      (v) => !!v || "La propina es requerida en 0 almenos",
+      (v) => (v === 0 || !!v) || "La propina es requerida en 0 almenos",
       (v) =>
-        (v && /^[0-9]+$/.test(v)) || "El numero no debe contener caracteres",
-      (v) => (v && parseInt(v) > -1) || "El numero debe ser mayor o igual a 0",
+        (/^[0-9]+$/.test(v)) || "El numero no debe contener caracteres",
+      (v) => (parseInt(v) > -1) || "El numero debe ser mayor o igual a 0",
     ],
     porcentajeRule: [
-      (v) => !!v || "El porcentaje es requerido",
+      (v) => (v === 0 || !!v) || "El porcentaje es requerido",
       (v) =>
-        (v && /^[0-9]+$/.test(v)) || "El numero no debe contener caracteres",
+        (/^[0-9]+$/.test(v)) || "El numero no debe contener caracteres",
       (v) =>
-        (v && parseInt(v) > -1 && parseInt(v) < 101) ||
+        (parseInt(v) > -1 && parseInt(v) < 101) ||
         "El numero debe ser un porcentaje",
     ],
     campoRules: [
@@ -192,7 +192,7 @@ export default {
       empleado: null,
       mesa: null,
       medio_pago: 'Efectivo',
-      descuento: null,
+      descuento: 0,
       total: null,
       propina: 0,
       neto: 0,
@@ -354,7 +354,7 @@ export default {
         empleado: null,
         mesa: null,
         medio_pago: null,
-        descuento: null,
+        descuento: 0,
         total: null,
         propina: 0,
         neto: 0,
