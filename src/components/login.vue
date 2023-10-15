@@ -8,10 +8,15 @@
                 <form ref="form">
                     <v-row class="flex-column">
                         <v-col cols="12" class="pa-3">
-                            <v-text-field v-model="paquete.usuario" variant="outlined" label="Usuario" :rules="usuarioRule" placeholder="Ingrese su usuario" prepend-inner-icon="mdi-account-lock"></v-text-field>
+                            <v-text-field v-model="paquete.usuario" variant="outlined" label="Usuario" :rules="usuarioRule"
+                                placeholder="Ingrese su usuario" prepend-inner-icon="mdi-account-lock"></v-text-field>
                         </v-col>
                         <v-col cols="12" class="pa-3">
-                            <v-text-field v-model="paquete.contrasena" :type="visible ? 'text' : 'password'" variant="outlined" label="Contraseña" placeholder="Ingrese su contraseña" :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'" prepend-inner-icon="mdi-lock-outline" @click:append-inner="visible = !visible"></v-text-field>
+                            <v-text-field v-model="paquete.contrasena" :type="visible ? 'text' : 'password'"
+                                variant="outlined" label="Contraseña" placeholder="Ingrese su contraseña"
+                                :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
+                                prepend-inner-icon="mdi-lock-outline"
+                                @click:append-inner="visible = !visible"></v-text-field>
                         </v-col>
                     </v-row>
                 </form>
@@ -60,7 +65,8 @@ export default {
                                     this.$router.push('/inicio/empleado');
                                     break;
                                 case 'Cajero':
-                                    this.$router.push('/inicio/factura');
+                                    console.log('Entro');
+                                    this.$router.push('/inicio/productos');
                                     break;
                             }
                             break;
