@@ -65,8 +65,7 @@ export default {
                                     this.$router.push('/inicio/empleado');
                                     break;
                                 case 'Cajero':
-                                    console.log('Entro');
-                                    this.$router.push('/inicio/productos');
+                                    this.$router.push('/inicio/factura');
                                     break;
                             }
                             break;
