@@ -216,7 +216,7 @@ export default {
                     });
                 }
             }).catch(() => {
-                return Swal.fire({ icon: 'error', title: 'No se pudo eliminar el producto', timer: 1000 });
+                return Swal.fire({ icon: 'error', title: 'No se pudo eliminar el empleado', timer: 1000 });
             });
 
         },
