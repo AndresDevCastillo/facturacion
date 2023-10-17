@@ -46,7 +46,7 @@
                                 <v-col :cols="cols[0]">
                                     <v-autocomplete v-model="add" id="selectProducto" ref="selectProducto"
                                         :items="productos" label="Productos" no-data-text="Sin productos"
-                                        item-title="nombre" return-object placeholder="Escoja producto" required
+                                        item-title="nombreCantidad" return-object placeholder="Escoja producto" required
                                         variant="outlined">
                                     </v-autocomplete>
                                 </v-col>
@@ -99,15 +99,9 @@
                             </tfoot>
                         </v-table>
                         <v-col :cols="12">
-                            <v-textarea
-                                v-model="form.descripcion"
-                                label="Comentario"
-                                placeholder="Ingrese comentario para el pedido"
-                                auto-grow
-                                variant="outlined"
-                                rows="4"
-                                row-height="10"
-                                shaped></v-textarea>
+                            <v-textarea v-model="form.descripcion" label="Comentario"
+                                placeholder="Ingrese comentario para el pedido" auto-grow variant="outlined" rows="4"
+                                row-height="10" shaped></v-textarea>
                         </v-col>
                         <v-row no-gutters justify="space-evenly" class="mb-4" v-if="compras.length != 0">
                             <v-btn elevation="4" @click="cancelarPedido" color="blue" size="x-large"
@@ -270,8 +264,14 @@ export default {
 
         },
         async getProductos() {
-            await axios.get(`${process.env.VUE_APP_API_URL}/producto`).then((resp) => {
-                this.productos = Array.isArray(resp.data) ? resp.data : [];
+            await axios.get(`${process.env.VUE_APP_API_URL}/inventario`).then((resp) => {
+                if (resp.data.response) {
+                    return;
+                }
+                this.productos = resp.data.map(item => {
+                    item.producto.nombreCantidad = `${item.producto.nombre} - ${item.cantidad}`;
+                    return item.producto;
+                })
             });
         },
         reiniciarForm() {
