@@ -44,9 +44,6 @@ export default {
             Swal.close();
         }
     },
-    created() {
-        console.log('creado');
-    }
 }
 </script>
 <style>

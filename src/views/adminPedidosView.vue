@@ -31,7 +31,7 @@
                                 <th class="text-left">
                                     Empleado
                                 </th>
-                                <th colspan="2" class="text-center">
+                                <th colspan="3" class="text-center">
                                     Acción
                                 </th>
                             </tr>
@@ -46,15 +46,20 @@
                                 <td class="text-left">{{ pedido.detalleTicket.length }}</td>
                                 <td class="text-left">{{ pedido.mesa.nombre }}</td>
                                 <td class="text-left">{{ pedido.empleado.nombre }}</td>
-                                <td class="text-right">
-                                    <v-btn color="red" density="comfortable" @click="eliminarPedido(pedido.ticket)">Eliminar
-                                        pedido</v-btn>
+                                <td class="text-right pr-0">
+                                    <v-btn color="red" density="comfortable" @click="eliminarPedido(pedido.ticket)">
+                                        Eliminar pedido</v-btn>
                                 </td>
-                                <td> <v-btn color="blue" density="comfortable"
+                                <td class="text-right px-0">
+                                    <v-btn color="green" v-if="puedeCambiar()" density="comfortable" @click="dialogMesa(pedido.ticket, pedido.mesa.id)">
+                                        Cambiar mesa</v-btn>
+                                </td>
+                                <td class="text-right px-0">
+                                    <v-btn color="blue" density="comfortable"
                                         @click="mostrarTicket(Object.assign({}, pedido))">
                                         ver
-                                    </v-btn></td>
-
+                                    </v-btn>
+                                </td>
                             </tr>
                         </tbody>
                     </v-table>
@@ -63,6 +68,30 @@
         </v-card>
         <ticket-cocinero-component :dialog2="dialogTicket" :ticket="ticketImpreso"
             @cerrarDialogoTicketCocinero="dialogTicket = false"></ticket-cocinero-component>
+        <v-dialog v-model="dialogCambioMesa" persistent width="700">
+            <v-card>
+                <v-card-text>
+                    <v-container>
+                        <v-form ref="formCambioMesa">
+                            <v-row>
+                                <v-col cols="12">
+                                    <v-autocomplete label="Mesas disponibles" v-model="cambioMesa.mesaNew" :items="mesasDisponibles" item-title="nombre" item-value="id" required
+                                        variant="outlined" placeholder="Escoja mesa" no-data-text="Sin mesas disponibles" :rules="campoRules"></v-autocomplete>
+                                </v-col>
+                            </v-row>
+                        </v-form>
+                    </v-container>
+                </v-card-text>
+                <v-card-actions class="justify-end">
+                    <v-btn color="red-darken-1" variant="tonal" @click="dialogCambioMesa = false">
+                        Cerrar
+                    </v-btn>
+                    <v-btn color="green-darken-1" :disabled="disableBtn" @click="cambiarMesa">
+                        Cambiar mesa
+                    </v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
     </div>
 </template>
 <script>
@@ -75,9 +104,15 @@ export default {
         ticketCocineroComponent
     },
     data: () => ({
+        disableBtn: false,
         dialogTicket: false,
+        dialogCambioMesa: false,
         pedidos: [],
+        mesasDisponibles: [],
         api: process.env.VUE_APP_API_URL,
+        campoRules: [
+            v => !!v || 'Campo requerido',
+        ],
         ticketImpreso: {
             ticket: null,
             fecha: null,
@@ -85,13 +120,17 @@ export default {
             detalleTicket: [],
             empleado: {},
             mesa: {},
+        },
+        cambioMesa: {
+            mesaOld: null,
+            mesaNew: null,
+            ticket: null
         }
     }),
     methods: {
         async obtenerPedidos() {
             await axios.get(`${this.api}/pedido`).then(response => {
                 this.pedidos = response.data;
-
             });
         },
         async eliminarPedido(ticket) {
@@ -128,10 +167,50 @@ export default {
         mostrarTicket(ticket) {
             this.ticketImpreso = ticket;
             this.dialogTicket = true;
+        },
+        dialogMesa(ticket, mesaOld) {
+            if (ticket && mesaOld) {
+                this.dialogCambioMesa = true;
+                this.cambioMesa.ticket = parseInt(ticket);
+                this.cambioMesa.mesaOld = parseInt(mesaOld);
+            }
+        },
+        async cambiarMesa() {
+            const { valid } = await this.$refs.formCambioMesa.validate();
+            if (valid) {
+                this.cambioMesa.mesaNew = parseInt(this.cambioMesa.mesaNew);
+                this.disableBtn = true;
+                await axios.post(`${this.api}/pedido/cambiarMesa`, this.cambioMesa).then(() => {
+                    this.obtenerPedidos();
+                    this.getMesasDisponibles();
+                    Swal.fire({ text: 'Mesa cambiada', icon: 'success', showConfirmButton: false, timer: 1500 });
+                    this.dialogCambioMesa = false;
+                }).catch(error => {
+                    console.log('Error', error);
+                    Swal.fire({ text: 'No se pudo cambiar la mesa', icon: 'error', showConfirmButton: false, timer: 1600 });
+                })
+                this.disableBtn = false;
+            }
+        },
+        async getMesasDisponibles() {
+            await axios.get(`${this.api}/mesa/disponibles`).then(response => {
+                this.mesasDisponibles = response.data;
+            }).catch(error => {
+                console.log('Error', error);
+            });
+        },
+        puedeCambiar() {
+            if (this.$store.getters.usuario) {
+                const cargo = this.$store.getters.usuario.empleado.tipoCargo.toLowerCase();
+                const cargoPermitido = ['mesero', 'engineersoft'];
+                return cargoPermitido.includes(cargo);
+            }
+            return false;
         }
     },
     async created() {
         this.$emit('loadingSweet');
+        await this.getMesasDisponibles();
         await this.obtenerPedidos();
         this.$emit('closeSweet');
     }

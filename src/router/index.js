@@ -188,7 +188,7 @@ const routes = [{
             const data = store.getters.usuario;
             if (data) {
                 const cargo = store.getters.usuario.empleado.tipoCargo.toLowerCase();
-                if (cargo == "mesero" || cargo == "cajero" || cargo == undefined) {
+                if (cargo == undefined) {
                     return next(from);
                 }
                 return next();

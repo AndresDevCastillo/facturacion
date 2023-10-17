@@ -71,7 +71,7 @@
                                 <td class="text-left">{{ factura.propina }}</td>
                                 <td>
                                     <v-btn color="red" density="comfortable"
-                                        @click="eliminarFactura(factura.codigo)">Eliminar
+                                        @click="eliminarFacturaDialog(factura.codigo)">Eliminar
                                         factura</v-btn>
                                 </td>
                                 <td>
@@ -86,6 +86,37 @@
         </v-card>
         <ticketComponent :dialog="dialogTicket" :datos="facturaImpresa" @cerrarDialogoTicket="dialogTicket = false">
         </ticketComponent>
+        <v-dialog v-model="dialogEliminarFactura" persistent width="700">
+            <v-card>
+                <v-card-text>
+                    <v-container>
+                        <v-form ref="formEliminarFactura">
+                            <v-row>
+                                <v-col cols="12">
+                                    <v-textarea
+                                        v-model="formEliminarFactura.razon"
+                                        label="Razón eliminación"
+                                        placeholder="Ingrese razón por la cual elimina la factura"
+                                        auto-grow
+                                        variant="outlined"
+                                        rows="6"
+                                        row-height="10"
+                                        shaped :rules="camposRules"></v-textarea>
+                                </v-col>
+                            </v-row>
+                        </v-form>
+                    </v-container>
+                </v-card-text>
+                <v-card-actions class="justify-end">
+                    <v-btn color="red-darken-1" variant="tonal" @click="dialogEliminarFactura = false">
+                        Cancelar
+                    </v-btn>
+                    <v-btn color="green-darken-1" variant="tonal" :disabled="disableBtn" @click="eliminarFactura">
+                        Eliminar
+                    </v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
     </div>
 </template>
 <script>
@@ -100,12 +131,22 @@ export default {
         ticketComponent,
     },
     data: () => ({
+        dialogEliminarFactura: false,
+        disableBtn: false,
         facturas: [],
         api: process.env.VUE_APP_API_URL,
         dialogTicket: false,
         facturaImpresa: null,
         facturaId: null,
         miFactura: null,
+        formEliminarFactura: {
+            id: null,
+            razon: null,
+        },
+        camposRules: [
+            v => !!v || 'Campo requerido',
+            v => /^(?!\s*$).+/ig.test(v) || 'La razón no puede estar vacía'
+        ]
     }),
     methods: {
         async obtenerFacturas() {
@@ -113,37 +154,58 @@ export default {
                 this.facturas = response.data;
             });
         },
-        async eliminarFactura(codigo) {
-            Swal.fire({
-                icon: "info",
-                title: "Seguro quiere eliminar el la factura?",
-                showDenyButton: true,
-                denyButtonText: "No",
-                confirmButtonText: "Eliminar",
-            })
-                .then(async (result) => {
-                    /* Read more about isConfirmed, isDenied below */
-                    if (result.isConfirmed) {
-                        await axios.delete(`${this.api}/factura/${codigo}`).then(async () => {
-                            Swal.fire({
-                                icon: "success",
-                                title: "Se elimino correctamente",
-                                timer: 1000,
-                                showConfirmButton: false,
-                            });
-                            this.facturaId = null;
-                            await this.obtenerFacturas();
-                        });
-                    }
-                })
-                .catch(() => {
-                    return Swal.fire({
-                        icon: "error",
-                        title: "No se pudo eliminar la factura",
-                        timer: 1000,
-                    });
+        eliminarFacturaDialog(id = null) {
+            if (id) {
+                this.formEliminarFactura.id = parseInt(id);
+                this.dialogEliminarFactura = true;
+            }
+        },
+        async eliminarFactura() {
+            const { valid } = await this.$refs.formEliminarFactura.validate();
+            if (valid) {
+                this.disableBtn = true;
+                this.formEliminarFactura.razon = this.formEliminarFactura.razon.trim();
+                await axios.put(`${this.api}/factura/eliminar`, this.formEliminarFactura).then(() => {
+                    Swal.fire({ text: 'Factura eliminada', icon: 'success', showConfirmButton: false, timer: 1500 });
+                    this.obtenerFacturas();
+                    this.dialogEliminarFactura = false;
+                }).catch(error => {
+                    console.log(error);
+                    Swal.fire({ text: 'No se pudo eliminar la factura', icon: 'error', showConfirmButton: false, timer: 1600 });
                 });
+                this.disableBtn = false;
+            }
 
+            /*     Swal.fire({
+                    icon: "info",
+                    title: "Seguro quiere eliminar el la factura?",
+                    showDenyButton: true,
+                    denyButtonText: "No",
+                    confirmButtonText: "Eliminar",
+                })
+                    .then(async (result) => {
+                        /* Read more about isConfirmed, isDenied below 
+                        if (result.isConfirmed) {
+                            await axios.delete(`${this.api}/factura/${codigo}`).then(async () => {
+                                Swal.fire({
+                                    icon: "success",
+                                    title: "Se elimino correctamente",
+                                    timer: 1000,
+                                    showConfirmButton: false,
+                                });
+                                this.facturaId = null;
+                                await this.obtenerFacturas();
+                            });
+                        }
+                    })
+                    .catch(() => {
+                        return Swal.fire({
+                            icon: "error",
+                            title: "No se pudo eliminar la factura",
+                            timer: 1000,
+                        });
+                    });
+     */
         },
         verFactura(factura) {
             this.facturaImpresa = factura;
