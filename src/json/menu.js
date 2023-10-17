@@ -78,7 +78,13 @@ let menu = [{
         icon: 'mdi mdi-account-group-outline',
         title: 'Clientes',
         href: '/inicio/clientes'
+    },
+    {
+        icon: 'mdi mdi-store-edit',
+        title: 'Inventario',
+        href: '/inicio/Inventario'
     }
+
     ]
 },
 {
@@ -92,7 +98,8 @@ let menu = [{
         title: 'Pedidos',
         href: '/inicio/pedidos'
     },]
-}, {
+},
+{
     cargo: 'Cajero',
     menu: [{
         icon: 'mdi mdi-cash-plus',
@@ -107,7 +114,6 @@ let menu = [{
         title: 'Pedidos',
         href: '/inicio/pedidos'
     }]
-}
-]
+}]
 
 export default menu;

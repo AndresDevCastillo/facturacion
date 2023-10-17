@@ -1,155 +1,158 @@
 <template>
-    <v-card class="ma-3">
-        <v-row class="d-flex  px-6 my-4">
-            <v-col lg="8" md="8" sm="6" style="min-width: 200px;">
-                <div class="d-flex align-center "><v-icon size="x-large" icon="mdi-food"></v-icon>
-                    <h1 class="px-3">Productos</h1>
-                </div>
-            </v-col>
-            <v-col lg="2" md="2" sm="3">
-                <v-btn prepend-icon="mdi-plus" color="green" @click="dialogP = true"
-                    style="min-width: 170px;">Producto</v-btn>
-            </v-col>
-            <v-col lg="2" md="2" sm="3">
-                <v-btn prepend-icon="mdi-plus" style="min-width: 170px;" color="yellow"
-                    @click="dialogC = true">Categoria</v-btn>
-            </v-col>
+    <div class="producto">
+        <v-card class="ma-3">
+            <v-row class="d-flex  px-6 my-4">
+                <v-col lg="8" md="8" sm="6" style="min-width: 200px;">
+                    <div class="d-flex align-center "><v-icon size="x-large" icon="mdi-food"></v-icon>
+                        <h1 class="px-3">Productos</h1>
+                    </div>
+                </v-col>
+                <v-col lg="2" md="2" sm="3">
+                    <v-btn prepend-icon="mdi-plus" color="green" @click="dialogP = true"
+                        style="min-width: 170px;">Producto</v-btn>
+                </v-col>
+                <v-col lg="2" md="2" sm="3">
+                    <v-btn prepend-icon="mdi-plus" style="min-width: 170px;" color="yellow"
+                        @click="dialogC = true">Categoria</v-btn>
+                </v-col>
 
-        </v-row>
-        <v-row>
-            <v-card class="ma-3 w-100">
-                <v-table fixed-header fixed-footer class="w-100" v-if="productos.length > 0">
+            </v-row>
+            <v-row>
+                <v-card class="ma-3 w-100">
+                    <v-table fixed-header fixed-footer class="w-100" v-if="productos.length > 0">
+                        <thead style="z-index: 1000;" class="bg-table-header">
+                            <tr>
+                                <th class="text-left">
+                                    Nombre
+                                </th>
+                                <th class="text-left">
+                                    Categoría
+                                </th>
+                                <th class="text-left">
+                                    Descripcion
+                                </th>
+                                <th class="text-left">
+                                    Precio
+                                </th>
+                                <th colspan="2" class="text-center">Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(item) in productos" :key="item.id">
+                                <td class="text-left">{{ item.nombre }}</td>
+                                <td class="text-left">{{ item.categoria.nombre }}</td>
+                                <td class="text-left">{{ item.descripcion }}</td>
+                                <td class="text-left">{{ item.precio.toLocaleString() }}</td>
+                                <td style="text-align: center;"><v-btn density="comfortable"
+                                        @click="eliminarProducto(item.id)" color="red">eliminar</v-btn>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </v-table>
+                </v-card>
+            </v-row>
+
+        </v-card>
+        <v-dialog v-model="dialogP" persistent width="700">
+            <v-card>
+                <v-card-text>
+                    <v-container>
+                        <v-form ref="formProducto">
+                            <v-row>
+                                <v-col cols="12">
+                                    <v-text-field class="inline-form-input-name" label="Nombre" type="text" required
+                                        variant="outlined" v-model="formProducto.nombre" :rules="nombreRules"
+                                        :counter="65"></v-text-field>
+                                </v-col>
+                                <v-col cols="12">
+                                    <v-text-field class="inline-form-input-name" label="Descripción" type="text" required
+                                        variant="outlined" v-model="formProducto.descripcion"
+                                        :rules="[v => !!v || 'La descripción es requerida']"></v-text-field>
+                                </v-col>
+                                <v-col cols="12" sm="6" md="6">
+                                    <v-text-field label="Precio" type="number" variant="outlined"
+                                        hint="Sin comas o puntos (, .)" persistent-hint required
+                                        v-model="(formProducto.precio)" :rules="precioRules"></v-text-field>
+                                </v-col>
+                                <v-col cols="12" sm="6" v-if="categorias.length > 0">
+                                    <v-select :items="categorias" item-title="nombre" item-value="id" variant="outlined"
+                                        label="Categoría" required v-model="formProducto.categoria"
+                                        :rules="[v => !!v || 'Seleccione una categoría']"></v-select>
+                                </v-col>
+                            </v-row>
+                        </v-form>
+                    </v-container>
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="red-darken-1" variant="tonal" @click="dialogP = false">
+                        Cerrar
+                    </v-btn>
+                    <v-btn color="green-darken-1" variant="tonal" :disabled="disableBtn" @click="crearProducto()">
+                        Crear
+                    </v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+        <v-dialog v-model="dialogC" width="700">
+            <v-card>
+                <v-card-text>
+                    <v-container>
+                        <v-form ref="formCategoria">
+                            <v-row>
+                                <v-col cols="12">
+                                    <v-text-field class="inline-form-input-name" label="Nombre" type="text" required
+                                        variant="outlined" v-model="formCategoria.nombre" :rules="nombreRules"
+                                        :counter="65"></v-text-field>
+                                </v-col>
+
+                                <v-col cols="12">
+                                    <v-text-field class="inline-form-input-name" label="Descripción" type="text" required
+                                        variant="outlined" v-model="formCategoria.descripcion"
+                                        :rules="[v => !!v || 'La descripción es requerida']"></v-text-field>
+                                </v-col>
+                            </v-row>
+                        </v-form>
+                    </v-container>
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="red-darken-1" variant="tonal" @click="dialogC = false">
+                        Cerrar
+                    </v-btn>
+                    <v-btn color="green-darken-1" variant="tonal" :disabled="disableBtn" @click="crearCategoria()">
+                        Crear
+                    </v-btn>
+                </v-card-actions>
+                <v-table fixed-header fixed-footer height="400" class="w-100" v-if="categorias.length > 0">
                     <thead style="z-index: 1000;" class="bg-table-header">
                         <tr>
                             <th class="text-left">
                                 Nombre
                             </th>
                             <th class="text-left">
-                                Categoría
-                            </th>
-                            <th class="text-left">
                                 Descripcion
                             </th>
-                            <th class="text-left">
-                                Precio
-                            </th>
-                            <th colspan="2" class="text-center">Acción</th>
+                            <th class="text-center">Acción</th>
+
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="(item) in productos" :key="item.id">
+                        <tr v-for="(item) in categorias" :key="item.id">
                             <td class="text-left">{{ item.nombre }}</td>
-                            <td class="text-left">{{ item.categoria.nombre }}</td>
                             <td class="text-left">{{ item.descripcion }}</td>
-                            <td class="text-left">{{ item.precio.toLocaleString() }}</td>
-                            <td style="text-align: center;"><v-btn density="comfortable" @click="eliminarProducto(item.id)"
+                            <td><v-btn density="comfortable" @click="eliminarCategoria(item.id)"
                                     color="red">eliminar</v-btn>
                             </td>
                         </tr>
                     </tbody>
                 </v-table>
             </v-card>
-        </v-row>
-
-    </v-card>
-    <v-dialog v-model="dialogP" persistent width="700">
-        <v-card>
-            <v-card-text>
-                <v-container>
-                    <v-form ref="formProducto">
-                        <v-row>
-                            <v-col cols="12">
-                                <v-text-field class="inline-form-input-name" label="Nombre" type="text" required
-                                    variant="outlined" v-model="formProducto.nombre" :rules="nombreRules"
-                                    :counter="65"></v-text-field>
-                            </v-col>
-                            <v-col cols="12">
-                                <v-text-field class="inline-form-input-name" label="Descripción" type="text" required
-                                    variant="outlined" v-model="formProducto.descripcion"
-                                    :rules="[v => !!v || 'La descripción es requerida']"></v-text-field>
-                            </v-col>
-                            <v-col cols="12" sm="6" md="6">
-                                <v-text-field label="Precio" type="number" variant="outlined"
-                                    hint="Sin comas o puntos (, .)" persistent-hint required v-model="(formProducto.precio)"
-                                    :rules="precioRules"></v-text-field>
-                            </v-col>
-                            <v-col cols="12" sm="6" v-if="categorias.length > 0">
-                                <v-select :items="categorias" item-title="nombre" item-value="id" variant="outlined"
-                                    label="Categoría" required v-model="formProducto.categoria"
-                                    :rules="[v => !!v || 'Seleccione una categoría']"></v-select>
-                            </v-col>
-                        </v-row>
-                    </v-form>
-                </v-container>
-            </v-card-text>
-            <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="red-darken-1" variant="tonal" @click="dialogP = false">
-                    Cerrar
-                </v-btn>
-                <v-btn color="green-darken-1" variant="tonal" :disabled="disableBtn" @click="crearProducto()">
-                    Crear
-                </v-btn>
-            </v-card-actions>
-        </v-card>
-    </v-dialog>
-    <v-dialog v-model="dialogC" width="700">
-        <v-card>
-            <v-card-text>
-                <v-container>
-                    <v-form ref="formCategoria">
-                        <v-row>
-                            <v-col cols="12">
-                                <v-text-field class="inline-form-input-name" label="Nombre" type="text" required
-                                    variant="outlined" v-model="formCategoria.nombre" :rules="nombreRules"
-                                    :counter="65"></v-text-field>
-                            </v-col>
-
-                            <v-col cols="12">
-                                <v-text-field class="inline-form-input-name" label="Descripción" type="text" required
-                                    variant="outlined" v-model="formCategoria.descripcion"
-                                    :rules="[v => !!v || 'La descripción es requerida']"></v-text-field>
-                            </v-col>
-                        </v-row>
-                    </v-form>
-                </v-container>
-            </v-card-text>
-            <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="red-darken-1" variant="tonal" @click="dialogC = false">
-                    Cerrar
-                </v-btn>
-                <v-btn color="green-darken-1" variant="tonal" :disabled="disableBtn" @click="crearCategoria()">
-                    Crear
-                </v-btn>
-            </v-card-actions>
-            <v-table fixed-header fixed-footer height="400" class="w-100" v-if="categorias.length > 0">
-                <thead style="z-index: 1000;" class="bg-table-header">
-                    <tr>
-                        <th class="text-left">
-                            Nombre
-                        </th>
-                        <th class="text-left">
-                            Descripcion
-                        </th>
-                        <th class="text-center">Acción</th>
-
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="(item) in categorias" :key="item.id">
-                        <td class="text-left">{{ item.nombre }}</td>
-                        <td class="text-left">{{ item.descripcion }}</td>
-                        <td><v-btn density="comfortable" @click="eliminarCategoria(item.id)" color="red">eliminar</v-btn>
-                        </td>
-                    </tr>
-                </tbody>
-            </v-table>
-        </v-card>
-    </v-dialog>
-    <editarProductoComponent v-model="dialogEditar" @noactualizo="noactualizoProducto" @actualizo="actualizoProducto"
-        @cerrar="cerrarEditarProducto" :editarProducto="actualizarProducto">
-    </editarProductoComponent>
+        </v-dialog>
+        <editarProductoComponent v-model="dialogEditar" @noactualizo="noactualizoProducto" @actualizo="actualizoProducto"
+            @cerrar="cerrarEditarProducto" :editarProducto="actualizarProducto">
+        </editarProductoComponent>
+    </div>
 </template>
 
 <script>

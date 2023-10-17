@@ -15,6 +15,7 @@ import empleadosVista from '../views/empleadosView.vue';
 import clientesVista from '../views/clienteView.vue';
 import adminFacturasVista from '../views/adminFacturasView.vue';
 import adminPedidosVista from '../views/adminPedidosView.vue';
+import inventarioVista from '../views/inventarioView.vue'
 //Creación de rutas a los archivos
 //Store para validar tipoCargo
 import store from '../store';
@@ -199,6 +200,22 @@ const routes = [{
         path: '/inicio/gastos',
         name: 'gastosView',
         component: gastosVista,
+        beforeEnter: (to, from, next) => {
+            const data = store.getters.usuario;
+            if (data) {
+                const cargo = store.getters.usuario.empleado.tipoCargo.toLowerCase();
+                if (cargo == "mesero" || cargo == "cajero" || cargo == undefined) {
+                    return next(from);
+                }
+                return next();
+            }
+            next('/');
+        }
+    },
+    {
+        path: '/inicio/inventario',
+        name: 'inventarioVista',
+        component: inventarioVista,
         beforeEnter: (to, from, next) => {
             const data = store.getters.usuario;
             if (data) {
