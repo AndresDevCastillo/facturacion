@@ -8,7 +8,7 @@
         <v-container>
           <v-row>
             <v-col cols="12" md="3">
-              <v-autocomplete label="Nombre del cliente" item-value="id" :items="clientes" item-title="nombre"
+              <v-autocomplete label="Nombre del cliente" no-data-text="Sin clientes registrados" item-value="id" :items="clientes" item-title="nombre"
                 variant="outlined" v-model="form.cliente" :rules="campoRules"></v-autocomplete>
               <!-- <v-text-field v-model="form.nombre" label="Nombre del cliente" placeholder="Pepito pérez" required
                                 variant="outlined"></v-text-field> -->
@@ -209,7 +209,7 @@ export default {
       cantidad: null,
       neto: null,
     },
-    facturaImpresa: null,
+    facturaImpresa: {},
     idEliminarPedidos: null,
   }),
   methods: {
@@ -296,7 +296,7 @@ export default {
         await axios
           .get(`${process.env.VUE_APP_API_URL}/cliente`)
           .then((data) => {
-            this.clientes = data.data;
+            this.clientes = Array.isArray(data.data) ? data.data : [];
           });
       } catch (error) {
         console.log(error);
@@ -419,10 +419,10 @@ export default {
   },
   async mounted() {
     this.$emit('loadingSweet');
+    await this.cargarPedidos();
     await this.buscarEmpleados();
     await this.buscarProductos();
     await this.buscarClientes();
-    await this.cargarPedidos();
     this.$emit('closeSweet');
 
 

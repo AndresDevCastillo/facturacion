@@ -165,14 +165,16 @@ export default {
             if (valid) {
                 this.disableBtn = true;
                 this.formEliminarFactura.razon = this.formEliminarFactura.razon.trim();
-                await axios.put(`${this.api}/factura/eliminar`, this.formEliminarFactura).then(() => {
-                    Swal.fire({ text: 'Factura eliminada', icon: 'success', showConfirmButton: false, timer: 1500 });
-                    this.obtenerFacturas();
+                await axios.put(`${this.api}/factura/eliminar`, this.formEliminarFactura).then(response => {
+                    const m = response.data ? 'Factura eliminada' : 'No se pudo eliminar';
+                    const i = response.data ? 'success' : 'error';
+                    Swal.fire({ text: m, icon: i, showConfirmButton: false, timer: 1500 });
                     this.dialogEliminarFactura = false;
                 }).catch(error => {
                     console.log(error);
-                    Swal.fire({ text: 'No se pudo eliminar la factura', icon: 'error', showConfirmButton: false, timer: 1600 });
+                    Swal.fire({ text: 'Sucedio algo eliminando, inténtelo nuevamente', icon: 'error', showConfirmButton: false, timer: 1600 });
                 });
+                this.obtenerFacturas();
                 this.disableBtn = false;
             }
 

@@ -40,7 +40,11 @@ let menu = [{
         title: 'Clientes',
         href: '/inicio/clientes'
     },
-
+    {
+        icon: 'mdi mdi-history',
+        title: 'Historial',
+        href: '/inicio/historial'
+    },
     ]
 },
 {
@@ -83,8 +87,12 @@ let menu = [{
         icon: 'mdi mdi-store-edit',
         title: 'Inventario',
         href: '/inicio/Inventario'
-    }
-
+    },
+    {
+        icon: 'mdi mdi-history',
+        title: 'Historial',
+        href: '/inicio/historial'
+    },
     ]
 },
 {
