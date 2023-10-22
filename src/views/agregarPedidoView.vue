@@ -89,10 +89,11 @@
                                     <td class="text-left">{{ item.cantidad * item.precioU }}</td>
                                     <td>
                                         <v-row>
-                                            <v-col cols="6" v-for="(com, indexC) in comentario[index]" :key="indexC">
-                                                <v-textarea class="pt-3" v-model="comentario[index][indexC]" label="Comentario"
-                                                    :placeholder="'Ingrese comentario para el producto ' + item.nombre" auto-grow variant="outlined" rows="2"
-                                                    row-height="10" shaped>{{ com }}
+                                            <v-col cols="12" v-for="(com, indexC) in comentario[index]" :key="indexC">
+                                                <v-textarea class="pt-3" v-model="comentario[index][indexC]"
+                                                    label="Comentario"
+                                                    :placeholder="'Ingrese comentario para el producto ' + item.nombre"
+                                                    auto-grow variant="outlined" rows="2" row-height="10" shaped>{{ com }}
                                                 </v-textarea>
                                             </v-col>
                                         </v-row>
@@ -109,11 +110,8 @@
                                 </tr>
                             </tfoot>
                         </v-table>
-                        <v-col :cols="12">
-                            <v-textarea v-model="form.descripcion" label="Comentario"
-                                placeholder="Ingrese comentario para el pedido" auto-grow variant="outlined" rows="4"
-                                row-height="10" shaped></v-textarea>
-                        </v-col>
+                        {{ add }} <br>
+                        {{ form }}
                         <v-row no-gutters justify="space-evenly" class="mb-4" v-if="compras.length != 0">
                             <v-btn elevation="4" @click="cancelarPedido" color="blue" size="x-large"
                                 class="mb-3">Cancelar</v-btn>
@@ -150,7 +148,6 @@ export default {
         form: {
             mesa: null,
             empleado: 1,//Se asigna al crear el componente
-            descripcion: '',
             detallePedido: [],
         },
         compras: [],
@@ -164,9 +161,8 @@ export default {
             if (this.cantidad != null && this.cantidad > 0 && this.add != null) {
                 this.cantidad = parseInt(this.cantidad);
                 this.comentario.push(new Array(this.cantidad).fill(''));
-                console.log(this.comentario);
                 this.compras.push({ nombre: this.add.nombre, cantidad: parseInt(this.cantidad), precioU: this.add.precio });
-                this.form.detallePedido.push({ pedido: 1, producto: this.add.id, cantidad: parseInt(this.cantidad) });
+                this.form.detallePedido.push({ pedido: 1, producto: this.add.id, cantidad: parseInt(this.cantidad), comentario: new Array(this.cantidad).fill(''), idInventario: this.add.idInventario });
                 this.cantidad = null;
                 this.add = null;
             } else {
@@ -208,6 +204,9 @@ export default {
                 });
             }
             this.disableBtn = true;
+            this.comentario.map((comentario, index) => {
+                this.form.detallePedido[index].comentario = comentario;
+            });
             const resp = await axios.post(`${process.env.VUE_APP_API_URL}/pedido/crear`, this.form).then(resp => {
                 return resp;
             }).catch(() => {
@@ -220,30 +219,43 @@ export default {
                 });
             });
             if (resp) {
-                switch (resp.status) {
-                    case 201:
-                        this.reiniciarForm();
-                        this.compras = [];
-                        this.cantidad = null;
-                        this.add = null;
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Creado',
-                            text: 'Pedido creado correctamente',
-                            timer: 1780,
-                            showConfirmButton: false,
-                        });
-                        this.dialog = false;
-                        this.getMesasOcupadas();
-                        this.getMesas();
-                        this.getProductos();
-                        break;
+                if (resp.data.noHayStock) {
+                    this.comentario.splice(resp.data.indice, 1);
+                    this.form.detallePedido.splice(resp.data.indice, 1);
+                    this.compras.splice(resp.data.indice, 1);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'No hay existencia',
+                        text: resp.data.noHayStock,
+                    });
 
-                    default:
-                        break;
                 }
-            }
+                else {
+                    switch (resp.status) {
+                        case 201:
+                            this.reiniciarForm();
+                            this.compras = [];
+                            this.cantidad = null;
+                            this.add = null;
+                            this.comentario = [];
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Creado',
+                                text: 'Pedido creado correctamente',
+                                timer: 1780,
+                                showConfirmButton: false,
+                            });
+                            this.dialog = false;
+                            await this.getMesasOcupadas();
+                            await this.getMesas();
+                            await this.getProductos();
+                            break;
+                        default:
+                            break;
+                    }
+                }
 
+            }
             this.disableBtn = false;
         },
         cancelarPedido() {
@@ -284,7 +296,8 @@ export default {
                     return;
                 }
                 this.productos = resp.data.map(item => {
-                    item.producto.nombreCantidad = `${item.producto.nombre} - ${item.cantidad}`;
+                    item.producto.nombreCantidad = `${item.producto.nombre} - ${item.existencia}`;
+                    item.producto.idInventario = item.id;
                     return item.producto;
                 })
             });
@@ -294,7 +307,6 @@ export default {
                 mesa: null,
                 empleado: this.$store.getters.usuario.empleado.id,
                 detallePedido: [],
-                descripcion: ''
             };
         }
     },
