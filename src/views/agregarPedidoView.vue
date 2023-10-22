@@ -77,6 +77,7 @@
                                     <th class="text-left">
                                         Neto
                                     </th>
+                                    <th class="text-left">Comentario</th>
                                     <th>Acción</th>
                                 </tr>
                             </thead>
@@ -86,6 +87,16 @@
                                     <td class="text-left">{{ item.cantidad }}</td>
                                     <td class="text-left">{{ item.precioU }}</td>
                                     <td class="text-left">{{ item.cantidad * item.precioU }}</td>
+                                    <td>
+                                        <v-row>
+                                            <v-col cols="6" v-for="(com, indexC) in comentario[index]" :key="indexC">
+                                                <v-textarea class="pt-3" v-model="comentario[index][indexC]" label="Comentario"
+                                                    :placeholder="'Ingrese comentario para el producto ' + item.nombre" auto-grow variant="outlined" rows="2"
+                                                    row-height="10" shaped>{{ com }}
+                                                </v-textarea>
+                                            </v-col>
+                                        </v-row>
+                                    </td>
                                     <td><v-btn elevation="4" @click="eliminarCompra(index)" color="red">eliminar</v-btn>
                                     </td>
                                 </tr>
@@ -135,6 +146,7 @@ export default {
         disableBtn: false,
         add: null,
         cantidad: null,
+        comentario: [],
         form: {
             mesa: null,
             empleado: 1,//Se asigna al crear el componente
@@ -150,6 +162,9 @@ export default {
     methods: {
         agregarProducto() {
             if (this.cantidad != null && this.cantidad > 0 && this.add != null) {
+                this.cantidad = parseInt(this.cantidad);
+                this.comentario.push(new Array(this.cantidad).fill(''));
+                console.log(this.comentario);
                 this.compras.push({ nombre: this.add.nombre, cantidad: parseInt(this.cantidad), precioU: this.add.precio });
                 this.form.detallePedido.push({ pedido: 1, producto: this.add.id, cantidad: parseInt(this.cantidad) });
                 this.cantidad = null;
