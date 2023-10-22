@@ -45,6 +45,12 @@ let menu = [{
         title: 'Historial',
         href: '/inicio/historial'
     },
+    {
+        icon: 'mdi mdi-store-edit',
+        title: 'Inventario',
+        href: '/inicio/Inventario'
+    }
+
     ]
 },
 {
@@ -101,13 +107,8 @@ let menu = [{
         icon: 'mdi mdi-chef-hat',
         title: 'Pedido',
         href: '/inicio/agregarPedido'
-    }, {
-        icon: 'mdi mdi-order-bool-descending-variant',
-        title: 'Pedidos',
-        href: '/inicio/pedidos'
-    },]
-},
-{
+    }]
+}, {
     cargo: 'Cajero',
     menu: [{
         icon: 'mdi mdi-cash-plus',
@@ -117,11 +118,8 @@ let menu = [{
         icon: 'mdi mdi-food',
         title: 'Productos',
         href: '/inicio/productos'
-    }, {
-        icon: 'mdi mdi-order-bool-descending-variant',
-        title: 'Pedidos',
-        href: '/inicio/pedidos'
-    }]
-}]
+    },]
+}
+]
 
 export default menu;
