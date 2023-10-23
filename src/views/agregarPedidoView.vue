@@ -35,7 +35,7 @@
 
         <!-- Dialog agregar productos -->
         <v-row justify="center">
-            <v-dialog v-model="dialog" persistent width="800">
+            <v-dialog v-model="dialog" persistent width="1300">
                 <v-card>
                     <v-card-title class="text-h5">
                         Agregar productos
@@ -110,8 +110,6 @@
                                 </tr>
                             </tfoot>
                         </v-table>
-                        {{ add }} <br>
-                        {{ form }}
                         <v-row no-gutters justify="space-evenly" class="mb-4" v-if="compras.length != 0">
                             <v-btn elevation="4" @click="cancelarPedido" color="blue" size="x-large"
                                 class="mb-3">Cancelar</v-btn>
@@ -159,12 +157,30 @@ export default {
     methods: {
         agregarProducto() {
             if (this.cantidad != null && this.cantidad > 0 && this.add != null) {
-                this.cantidad = parseInt(this.cantidad);
-                this.comentario.push(new Array(this.cantidad).fill(''));
-                this.compras.push({ nombre: this.add.nombre, cantidad: parseInt(this.cantidad), precioU: this.add.precio });
-                this.form.detallePedido.push({ pedido: 1, producto: this.add.id, cantidad: parseInt(this.cantidad), comentario: new Array(this.cantidad).fill(''), idInventario: this.add.idInventario });
-                this.cantidad = null;
-                this.add = null;
+                let existeP = false;
+                this.form.detallePedido.map(pedido => {
+                    if (pedido.producto == this.add.id) {
+                        existeP = true
+                    }
+                });
+                if (existeP) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'El producto ya fue seleccionado',
+                        timer: 1700,
+                        showConfirmButton: false,
+                    });
+                }
+                else {
+                    this.cantidad = parseInt(this.cantidad);
+                    this.comentario.push(new Array(this.cantidad).fill(''));
+                    this.compras.push({ nombre: this.add.nombre, cantidad: parseInt(this.cantidad), precioU: this.add.precio });
+                    this.form.detallePedido.push({ pedido: 1, producto: this.add.id, cantidad: parseInt(this.cantidad), comentario: new Array(this.cantidad).fill(''), idInventario: this.add.idInventario });
+                    this.cantidad = null;
+                    this.add = null;
+                }
+
             } else {
                 Swal.fire({
                     icon: 'error',
@@ -192,6 +208,7 @@ export default {
         eliminarCompra(posicion = null) {
             this.compras.splice(posicion, 1);
             this.form.detallePedido.splice(posicion, 1);
+            this.comentario.splice(posicion, 1);
         },
         async guardarPedido() {
             if (this.form.mesa == null || this.form.mesa.length == 0 || this.form.detallePedido.length == 0) {
@@ -295,10 +312,13 @@ export default {
                 if (resp.data.response) {
                     return;
                 }
-                this.productos = resp.data.map(item => {
-                    item.producto.nombreCantidad = `${item.producto.nombre} - ${item.existencia}`;
-                    item.producto.idInventario = item.id;
-                    return item.producto;
+                this.productos = [];
+                resp.data.map(item => {
+                    if (item.existencia > 0) {
+                        item.producto.nombreCantidad = `${item.producto.nombre} - ${item.existencia}`;
+                        item.producto.idInventario = item.id;
+                        this.productos.push(item.producto);
+                    }
                 })
             });
         },

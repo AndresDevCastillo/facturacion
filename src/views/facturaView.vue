@@ -8,8 +8,9 @@
         <v-container>
           <v-row>
             <v-col cols="12" md="3">
-              <v-autocomplete label="Nombre del cliente" no-data-text="Sin clientes registrados" item-value="id" :items="clientes" item-title="nombre"
-                variant="outlined" v-model="form.cliente" :rules="campoRules"></v-autocomplete>
+              <v-autocomplete label="Nombre del cliente" no-data-text="Sin clientes registrados" item-value="id"
+                :items="clientes" item-title="nombre" variant="outlined" v-model="form.cliente"
+                :rules="campoRules"></v-autocomplete>
               <!-- <v-text-field v-model="form.nombre" label="Nombre del cliente" placeholder="Pepito pérez" required
                                 variant="outlined"></v-text-field> -->
             </v-col>
@@ -197,6 +198,8 @@ export default {
       propina: 0,
       neto: 0,
       lugar: 'Restaurante',
+      comentario: '',
+      calificacion: 0,
       detalleFactura: [],
     },
     trabajadores: [],
@@ -390,6 +393,8 @@ export default {
         this.form.compras.splice(0, 1);
         this.form.compras.push(newPedido);
         this.idEliminarPedidos = newPedido.ticket;
+        this.formFactura.calificacion = newPedido.calificacion;
+        this.formFactura.comentario = newPedido.sugerencia;
         this.formFactura.empleado = newPedido.empleado.id;
         this.formFactura.mesa = newPedido.mesa.id;
         this.formFactura.descuento = parseInt(this.form.descuento);

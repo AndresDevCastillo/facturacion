@@ -231,7 +231,9 @@ export default {
                 this.dialogoE = false;
                 this.formInventarioEditar.existencia = parseInt(this.formInventarioEditar.existencia);
                 this.formInventarioEditar.cantidad = this.formInventarioEditar.existencia;
-                axios.put(`${process.env.VUE_APP_API_URL}/inventario/actualizar`, this.formInventarioEditar).then(() => {
+                axios.put(`${process.env.VUE_APP_API_URL}/inventario/actualizar`, this.formInventarioEditar).then(async () => {
+                    await this.listarInventario();
+                    await this.listarProductos();
                     return Swal.fire({
                         icon: 'success',
                         title: 'Exitoso',
@@ -244,8 +246,6 @@ export default {
                     return Swal.fire({ icon: 'error', title: 'No se pudo crear el stock', showConfirmButton: false, timer: 1500 });
                 });
             }
-            await this.listarInventario();
-            await this.listarProductos();
             this.disableBtn = false;
         }
     },

@@ -31,7 +31,7 @@
                                 <th class="text-left">
                                     Empleado
                                 </th>
-                                <th colspan="3" class="text-center">
+                                <th colspan="4" class="text-center">
                                     Acción
                                 </th>
                             </tr>
@@ -48,17 +48,22 @@
                                 <td class="text-left">{{ pedido.empleado.nombre }}</td>
                                 <td class="text-right pr-0">
                                     <v-btn color="red" density="comfortable" @click="eliminarPedido(pedido.ticket)">
-                                        Eliminar pedido</v-btn>
+                                        Eliminar </v-btn>
                                 </td>
                                 <td class="text-right px-0">
-                                    <v-btn color="green" v-if="puedeCambiar()" density="comfortable" @click="dialogMesa(pedido.ticket, pedido.mesa.id)">
+                                    <v-btn color="green" v-if="puedeCambiar()" density="comfortable"
+                                        @click="dialogMesa(pedido.ticket, pedido.mesa.id)">
                                         Cambiar mesa</v-btn>
                                 </td>
                                 <td class="text-right px-0">
                                     <v-btn color="blue" density="comfortable"
                                         @click="mostrarTicket(Object.assign({}, pedido))">
-                                        ver
+                                        Ver
                                     </v-btn>
+                                </td>
+                                <td v-if="pedido.calificacion < 1">
+                                    <v-btn color="yellow" density="comfortable"
+                                        @click="abrirCalificar(pedido.ticket)">Calificar</v-btn>
                                 </td>
                             </tr>
                         </tbody>
@@ -75,8 +80,10 @@
                         <v-form ref="formCambioMesa">
                             <v-row>
                                 <v-col cols="12">
-                                    <v-autocomplete label="Mesas disponibles" v-model="cambioMesa.mesaNew" :items="mesasDisponibles" item-title="nombre" item-value="id" required
-                                        variant="outlined" placeholder="Escoja mesa" no-data-text="Sin mesas disponibles" :rules="campoRules"></v-autocomplete>
+                                    <v-autocomplete label="Mesas disponibles" v-model="cambioMesa.mesaNew"
+                                        :items="mesasDisponibles" item-title="nombre" item-value="id" required
+                                        variant="outlined" placeholder="Escoja mesa" no-data-text="Sin mesas disponibles"
+                                        :rules="campoRules"></v-autocomplete>
                                 </v-col>
                             </v-row>
                         </v-form>
@@ -92,21 +99,41 @@
                 </v-card-actions>
             </v-card>
         </v-dialog>
+        <v-dialog v-model="dialogCalificar" persistent width="700">
+            <v-card>
+                <v-card-text>
+                    <v-container>
+                        <RatingComponent :grade="0" @calificarEmit="calificarPedido" :maxStars="5" :hasCounter="true" />
+                    </v-container>
+                </v-card-text>
+                <v-card-actions class="justify-end">
+                    <v-btn color="red-darken-1" variant="tonal" @click="dialogCalificar = false">
+                        Cerrar
+                    </v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+
     </div>
 </template>
 <script>
 import axios from 'axios'
 import Swal from 'sweetalert2';
 import ticketCocineroComponent from '../components/ticketCocinero.vue'
+import RatingComponent from '../components/rating.vue'
 export default {
     name: 'adminPedidosVista',
     components: {
-        ticketCocineroComponent
+        ticketCocineroComponent,
+        RatingComponent
     },
     data: () => ({
+        calificacion: 1,
         disableBtn: false,
         dialogTicket: false,
         dialogCambioMesa: false,
+        dialogCalificar: false,
+        idTicket: null,
         pedidos: [],
         mesasDisponibles: [],
         api: process.env.VUE_APP_API_URL,
@@ -128,6 +155,32 @@ export default {
         }
     }),
     methods: {
+        async abrirCalificar(id) {
+            this.idTicket = id;
+            this.dialogCalificar = true;
+        },
+        async calificarPedido(data) {
+            this.dialogCalificar = false;
+            await axios.put(`${process.env.VUE_APP_API_URL}/pedido/calificar/${this.idTicket}`, data)
+                .then(() => {
+                    Swal.fire({
+                        icon: "success",
+                        title: "Se califico correctamente",
+                        timer: 1000,
+                        showConfirmButton: false,
+                    });
+                })
+                .catch((error) => {
+                    console.log(error);
+                    Swal.fire({
+                        icon: "error",
+                        title: "No se califico correctamente",
+                        timer: 1000,
+                        showConfirmButton: false,
+                    });
+                })
+            await this.obtenerPedidos();
+        },
         async obtenerPedidos() {
             await axios.get(`${this.api}/pedido`).then(response => {
                 this.pedidos = response.data;
