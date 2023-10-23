@@ -31,14 +31,14 @@
                                 <th class="text-left">
                                     Empleado
                                 </th>
-                                <th colspan="4" class="text-center">
+                                <th colspan="5" class="text-center">
                                     Acción
                                 </th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr v-if="pedidos.length == 0">
-                                <td colspan="6" class="text-center">Sin pedidos</td>
+                                <td colspan="10" class="text-center">Sin pedidos</td>
                             </tr>
                             <tr v-for="(pedido, index) in pedidos" :key="index">
                                 <td class="text-left">{{ pedido.ticket }}</td>
@@ -54,6 +54,11 @@
                                     <v-btn color="green" v-if="puedeCambiar()" density="comfortable"
                                         @click="dialogMesa(pedido.ticket, pedido.mesa.id)">
                                         Cambiar mesa</v-btn>
+                                </td>
+                                <td class="text-right px-0">
+                                    <v-btn color="orange" density="comfortable" :disabled="disableBtnListo"
+                                        @click="marcarPedidoListo(pedido.ticket)">
+                                        Listo</v-btn>
                                 </td>
                                 <td class="text-right px-0">
                                     <v-btn color="blue" density="comfortable"
@@ -113,7 +118,6 @@
                 </v-card-actions>
             </v-card>
         </v-dialog>
-
     </div>
 </template>
 <script>
@@ -133,6 +137,7 @@ export default {
         dialogTicket: false,
         dialogCambioMesa: false,
         dialogCalificar: false,
+        disableBtnListo: false,
         idTicket: null,
         pedidos: [],
         mesasDisponibles: [],
@@ -259,6 +264,16 @@ export default {
                 return cargoPermitido.includes(cargo);
             }
             return false;
+        },
+        async marcarPedidoListo(ticket) {
+            this.disableBtnListo = true;
+            await axios.put(`${this.api}/pedido/listo/${ticket}`).then(() => {
+                Swal.fire({ icon: 'success', text: 'Pedido terminado', showConfirmButton: false, timer: 1600 });
+            }).catch(error => {
+                console.log(error);
+                Swal.fire({ icon: 'error', text: 'No se pudo marcar el pedido', showConfirmButton: false, timer: 1600 });
+            });
+            this.disableBtnListo = false;
         }
     },
     async created() {

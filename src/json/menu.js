@@ -35,6 +35,11 @@ let menu = [{
         icon: 'mdi mdi-file-settings',
         title: 'Facturas',
         href: '/inicio/facturas'
+    },
+    {
+        icon: 'mdi mdi-chef-hat',
+        title: 'Cocinero',
+        href: '/inicio/cocinero'
     }, {
         icon: 'mdi mdi-account-group-outline',
         title: 'Clientes',
@@ -118,6 +123,13 @@ let menu = [{
         icon: 'mdi mdi-food',
         title: 'Productos',
         href: '/inicio/productos'
+    },]
+}, {
+    cargo: 'Cocinero',
+    menu: [{
+        icon: 'mdi mdi-chef-hat',
+        title: 'Cocinero',
+        href: '/inicio/cocinero'
     },]
 }
 ]
