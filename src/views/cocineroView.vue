@@ -50,26 +50,17 @@
     </div>
 </template>
 <script>
-import axios from 'axios'
-import Swal from 'sweetalert2';
-//import ticketComponent from "../components/ticket.vue";
-
-
+import axios from 'axios';
 export default {
-    name: 'adminFacturasVista',
-    components: {
-
-    },
+    name: 'cocineroVista',
     data: () => ({
-        disableBtn: false,
         pedidos: [],
         pedidosTabla: [],
         api: process.env.VUE_APP_API_URL,
-        items: [],
+        interval: null
     }),
     methods: {
         async obtenerPedidos() {
-
             await axios.get(`${this.api}/pedido/cocinero`).then(response => {
                 this.pedidosTabla = [];
                 this.pedidos = response.data;
@@ -82,100 +73,18 @@ export default {
                     });
                 });
             });
-            setInterval(() => {
+            this.interval = setInterval(() => {
                 this.obtenerPedidos();
             }, 30000);
-        },
-        eliminarFacturaDialog(id = null) {
-            if (id) {
-                this.formEliminarFactura.id = parseInt(id);
-                this.dialogEliminarFactura = true;
-            }
-        },
-        async eliminarFactura() {
-            const { valid } = await this.$refs.formEliminarFactura.validate();
-            if (valid) {
-                this.disableBtn = true;
-                this.formEliminarFactura.razon = this.formEliminarFactura.razon.trim();
-                await axios.put(`${this.api}/factura/eliminar`, this.formEliminarFactura).then(response => {
-                    const m = response.data ? 'Factura eliminada' : 'No se pudo eliminar';
-                    const i = response.data ? 'success' : 'error';
-                    Swal.fire({ text: m, icon: i, showConfirmButton: false, timer: 1500 });
-                    this.dialogEliminarFactura = false;
-                }).catch(error => {
-                    console.log(error);
-                    Swal.fire({ text: 'Sucedio algo eliminando, inténtelo nuevamente', icon: 'error', showConfirmButton: false, timer: 1600 });
-                });
-                this.obtenerFacturas();
-                this.disableBtn = false;
-            }
-
-            /*     Swal.fire({
-                    icon: "info",
-                    title: "Seguro quiere eliminar el la factura?",
-                    showDenyButton: true,
-                    denyButtonText: "No",
-                    confirmButtonText: "Eliminar",
-                })
-                    .then(async (result) => {
-                        /* Read more about isConfirmed, isDenied below 
-                        if (result.isConfirmed) {
-                            await axios.delete(`${this.api}/factura/${codigo}`).then(async () => {
-                                Swal.fire({
-                                    icon: "success",
-                                    title: "Se elimino correctamente",
-                                    timer: 1000,
-                                    showConfirmButton: false,
-                                });
-                                this.facturaId = null;
-                                await this.obtenerFacturas();
-                            });
-                        }
-                    })
-                    .catch(() => {
-                        return Swal.fire({
-                            icon: "error",
-                            title: "No se pudo eliminar la factura",
-                            timer: 1000,
-                        });
-                    });
-     */
-        },
-        verPedido(index) {
-            const pedido = this.pedidos[index];
-            pedido.detalleTicket.forEach(detalle => {
-                this.items.push({ type: 'subheader', title: `${detalle.producto.nombre}: ${detalle.producto.descripcion}` });
-                console.log(detalle.cantidad);
-                detalle.comentario.forEach((comen, index) => {
-                    this.items.push({ title: `Plato ${index + 1}: \nNota: ${comen}` });
-                });
-                this.items.push({ type: 'divider' });
-            });
-            this.dialogPedido = true;
-        },
-        async verFacturaGeneral() {
-            this.$emit('loadingSweet');
-            await axios.get(`${process.env.VUE_APP_API_URL}/factura/${this.facturaId}`).then(resp => {
-                if (resp.data.response) {
-                    return Swal.fire({
-                        icon: "error",
-                        title: "No se pudo encontrar la factura",
-                        timer: 1000,
-                    });
-                }
-                else {
-                    this.$emit('closeSweet');
-                    this.verFactura(resp.data);
-                }
-            });
-            this.$emit('closeSweet');
         }
-
     },
     async created() {
         this.$emit('loadingSweet');
         await this.obtenerPedidos();
         this.$emit('closeSweet');
+    },
+    unmounted() {
+        clearInterval(this.interval);
     }
 }
 </script>

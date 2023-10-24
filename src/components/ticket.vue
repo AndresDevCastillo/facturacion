@@ -12,7 +12,7 @@
                     </v-toolbar-items>
                 </v-toolbar>
                 <v-card-text>
-                    <v-col cols="4" sm="6" md="4" xl="4" class="ma-auto">
+                    <v-col cols="12" sm="6" md="4" xl="4" class="ma-auto">
                         <v-card rounded="4" class="pa-4 mt-2" id="ticket">
                             <v-row class="w-100 flex-column" id="infoEmpresa" no-gutters style="
                   font-family: 'Roboto', sans-serif;

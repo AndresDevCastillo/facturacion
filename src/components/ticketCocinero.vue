@@ -1,6 +1,6 @@
 <template>
     <v-row justify="center">
-        <v-dialog v-model="verDialogTicketCocinero" persistent fullscreen  :scrim="false" transition="dialog-bottom-transition">
+        <v-dialog v-model="verDialogTicketCocinero" persistent fullscreen :scrim="false" transition="dialog-bottom-transition">
             <v-card>
                 <v-toolbar dark theme="dark" class="noImprimir">
                     <v-btn icon dark @click="cerrarDialogo()">
@@ -14,7 +14,7 @@
                     </v-toolbar-items>
                 </v-toolbar>
                 <v-card-text>
-                    <v-col cols="4" sm="6" md="4" xl="4" class="ma-auto">
+                    <v-col cols="12" sm="6" md="4" xl="4" class="ma-auto">
                         <v-card rounded="4" class="pa-4 mt-2" id="ticketCocinero">
                             <v-row class="w-100 flex-column" id="infoEmpresa" no-gutters
                                 style="font-family: 'Roboto', sans-serif; color: #000 !important; margin-top:5px;">

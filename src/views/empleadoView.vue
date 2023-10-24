@@ -108,8 +108,8 @@
                             <v-form ref="formUsuario">
                                 <v-row>
                                     <v-col cols="12">
-                                        <v-autocomplete v-model="formUsuario.empleado" :items="empleados" label="Empleado"
-                                            no-data-text="Sin empleados" item-title="nombre" item-value="id"
+                                        <v-autocomplete v-model="formUsuario.empleado" :items="empleadosNoUser" label="Empleado"
+                                            no-data-text="Sin empleados para asignarle usuarios" item-title="nombre" item-value="id"
                                             item-text="nombre" placeholder="Escoja empleado" required variant="outlined">
                                         </v-autocomplete>
                                     </v-col>
@@ -159,6 +159,7 @@ export default {
         disableBtn: false,
         visibleContra: true,
         empleados: [],
+        empleadosNoUser: [],
         tipoCargo: [],
         dialogC: false,
         dialogE: false,
@@ -200,6 +201,11 @@ export default {
 
             });
         },
+        async listarEmpleadosNoUser() {
+            await axios.get(`${process.env.VUE_APP_API_URL}/empleado/empresa/nouser`).then(resp => {
+                this.empleadosNoUser = resp.data;
+            });
+        },
         async eliminarEmpleado(cedula) {
             Swal.fire({
                 icon: 'info',
@@ -224,37 +230,6 @@ export default {
             await axios.get(`${process.env.VUE_APP_API_URL}/empleado/cargos/empresa`).then((resp) => {
                 this.tipoCargo = resp.data;
             })
-        },
-        async crearCargo() {
-            await axios.post(`${process.env.VUE_APP_API_URL}/tipo-cargo/crear`, this.formCargo).then(() => {
-                this.dialogC = false;
-                this.listarCargos();
-                this.formCargo = {
-                    cargo: null
-                }
-                Swal.fire({ icon: 'success', text: 'Se creo el cargo correctamente', timer: 1500, showConfirmButton: false });
-            })
-        },
-        async eliminarCargo(id) {
-            this.dialogC = false;
-            Swal.fire({
-                icon: 'info',
-                title: 'Seguro quiere eliminar el cargo?',
-                showDenyButton: true,
-                denyButtonText: 'No',
-                confirmButtonText: 'Eliminar',
-            }).then(async (result) => {
-                /* Read more about isConfirmed, isDenied below */
-                if (result.isConfirmed) {
-                    await axios.delete(`${process.env.VUE_APP_API_URL}/tipo-cargo/${id}`).then(() => {
-                        Swal.fire({ icon: 'success', text: 'Se elimino el cargo correctamente', timer: 1500, showConfirmButton: false });
-                        this.listarCargos();
-                    })
-                }
-            }).catch(() => {
-                return Swal.fire({ icon: 'error', title: 'No se pudo eliminar el cargo', timer: 1000 });
-            });
-
         },
         async crearEmpleado() {
             const { valid } = await this.$refs.formEmpleado.validate();
@@ -310,6 +285,7 @@ export default {
                             break;
                     }
                 });
+                this.listarEmpleadosNoUser();
             }
         },
         editarEmpleado(empleado) {
@@ -329,6 +305,7 @@ export default {
     async created() {
         this.$emit('loadingSweet');
         await this.listarEmpleados();
+        await this.listarEmpleadosNoUser();
         this.$emit('closeSweet');
         await this.listarCargos();
     }

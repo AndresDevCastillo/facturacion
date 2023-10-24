@@ -8,7 +8,7 @@
                     </v-btn>
                 </v-toolbar>
                 <v-card-text>
-                    <v-col cols="4" sm="6" md="4" xl="4" class="ma-auto">
+                    <v-col cols="12" sm="6" md="4" xl="4" class="ma-auto">
                         <v-card rounded="4" class="pa-4 mt-2" id="ticket">
                             <v-img
                                 :src="require('@/assets/eliminado.png')"

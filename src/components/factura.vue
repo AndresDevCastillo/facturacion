@@ -14,7 +14,7 @@
                     </v-toolbar-items>
                 </v-toolbar>
                 <v-card-text>
-                    <v-col md="8" xl="9" cols="12" class="ma-auto">
+                    <v-col cols="12" sm="6" md="4" xl="4" class="ma-auto">
                         <v-card rounded="4" class="pa-4 mt-2" ref="imprimir" id="imprimir">
                             <v-row class="w-100 flex-column" id="parte1" no-gutters
                                 style="font-family: 'Roboto', sans-serif;">
